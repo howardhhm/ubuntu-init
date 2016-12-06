@@ -52,6 +52,7 @@ alias sad='svn add'
 alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
+alias gitco='git commit -m ""'
 
 # ==================================================================
 # ---------   Ubuntu
