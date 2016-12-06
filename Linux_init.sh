@@ -63,7 +63,19 @@ wget
 ##                      Zsh
 ############################################################################################
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="rkj-repos"|g' ~/.zshrc
-echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
-echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
+tmp=`grep 'ZSH_THEME="rkj-repos"' ~/.zshrc &>/dev/null;echo $?`
+if [ $tmp -ne 0 ]; then
+    sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="rkj-repos"|g' ~/.zshrc
+fi
+
+tmp=`grep 'set -o ignoreeof' ~/.zshrc &>/dev/null;echo $?`
+if [ $tmp -ne 0 ]; then
+    echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
+fi
+
+tmp=`grep 'export PYTHONSTARTUP' ~/.zshrc &>/dev/null;echo $?`
+if [ $tmp -ne 0 ]; then
+    echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
+fi
+
 sed -i '3 a source /etc/sharerc' ~/.zshrc
