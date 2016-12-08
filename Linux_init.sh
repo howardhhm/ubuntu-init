@@ -11,6 +11,7 @@ if [ ! -f ./netselect_0.3.ds1-26_amd64.deb ]; then
     exit 127
 else
     sudo dpkg -i netselect_0.3.ds1-26_amd64.deb
+    rm -f netselect_0.3.ds1-26_amd64.deb
 fi
 
 ############################################################################################
@@ -25,6 +26,7 @@ fi
 
 sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 sudo apt-get update
+sudo apt-get upgrade
 
 ############################################################################################
 ##                      Common Software
@@ -36,13 +38,14 @@ sudo apt install vim net-tools zsh git gcc unzip gcc ack-grep tmux wget autojump
 ############################################################################################
 wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/sharerc
 if [ ! -f ./sharerc ]; then
-    echo -e "\033[41;37m CAN NOT FIND SHARERC FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND SHARERC FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND SHARERC FILE\!\! \033[0m"
+    echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
+    echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
+    echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
     exit 127
 else
-    sudo cp ./sharerc /etc/sharerc
+    sudo mv ./sharerc /etc/sharerc
 fi
+source /etc/sharerc
 
 ############################################################################################
 ##                      Python & Pip
@@ -54,28 +57,30 @@ sudo apt-get install build-essential libssl-dev libevent-dev libjpeg-dev libxml2
 mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" > ~/.pip/pip.conf
 sudo pip install --upgrade pip $PIPDO
-sudo pip install sklearn $PIPDO
-sudo pip install numpy $PIPDO
+sudo pip install sklearn numpy scipy $PIPDO
+# sudo apt-get install libmysqlclient-dev
+# sudo pip install MySQL-python $PIPDO
 
-wget
+wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstartup.py
+if [ ! -f ./.pythonstartup.py ]; then
+    echo -e "\033[41;37m CAN NOT FIND pythonstartup.py FILE\!\! \033[0m"
+    echo -e "\033[41;37m CAN NOT FIND pythonstartup.py FILE\!\! \033[0m"
+    echo -e "\033[41;37m CAN NOT FIND pythonstartup.py FILE\!\! \033[0m"
+    exit 127
+else
+    sudo mv ./.pythonstartup.py ~/.pythonstartup.py
+fi
 
 ############################################################################################
 ##                      Zsh
 ############################################################################################
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 tmp=`grep 'ZSH_THEME="rkj-repos"' ~/.zshrc &>/dev/null;echo $?`
+
 if [ $tmp -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="rkj-repos"|g' ~/.zshrc
-fi
-
-tmp=`grep 'set -o ignoreeof' ~/.zshrc &>/dev/null;echo $?`
-if [ $tmp -ne 0 ]; then
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
-fi
-
-tmp=`grep 'export PYTHONSTARTUP' ~/.zshrc &>/dev/null;echo $?`
-if [ $tmp -ne 0 ]; then
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
+    sed -i '3 a source /etc/sharerc' ~/.zshrc
 fi
 
-sed -i '3 a source /etc/sharerc' ~/.zshrc
