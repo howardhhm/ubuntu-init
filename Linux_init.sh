@@ -27,6 +27,8 @@ fi
 sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get upgrade
+sudo apt-get install apt-file
+sudo apt-file update
 
 ############################################################################################
 ##                      Common Software
