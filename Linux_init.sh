@@ -31,7 +31,7 @@ sudo apt-get upgrade
 ############################################################################################
 ##                      Common Software
 ############################################################################################
-sudo apt install vim net-tools zsh git gcc unzip gcc ack-grep tmux wget autojump
+sudo apt-get install vim net-tools zsh git gcc unzip gcc ack-grep tmux byobu wget autojump
 
 ############################################################################################
 ##                      Share Resource
