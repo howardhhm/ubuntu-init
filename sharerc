@@ -1,5 +1,5 @@
 # ###############################
-# ----   Date 2016-12-6
+# ----   Date 2016-12-11
 # ###############################
 
 # ==================================================================
@@ -17,15 +17,21 @@ export PIPDO='--trusted-host=pypi.douban.com'
 # ==================================================================
 alias rm='rm -irv'
 alias rmr='rm -rvf'
-alias mv='mv -i'
+alias mv='mv -iv'
 alias lm='ls -al'
 alias ll='ls -alF'
 alias lf='lm --full-time'
 alias h='history'
-alias mkdir='mkdir -p'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias tex="tar zxvf"
+alias tec="tar zcvf"
+alias tm="byobu"
+alias f="du -sh"
+alias fs="f *"
+alias fsh="f * .??*"
+alias gitco='git commit -m '
+
 # caution 'p4p1'
 # caution: ip got below is divided by '.'
 # ip0 $(ip addr show p4p1 | grep 'inet ' | sed 's/^.*inet //g'| cut -d ' ' -f1 | sed 's/\/.*$//g')
@@ -42,6 +48,8 @@ alias ipp="wget http://ipecho.net/plain -O - -q; echo "
 alias py="python"
 alias allip="ip addr show | grep 'inet ' | sed 's/^.*inet //g'| cut -d ' ' -f1,4,6 | sed 's/scope //g' | awk '{ print \$2 \"\t\" \$1  }'"
 
+
+
 # ==================================================================
 # ---------   Local
 # ==================================================================
@@ -50,17 +58,23 @@ alias sup='svn update'
 alias srm='svn rm --force'
 alias sad='svn add'
 alias sta='svn status'
-alias f="du -sh"
-alias fs="f *"
-alias fsh="f * .??*"
-alias gitco='git commit -m '
+alias st='subl'
+
+# ==================================================================
+# ---------   Server
+# ==================================================================
+alias hs="hexo g && hexo s"
+alias hd="hexo g && hexo d"
+
+# ==================================================================
+# ---------   Linux
+# ==================================================================
+alias cp='cp -iar'
+alias tm='byobu'
+alias tma='byobu a'
+alias tml='byobu ls'
 
 # ==================================================================
 # ---------   Ubuntu
 # ==================================================================
-alias cp='cp -iar'
 alias ack="ack-grep"
-alias st='subl'
-alias tm='byobu'
-alias tma='byobu a'
-alias tms='byobu ls'
