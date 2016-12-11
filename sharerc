@@ -48,8 +48,6 @@ alias ipp="wget http://ipecho.net/plain -O - -q; echo "
 alias py="python"
 alias allip="ip addr show | grep 'inet ' | sed 's/^.*inet //g'| cut -d ' ' -f1,4,6 | sed 's/scope //g' | awk '{ print \$2 \"\t\" \$1  }'"
 
-
-
 # ==================================================================
 # ---------   Local
 # ==================================================================
