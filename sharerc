@@ -49,6 +49,7 @@ alias sco='svn commit -m ""'
 alias sup='svn update'
 alias srm='svn rm --force'
 alias sad='svn add'
+alias sta='svn status'
 alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
