@@ -30,7 +30,6 @@ alias tm="byobu"
 alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
-alias gitco='git commit -m '
 alias py="python"
 
 alias psa='ps aux'
