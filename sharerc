@@ -31,6 +31,9 @@ alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
 alias py="python"
+alias mk="make"
+alias mc="make clean"
+alias mi="make install"
 
 alias psa='ps aux'
 alias code="LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-10};echo;"
