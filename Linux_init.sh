@@ -48,7 +48,7 @@ source /etc/sharerc
 ############################################################################################
 ##                      Common Software
 ############################################################################################
-sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc gcc gcc git htop net-tools ntpdate pandoc subversion tmux unzip vim wget zsh
+sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc gcc git htop net-tools ntpdate pandoc subversion tmux unzip vim wget zsh
 sudo ntpdate time.nist.gov
 # ** The commands below should be executed **
 # ** if the PC was installed windows and ubuntu **
@@ -99,6 +99,10 @@ fi
 sudo add-apt-repository -y ppa:shutter/ppa
 sudo apt-get update
 sudo apt-get install -y shutter
+# haroopad (Markdown editor)
+wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb
+sudo dpkg -i haroopad-v0.13.1-x64.deb
+rm -f haroopad-v0.13.1-x64.deb
 
 ############################################################################################
 ##                      Python & Pip
