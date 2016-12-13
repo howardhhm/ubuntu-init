@@ -18,12 +18,17 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - ctags
  - curl wget
  - dfc
+ - filezilla
  - gcc
  - git
  - htop
+ - meld:Comparison
  - net-tools
  - ntpdate
+ - okular
  - pandoc:Convert docs
+ - terminator
+ - speedcrunch
  - subversion
  - unzip
  - vim
@@ -39,6 +44,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - numlock:Numlock on automatically when login
  - shutter:Screenshot
  - haroopad:Markdown editor
+ - chrome
+ - wps
+ - sogou
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion

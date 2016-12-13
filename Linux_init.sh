@@ -3,15 +3,15 @@
 ############################################################################################
 ##                      Preparation
 ############################################################################################
-wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/netselect_0.3.ds1-26_amd64.deb
-if [ ! -f ./netselect_0.3.ds1-26_amd64.deb ]; then
+mkdir ~/tmp
+wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/netselect_0.3.ds1-26_amd64.deb -P ~/tmp
+if [ ! -f ~/tmp/netselect_0.3.ds1-26_amd64.deb ]; then
     echo -e "\033[41;37m CAN NOT FIND netselect FILE\!\! \033[0m"
     echo -e "\033[41;37m CAN NOT FIND netselect FILE\!\! \033[0m"
     echo -e "\033[41;37m CAN NOT FIND netselect FILE\!\! \033[0m"
     exit 127
 else
-    sudo dpkg -i netselect_0.3.ds1-26_amd64.deb
-    rm -f netselect_0.3.ds1-26_amd64.deb
+    sudo dpkg -i ~/tmp/netselect_0.3.ds1-26_amd64.deb
 fi
 
 ############################################################################################
@@ -34,21 +34,21 @@ sudo apt-file update
 ############################################################################################
 ##                      Share Resource
 ############################################################################################
-wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/sharerc
-if [ ! -f ./sharerc ]; then
+wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/sharerc -P ~/tmp
+if [ ! -f ~/tmp/sharerc ]; then
     echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
     echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
     echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
     exit 127
 else
-    sudo mv ./sharerc /etc/sharerc
+    sudo mv ~/tmp/sharerc /etc/sharerc
 fi
 source /etc/sharerc
 
 ############################################################################################
 ##                      Common Software
 ############################################################################################
-sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc gcc git htop net-tools ntpdate pandoc subversion tmux unzip vim wget zsh
+sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc filezilla gcc git htop meld net-tools ntpdate okular pandoc speedcrunch subversion terminator tmux unzip vim wget zsh
 sudo ntpdate time.nist.gov
 # ** The commands below should be executed **
 # ** if the PC was installed windows and ubuntu **
@@ -100,9 +100,19 @@ sudo add-apt-repository -y ppa:shutter/ppa
 sudo apt-get update
 sudo apt-get install -y shutter
 # haroopad (Markdown editor)
-wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb
-sudo dpkg -i haroopad-v0.13.1-x64.deb
-rm -f haroopad-v0.13.1-x64.deb
+wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/tmp
+sudo dpkg -i ~/tmp/haroopad-v0.13.1-x64.deb
+# chrome
+sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
+wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install -y google-chrome-stable
+# wps
+wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/tmp
+sudo dpkg -i ~/tmp/wps-office_10.1.0.5672~a21_amd64.deb
+# sogou
+wget http://7xvxlx.com1.z0.glb.clouddn.com/sogoupinyin_2.1.0.0082_amd64.deb -P ~/tmp
+sudo dpkg -i ~/tmp/sogoupinyin_2.1.0.0082_amd64.deb
 
 ############################################################################################
 ##                      Python & Pip
@@ -116,15 +126,7 @@ sudo pip install sklearn numpy scipy $PIPDO
 # sudo apt-get install -y libmysqlclient-dev
 # sudo pip install MySQL-python $PIPDO
 
-wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstartup.py
-if [ ! -f ./.pythonstartup.py ]; then
-    echo -e "\033[41;37m CAN NOT FIND pythonstartup.py FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND pythonstartup.py FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND pythonstartup.py FILE\!\! \033[0m"
-    exit 127
-else
-    sudo mv ./.pythonstartup.py ~/.pythonstartup.py
-fi
+wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstartup.py -P ~/
 
 ############################################################################################
 ##                      Zsh
