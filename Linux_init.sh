@@ -25,15 +25,11 @@ if [ ! -f /etc/apt/sources.list.bak ]; then
 fi
 
 sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
+
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install apt-file
+sudo apt-get install -y apt-file
 sudo apt-file update
-
-############################################################################################
-##                      Common Software
-############################################################################################
-sudo apt-get install vim net-tools zsh git gcc unzip gcc ack-grep tmux byobu wget autojump
 
 ############################################################################################
 ##                      Share Resource
@@ -50,17 +46,70 @@ fi
 source /etc/sharerc
 
 ############################################################################################
+##                      Common Software
+############################################################################################
+sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc gcc gcc git htop net-tools ntpdate pandoc subversion tmux unzip vim wget zsh
+sudo ntpdate time.nist.gov
+# ** The commands below should be executed **
+# ** if the PC was installed windows and ubuntu **
+# sudo timedatectl set-local-rtc 1 --adjust-system-clock
+# sudo timedatectl set-ntp 0
+# sudo apt install ntpdate
+# sudo ntpdate cn.pool.ntp.org
+
+# exfat
+# mount sdX to /mnt
+# sudo mount -t exfat /dev/sdX /mnt
+sudo add-apt-repository -y ppa:relan/exfat
+sudo apt-get update
+sudo apt-get install -y exfat-utils
+# codeblocks
+# wx-config --version
+# 3.0.2
+sudo add-apt-repository -y ppa:damien-moore/codeblocks
+sudo apt-get update
+sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common codeblocks-contrib
+# wiz
+sudo add-apt-repository -y ppa:wiznote-team
+sudo apt-get update
+sudo apt-get install -y wiznote
+# ss
+sudo add-apt-repository -y ppa:hzwhuang/ss-qt5
+sudo apt-get update
+sudo apt-get install -y shadowsocks-qt5
+# flash anti-lock new version
+sudo add-apt-repository -y ppa:caffeine-developers/ppa
+sudo apt-get update
+sudo apt-get install -y caffeine
+# sublime text 3
+sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
+sudo apt-get update
+sudo apt-get install -y sublime-text-installer
+# vokoscreen (video monitor)
+sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
+sudo apt-get update
+sudo apt-get install -y vokoscreen
+# numlock
+sudo apt-get -y install numlockx
+tmp=`grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf &>/dev/null;echo $?`
+if [ $tmp -ne 0 ]; then
+    sudo sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+fi
+# shutter (screenshot)
+sudo add-apt-repository -y ppa:shutter/ppa
+sudo apt-get update
+sudo apt-get install -y shutter
+
+############################################################################################
 ##                      Python & Pip
 ############################################################################################
-sudo apt-get install python-pip python-dev build-essential python3-pip
-sudo apt-get install python2.7 python2.7-dev python3.5 python3.5-dev
-sudo apt-get install build-essential libssl-dev libevent-dev libjpeg-dev libxml2-dev libxslt-dev
+sudo apt-get install build-essential libevent-dev libjpeg-dev libssl-dev libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev python3-pip python3.5 python3.5-dev
 
 mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" > ~/.pip/pip.conf
 sudo pip install --upgrade pip $PIPDO
 sudo pip install sklearn numpy scipy $PIPDO
-# sudo apt-get install libmysqlclient-dev
+# sudo apt-get install -y libmysqlclient-dev
 # sudo pip install MySQL-python $PIPDO
 
 wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstartup.py
@@ -78,7 +127,6 @@ fi
 ############################################################################################
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 tmp=`grep 'ZSH_THEME="rkj-repos"' ~/.zshrc &>/dev/null;echo $?`
-
 if [ $tmp -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="rkj-repos"|g' ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
