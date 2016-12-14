@@ -1,7 +1,7 @@
 #!/bin/sh
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-13 20:00:31
+# @DateTime:     2016-12-14 10:59:48
 # @Description:  Description
 
 ############################################################################################
@@ -50,9 +50,16 @@ fi
 source /etc/sharerc
 
 ############################################################################################
+##                      Source code pro
+############################################################################################
+wget http://7xvxlx.com1.z0.glb.clouddn.com/SourceCodePro_FontsOnly-1.013.tar.gz -P ~/tmp
+sudo tar zxvf ~/tmp/SourceCodePro_FontsOnly-1.013.tar.gz -C /usr/share/fonts
+sudo fc-cache
+
+############################################################################################
 ##                      Common Software
 ############################################################################################
-sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc filezilla gcc git htop meld net-tools ntpdate okular pandoc speedcrunch subversion terminator tmux unzip vim wget zsh
+sudo apt-get install -y ack-grep autojump byobu chromium cmatrix ctags dfc filezilla gcc git htop meld net-tools ntpdate okular pandoc speedcrunch subversion terminator tmux unzip vim wget zsh
 sudo ntpdate time.nist.gov
 # ** The commands below should be executed **
 # ** if the PC was installed windows and ubuntu **
@@ -94,11 +101,20 @@ sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
 sudo apt-get update
 sudo apt-get install -y vokoscreen
 # numlock
+# method 1:
 sudo apt-get -y install numlockx
 tmp=`grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf &>/dev/null;echo $?`
 if [ $tmp -ne 0 ]; then
     sudo sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 fi
+# method 2:
+# sudo sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ] \&\& numlockx on\n\nexit 0|' /etc/rc.local
+
+# speedtest
+wget --no-check-certificate https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+chmod a+rx speedtest.py
+sudo mv speedtest.py /usr/local/bin/speedtest
+sudo chown root:root /usr/local/bin/speedtest
 # shutter (screenshot)
 sudo add-apt-repository -y ppa:shutter/ppa
 sudo apt-get update
@@ -127,6 +143,7 @@ mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" > ~/.pip/pip.conf
 sudo pip install --upgrade pip $PIPDO
 sudo pip install sklearn numpy scipy $PIPDO
+# Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
 # sudo pip install MySQL-python $PIPDO
 
@@ -136,11 +153,17 @@ wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstart
 ##                      Zsh
 ############################################################################################
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# add the following code into ~/.zshrc
+# ZSH_THEME="rkj-repos"
+# source /etc/sharerc
+# [AT THE END OF THE FILE]
+# source /usr/share/autojump/autojump.zsh
+# export PYTHONSTARTUP=~/.pythonstartup.py
 tmp=`grep 'ZSH_THEME="rkj-repos"' ~/.zshrc &>/dev/null;echo $?`
 if [ $tmp -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="rkj-repos"|g' ~/.zshrc
+    sed -i '3 a source /etc/sharerc' ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
-    sed -i '3 a source /etc/sharerc' ~/.zshrc
 fi
 

@@ -10,10 +10,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
 * Update the Ubuntu sources.list:Change the source to the fastest one
 * apt-file
 * /etc/sharerc:Useful alias settings
+* Source Code Pro
 * Common software
  - ack-grep
  - autojump
  - byobu tmux
+ - chromium
  - cmatrix:Just for fun
  - ctags
  - curl wget
@@ -42,6 +44,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - sublime text 3
  - vokoscreen:Video monitor
  - numlock:Numlock on automatically when login
+ - speedtest
  - shutter:Screenshot
  - haroopad:Markdown editor
  - chrome
