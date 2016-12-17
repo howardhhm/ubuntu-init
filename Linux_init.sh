@@ -137,12 +137,12 @@ sudo dpkg -i ~/tmp/sogoupinyin_2.1.0.0082_amd64.deb
 ############################################################################################
 ##                      Python & Pip
 ############################################################################################
-sudo apt-get install build-essential libevent-dev libjpeg-dev libssl-dev libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev python3-pip python3.5 python3.5-dev
+sudo apt-get install build-essential libevent-dev libjpeg-dev libssl-dev libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev python3-pip python3.5 python3.5-dev python-tk
 
 mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" > ~/.pip/pip.conf
 sudo pip install --upgrade pip $PIPDO
-sudo pip install sklearn numpy scipy $PIPDO
+sudo pip install matplotlib sklearn numpy scipy $PIPDO
 ## Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
 # sudo pip install MySQL-python $PIPDO
