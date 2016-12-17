@@ -158,19 +158,19 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ## source /etc/sharerc
 ## [AT THE END OF THE FILE]
 ## For python pressing Ctrl-D to exit
-# set -o ignoreeof 
+# set -o ignoreeof
 ## enable control-s and control-q
 # stty start undef
 # stty stop undef
 # setopt noflowcontrol
 # source /usr/share/autojump/autojump.zsh
 ## For python automatic completion
-# export PYTHONSTARTUP=~/.pythonstartup.py 
+# export PYTHONSTARTUP=~/.pythonstartup.py
 tmp=`grep 'ZSH_THEME="rkj-repos"' ~/.zshrc &>/dev/null;echo $?`
 if [ $tmp -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="rkj-repos"|g' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
-	echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
+    echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
 fi
