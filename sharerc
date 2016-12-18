@@ -1,5 +1,5 @@
 # ###############################
-# ----   Date 2016-12-11
+# - DateTime:2016-12-13 19:57:43
 # ###############################
 
 # ==================================================================
@@ -26,11 +26,13 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias tex="tar zxvf"
 alias tec="tar zcvf"
-alias tm="byobu"
 alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
 alias py="python"
+alias mk="make"
+alias mc="make clean"
+alias mi="make install"
 
 alias psa='ps aux'
 alias code="LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-10};echo;"
@@ -52,13 +54,17 @@ alias hs="hexo g && hexo s"
 alias hd="hexo g && hexo d"
 
 # ==================================================================
+# ---------   Linux Local (Not for Mac)
+# ==================================================================
+alias st='subl'
+
+# ==================================================================
 # ---------   Linux (Not for Mac)
 # ==================================================================
 alias cp='cp -iar'
 alias tm='byobu'
 alias tma='byobu a'
 alias tml='byobu ls'
-alias st='subl'
 
 # caution 'p4p1'
 # caution: ip got below is divided by '.'
