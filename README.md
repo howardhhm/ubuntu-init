@@ -54,5 +54,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - python2, python3, pip and useful libraries
  - python command line auto completion
 * Oh my zsh
+ - powerline fonts
  - change theme
  - some necessary additional settings

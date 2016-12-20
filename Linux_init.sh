@@ -151,9 +151,14 @@ wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstart
 ############################################################################################
 ##                      Zsh
 ############################################################################################
+## Install fonts for powerline
+wget http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz -P ~/tmp
+tar zxvf ~/tmp/fonts.tar.gz -C ~/tmp
+cd ~/tmp/fonts;sudo ./install.sh
+
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ## add the following code into ~/.zshrc
-# ZSH_THEME="rkj-repos"
+# ZSH_THEME="agnoster"
 ## source /etc/sharerc
 ## [AT THE END OF THE FILE]
 ## For python pressing Ctrl-D to exit
@@ -167,7 +172,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 # export PYTHONSTARTUP=~/.pythonstartup.py
 tmp=`grep 'ZSH_THEME="rkj-repos"' ~/.zshrc &>/dev/null;echo $?`
 if [ $tmp -ne 0 ]; then
-    sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="rkj-repos"|g' ~/.zshrc
+    sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
