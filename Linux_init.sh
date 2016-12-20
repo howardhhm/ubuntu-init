@@ -93,9 +93,8 @@ sudo add-apt-repository -y ppa:caffeine-developers/ppa
 sudo apt-get update
 sudo apt-get install -y caffeine
 ## sublime text 3
-sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
-sudo apt-get update
-sudo apt-get install -y sublime-text-installer
+wget http://7xvxlx.com1.z0.glb.clouddn.com/sublime-text_build-3126_amd64.deb -P ~/tmp
+sudo dpkg -i ~/tmp/sublime-text_build-3126_amd64.deb
 ## vokoscreen (video monitor)
 sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
 sudo apt-get update
