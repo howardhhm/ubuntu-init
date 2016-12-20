@@ -28,6 +28,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - net-tools
  - ntpdate
  - okular
+ - openssh-server
  - pandoc:Convert docs
  - terminator
  - speedcrunch
@@ -36,6 +37,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - vim
  - zsh
 * Other software
+ - java
  - exfat:To read exfat filesystem
  - codeblocks
  - wiz:A splendid note software

@@ -59,7 +59,7 @@ sudo fc-cache
 ############################################################################################
 ##                      Common Software
 ############################################################################################
-sudo apt-get install -y ack-grep autojump byobu chromium cmatrix ctags dfc filezilla gcc git htop meld net-tools ntpdate okular pandoc speedcrunch subversion terminator tmux unzip vim wget zsh
+sudo apt-get install -y ack-grep autojump byobu chromium cmatrix ctags dfc filezilla gcc git htop meld net-tools ntpdate okular openssh-server pandoc speedcrunch subversion terminator tmux unzip vim wget zsh
 sudo ntpdate time.nist.gov
 ## The commands below should be executed
 ## if the PC was installed windows and ubuntu
@@ -68,6 +68,19 @@ sudo ntpdate time.nist.gov
 # sudo apt install ntpdate
 # sudo ntpdate cn.pool.ntp.org
 
+## java
+# wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie"  http://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-x64.tar.gz
+tmp=`grep 'java' /etc/profile &>/dev/null;echo $?`
+if [ $tmp -ne 0 ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/jdk-8u112-linux-x64.tar.gz -P ~/tmp
+    sudo mkdir -p /usr/local/java/
+    sudo tar -zxvf ~/tmp/jdk-8u112-linux-x64.tar.gz -P -C /usr/local/java/
+    sudo sed -i '$ a # java' /etc/profile
+    sudo sed -i '$ a export JAVA_HOME=/usr/java/jdk1.8.0_112' /etc/profile
+    sudo sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
+    sudo sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar' /etc/profile
+    sudo sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
+fi
 ## exfat
 # mount sdX to /mnt
 # sudo mount -t exfat /dev/sdX /mnt
@@ -154,7 +167,8 @@ wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstart
 ## Install fonts for powerline
 wget http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz -P ~/tmp
 tar zxvf ~/tmp/fonts.tar.gz -C ~/tmp
-cd ~/tmp/fonts;sudo ./install.sh
+cd ~/tmp/fonts
+sudo ./install.sh
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ## add the following code into ~/.zshrc
@@ -170,7 +184,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 # source /usr/share/autojump/autojump.zsh
 ## For python automatic completion
 # export PYTHONSTARTUP=~/.pythonstartup.py
-tmp=`grep 'ZSH_THEME="rkj-repos"' ~/.zshrc &>/dev/null;echo $?`
+tmp=`grep 'ZSH_THEME="agnoster"' ~/.zshrc &>/dev/null;echo $?`
 if [ $tmp -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
