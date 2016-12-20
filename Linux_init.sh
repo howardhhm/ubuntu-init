@@ -1,7 +1,7 @@
 #!/bin/sh
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-14 10:59:48
+# @DateTime:     2016-12-20 17:02:20
 # @Description:  Description
 
 ############################################################################################
@@ -31,7 +31,7 @@ fi
 sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get -y upgrade
 sudo apt-get install -y apt-file
 sudo apt-file update
 
@@ -59,8 +59,12 @@ sudo fc-cache
 ############################################################################################
 ##                      Common Software
 ############################################################################################
-sudo apt-get install -y ack-grep autojump byobu chromium cmatrix ctags dfc filezilla gcc git htop meld net-tools ntpdate okular openssh-server pandoc speedcrunch subversion terminator tmux unzip vim wget zsh
+sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc filezilla gcc git htop meld net-tools ntpdate okular openssh-server pandoc speedcrunch subversion terminator tmux unzip vim wget
 sudo ntpdate time.nist.gov
+sudo apt-get install -y zsh
+## To be solved
+# sudo apt-get install -y chromium
+
 ## The commands below should be executed
 ## if the PC was installed windows and ubuntu
 # sudo timedatectl set-local-rtc 1 --adjust-system-clock
@@ -134,11 +138,14 @@ sudo apt-get install -y shutter
 ## haroopad (Markdown editor)
 wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/tmp
 sudo dpkg -i ~/tmp/haroopad-v0.13.1-x64.deb
-## chrome
-sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
-wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install -y google-chrome-stable
+
+### To be solved
+### chrome
+# sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
+# wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
+# sudo apt-get update
+# sudo apt-get install -y google-chrome-stable
+
 ## wps
 wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/tmp
 sudo dpkg -i ~/tmp/wps-office_10.1.0.5672~a21_amd64.deb

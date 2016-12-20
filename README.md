@@ -3,7 +3,11 @@ A shell script for installing common software and initializing relative settings
 
 Just execute the command  below
 ```shell
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh  )"
+sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh -O -)"
+```
+or
+```shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh)"
 ```
 
 ## Contents
@@ -15,7 +19,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - ack-grep
  - autojump
  - byobu tmux
- - chromium
+ <!-- - chromium -->
  - cmatrix:Just for fun
  - ctags
  - curl wget
@@ -49,7 +53,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/mast
  - speedtest
  - shutter:Screenshot
  - haroopad:Markdown editor
- - chrome
+ <!-- - chrome -->
  - wps
  - sogou
 * python
