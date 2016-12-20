@@ -1,7 +1,7 @@
 #!/bin/sh
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-20 17:02:20
+# @DateTime:     2016-12-20 22:11:23
 # @Description:  Description
 
 ############################################################################################
@@ -52,9 +52,10 @@ source /etc/sharerc
 ############################################################################################
 ##                      Source code pro
 ############################################################################################
-wget http://7xvxlx.com1.z0.glb.clouddn.com/SourceCodePro_FontsOnly-1.013.tar.gz -P ~/tmp
-sudo tar zxvf ~/tmp/SourceCodePro_FontsOnly-1.013.tar.gz -C /usr/share/fonts
+wget http://7xvxlx.com1.z0.glb.clouddn.com/SourceCodePro-1.013.tar.gz -P ~/tmp
+sudo tar zxvf ~/tmp/SourceCodePro-1.013.tar.gz -C /usr/share/fonts
 sudo fc-cache
+sudo chown root:root -R /usr/share/fonts
 
 ############################################################################################
 ##                      Common Software
@@ -69,7 +70,7 @@ sudo apt-get install -y zsh
 ## if the PC was installed windows and ubuntu
 # sudo timedatectl set-local-rtc 1 --adjust-system-clock
 # sudo timedatectl set-ntp 0
-# sudo apt install ntpdate
+# sudo apt-get install -y ntpdate
 # sudo ntpdate cn.pool.ntp.org
 
 ## java
@@ -80,7 +81,7 @@ if [ $tmp -ne 0 ]; then
     sudo mkdir -p /usr/local/java/
     sudo tar -zxvf ~/tmp/jdk-8u112-linux-x64.tar.gz -P -C /usr/local/java/
     sudo sed -i '$ a # java' /etc/profile
-    sudo sed -i '$ a export JAVA_HOME=/usr/java/jdk1.8.0_112' /etc/profile
+    sudo sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_112' /etc/profile
     sudo sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
     sudo sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar' /etc/profile
     sudo sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
@@ -138,7 +139,7 @@ sudo apt-get install -y shutter
 ## haroopad (Markdown editor)
 wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/tmp
 sudo dpkg -i ~/tmp/haroopad-v0.13.1-x64.deb
-
+sudo apt-get install -fy
 ### To be solved
 ### chrome
 # sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
@@ -149,18 +150,29 @@ sudo dpkg -i ~/tmp/haroopad-v0.13.1-x64.deb
 ## wps
 wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/tmp
 sudo dpkg -i ~/tmp/wps-office_10.1.0.5672~a21_amd64.deb
+sudo apt-get install -fy
 ## sogou
 wget http://7xvxlx.com1.z0.glb.clouddn.com/sogoupinyin_2.1.0.0082_amd64.deb -P ~/tmp
 sudo dpkg -i ~/tmp/sogoupinyin_2.1.0.0082_amd64.deb
+sudo apt-get install -fy
+## teamviewer
+wget http://7xvxlx.com1.z0.glb.clouddn.com/teamviewer_i386.deb -P ~/tmp
+sudo dpkg -i ~/tmp/teamviewer_i386.deb
+sudo apt-get install -fy
+## terminator config
+wget http://7xvxlx.com1.z0.glb.clouddn.com/terminator_config -P ~/tmp
+mkdir -p ~/.config/terminator
+mv ~/tmp/terminator_config ~/.config/terminator/config
 
 ############################################################################################
 ##                      Python & Pip
 ############################################################################################
-sudo apt-get install build-essential libevent-dev libjpeg-dev libssl-dev libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev python3-pip python3.5 python3.5-dev python-tk
+sudo apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev python3-pip python3.5 python3.5-dev python-tk
 
 mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" > ~/.pip/pip.conf
 sudo pip install --upgrade pip $PIPDO
+sudo pip3 install --upgrade pip $PIPDO
 sudo pip install matplotlib sklearn numpy scipy $PIPDO
 ## Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
@@ -200,3 +212,8 @@ if [ $tmp -ne 0 ]; then
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
 fi
 
+############################################################################################
+##                      Last update
+############################################################################################
+sudo apt-get update
+sudo apt-get -y upgrade
