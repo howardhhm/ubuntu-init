@@ -3,11 +3,11 @@ A shell script for installing common software and initializing relative settings
 
 Just execute the command  below
 ```shell
-sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh -O -)"
+sudo sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh -O -)"
 ```
 or
 ```shell
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh)"
+sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh)"
 ```
 
 ## Contents
