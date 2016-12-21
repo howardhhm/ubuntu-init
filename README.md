@@ -56,6 +56,8 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
  <!-- - chrome -->
  - wps
  - sogou
+ - teamviewer
+ - terminator config
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion

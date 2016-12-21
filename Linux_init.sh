@@ -1,22 +1,16 @@
 #!/bin/sh
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-20 22:11:23
+# @DateTime:     2016-12-21 09:59:31
 # @Description:  Description
 
 ############################################################################################
 ##                      Preparation
 ############################################################################################
-mkdir ~/tmp
-wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/netselect_0.3.ds1-26_amd64.deb -P ~/tmp
-if [ ! -f ~/tmp/netselect_0.3.ds1-26_amd64.deb ]; then
-    echo -e "\033[41;37m CAN NOT FIND netselect FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND netselect FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND netselect FILE\!\! \033[0m"
-    exit 127
-else
-    sudo dpkg -i ~/tmp/netselect_0.3.ds1-26_amd64.deb
-fi
+rm -rvf ~/ubuntu-init-tmp
+mkdir ~/ubuntu-init-tmp
+wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/netselect_0.3.ds1-26_amd64.deb -P ~/ubuntu-init-tmp
+sudo dpkg -i ~/ubuntu-init-tmp/netselect_0.3.ds1-26_amd64.deb
 
 ############################################################################################
 ##                      Ubuntu Source List Modification
@@ -38,24 +32,19 @@ sudo apt-file update
 ############################################################################################
 ##                      Share Resource
 ############################################################################################
-wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/sharerc -P ~/tmp
-if [ ! -f ~/tmp/sharerc ]; then
-    echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
-    echo -e "\033[41;37m CAN NOT FIND sharerc FILE\!\! \033[0m"
-    exit 127
-else
-    sudo mv ~/tmp/sharerc /etc/sharerc
-fi
+wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/sharerc -P ~/ubuntu-init-tmp
+sudo mv ~/ubuntu-init-tmp/sharerc /etc/sharerc
 source /etc/sharerc
 
 ############################################################################################
 ##                      Source code pro
 ############################################################################################
-wget http://7xvxlx.com1.z0.glb.clouddn.com/SourceCodePro-1.013.tar.gz -P ~/tmp
-sudo tar zxvf ~/tmp/SourceCodePro-1.013.tar.gz -C /usr/share/fonts
-sudo fc-cache
-sudo chown root:root -R /usr/share/fonts
+if [ ! -d /usr/share/fonts/SourceCodePro-1.013 ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/SourceCodePro-1.013.tar.gz -P ~/ubuntu-init-tmp
+    sudo tar zxvf ~/ubuntu-init-tmp/SourceCodePro-1.013.tar.gz -C /usr/share/fonts
+    sudo fc-cache
+    sudo chown root:root -R /usr/share/fonts
+fi
 
 ############################################################################################
 ##                      Common Software
@@ -75,11 +64,11 @@ sudo apt-get install -y zsh
 
 ## java
 # wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie"  http://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-x64.tar.gz
-tmp=`grep 'java' /etc/profile &>/dev/null;echo $?`
-if [ $tmp -ne 0 ]; then
-    wget http://7xvxlx.com1.z0.glb.clouddn.com/jdk-8u112-linux-x64.tar.gz -P ~/tmp
+grep 'java' /etc/profile &>/dev/null
+if [ $? -eq 1 ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/jdk-8u112-linux-x64.tar.gz -P ~/ubuntu-init-tmp
     sudo mkdir -p /usr/local/java/
-    sudo tar -zxvf ~/tmp/jdk-8u112-linux-x64.tar.gz -P -C /usr/local/java/
+    sudo tar -zxvf ~/ubuntu-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C /usr/local/java/
     sudo sed -i '$ a # java' /etc/profile
     sudo sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_112' /etc/profile
     sudo sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
@@ -111,8 +100,10 @@ sudo add-apt-repository -y ppa:caffeine-developers/ppa
 sudo apt-get update
 sudo apt-get install -y caffeine
 ## sublime text 3
-wget http://7xvxlx.com1.z0.glb.clouddn.com/sublime-text_build-3126_amd64.deb -P ~/tmp
-sudo dpkg -i ~/tmp/sublime-text_build-3126_amd64.deb
+if [ ! -f /usr/bin/subl ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/sublime-text_build-3126_amd64.deb -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
+fi
 ## vokoscreen (video monitor)
 sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
 sudo apt-get update
@@ -120,25 +111,29 @@ sudo apt-get install -y vokoscreen
 ## numlock
 ## method 1:
 sudo apt-get -y install numlockx
-tmp=`grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf &>/dev/null;echo $?`
-if [ $tmp -ne 0 ]; then
+grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf &>/dev/null
+if [ $? -eq 1 ]; then
     sudo sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 fi
 ## method 2:
 # sudo sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ] \&\& numlockx on\n\nexit 0|' /etc/rc.local
 
 ## speedtest
-wget --no-check-certificate https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
-chmod a+rx speedtest.py
-sudo mv speedtest.py /usr/local/bin/speedtest
-sudo chown root:root /usr/local/bin/speedtest
+if [ ! -f /usr/local/bin/speedtest ]; then
+    wget --no-check-certificate https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+    chmod a+rx speedtest.py
+    sudo mv speedtest.py /usr/local/bin/speedtest
+    sudo chown root:root /usr/local/bin/speedtest
+fi
+
+
 ## shutter (screenshot)
 sudo add-apt-repository -y ppa:shutter/ppa
 sudo apt-get update
 sudo apt-get install -y shutter
 ## haroopad (Markdown editor)
-wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/tmp
-sudo dpkg -i ~/tmp/haroopad-v0.13.1-x64.deb
+wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/ubuntu-init-tmp
+sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
 sudo apt-get install -fy
 ### To be solved
 ### chrome
@@ -148,21 +143,21 @@ sudo apt-get install -fy
 # sudo apt-get install -y google-chrome-stable
 
 ## wps
-wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/tmp
-sudo dpkg -i ~/tmp/wps-office_10.1.0.5672~a21_amd64.deb
+wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/ubuntu-init-tmp
+sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
 sudo apt-get install -fy
 ## sogou
-wget http://7xvxlx.com1.z0.glb.clouddn.com/sogoupinyin_2.1.0.0082_amd64.deb -P ~/tmp
-sudo dpkg -i ~/tmp/sogoupinyin_2.1.0.0082_amd64.deb
+wget http://7xvxlx.com1.z0.glb.clouddn.com/sogoupinyin_2.1.0.0082_amd64.deb -P ~/ubuntu-init-tmp
+sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
 sudo apt-get install -fy
 ## teamviewer
-wget http://7xvxlx.com1.z0.glb.clouddn.com/teamviewer_i386.deb -P ~/tmp
-sudo dpkg -i ~/tmp/teamviewer_i386.deb
+wget http://7xvxlx.com1.z0.glb.clouddn.com/teamviewer_i386.deb -P ~/ubuntu-init-tmp
+sudo dpkg -i ~/ubuntu-init-tmp/teamviewer_i386.deb
 sudo apt-get install -fy
 ## terminator config
-wget http://7xvxlx.com1.z0.glb.clouddn.com/terminator_config -P ~/tmp
+wget http://7xvxlx.com1.z0.glb.clouddn.com/terminator_config -P ~/ubuntu-init-tmp
 mkdir -p ~/.config/terminator
-mv ~/tmp/terminator_config ~/.config/terminator/config
+mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 
 ############################################################################################
 ##                      Python & Pip
@@ -184,9 +179,9 @@ wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstart
 ##                      Zsh
 ############################################################################################
 ## Install fonts for powerline
-wget http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz -P ~/tmp
-tar zxvf ~/tmp/fonts.tar.gz -C ~/tmp
-cd ~/tmp/fonts
+wget http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz -P ~/ubuntu-init-tmp
+tar zxvf ~/ubuntu-init-tmp/fonts.tar.gz -C ~/ubuntu-init-tmp
+cd ~/ubuntu-init-tmp/fonts
 sudo ./install.sh
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -203,8 +198,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 # source /usr/share/autojump/autojump.zsh
 ## For python automatic completion
 # export PYTHONSTARTUP=~/.pythonstartup.py
-tmp=`grep 'ZSH_THEME="agnoster"' ~/.zshrc &>/dev/null;echo $?`
-if [ $tmp -ne 0 ]; then
+grep 'ZSH_THEME="agnoster"' ~/.zshrc &>/dev/null
+if [ $? -eq 1 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
