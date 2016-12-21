@@ -72,7 +72,7 @@ sudo apt-get install -y zsh
 
 ## java
 # wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie"  http://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-x64.tar.gz
-grep 'java' /etc/profile &>/dev/null
+grep 'java' /etc/profile
 if [ $? -eq 1 ]; then
     wget http://7xvxlx.com1.z0.glb.clouddn.com/jdk-8u112-linux-x64.tar.gz -P ~/ubuntu-init-tmp
     sudo mkdir -p /usr/local/java/
@@ -119,7 +119,7 @@ sudo apt-get install -y vokoscreen
 ## numlock
 ## method 1:
 sudo apt-get -y install numlockx
-grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf &>/dev/null
+grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 if [ $? -eq 1 ]; then
     sudo sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 fi
@@ -216,7 +216,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 # source /usr/share/autojump/autojump.zsh
 ## For python automatic completion
 # export PYTHONSTARTUP=~/.pythonstartup.py
-grep 'ZSH_THEME="agnoster"' ~/.zshrc &>/dev/null
+grep 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -eq 1 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
