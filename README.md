@@ -12,6 +12,7 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
 
 ## Contents
 * Update the Ubuntu sources.list:Change the source to the fastest one
+* getfastsources shellscript
 * apt-file
 * /etc/sharerc:Useful alias settings
 * Source Code Pro

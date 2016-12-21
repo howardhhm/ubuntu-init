@@ -1,7 +1,7 @@
 #!/bin/sh
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-21 09:59:31
+# @DateTime:     2016-12-21 12:52:26
 # @Description:  Description
 
 ############################################################################################
@@ -23,6 +23,14 @@ if [ ! -f /etc/apt/sources.list.bak ]; then
 fi
 
 sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
+
+## get fast sources shellscript
+if [ ! -f /usr/local/bin/getfastsources ]; then
+    wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/get_fast_sources.sh -P ~/ubuntu-init-tmp
+    chmod a+rx ~/ubuntu-init-tmp/get_fast_sources.sh
+    sudo mv ~/ubuntu-init-tmp/get_fast_sources.sh /usr/local/bin/getfastsources
+    sudo chown root:root /usr/local/bin/getfastsources
+fi
 
 sudo apt-get update
 sudo apt-get -y upgrade
@@ -132,9 +140,11 @@ sudo add-apt-repository -y ppa:shutter/ppa
 sudo apt-get update
 sudo apt-get install -y shutter
 ## haroopad (Markdown editor)
-wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/ubuntu-init-tmp
-sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
-sudo apt-get install -fy
+if [ ! -f /usr/bin/haroopad ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
+    sudo apt-get install -fy
+fi
 ### To be solved
 ### chrome
 # sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
@@ -143,19 +153,25 @@ sudo apt-get install -fy
 # sudo apt-get install -y google-chrome-stable
 
 ## wps
-wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/ubuntu-init-tmp
-sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
-sudo apt-get install -fy
+if [ ! -f /usr/bin/wps ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
+    sudo apt-get install -fy
+fi
 ## sogou
-wget http://7xvxlx.com1.z0.glb.clouddn.com/sogoupinyin_2.1.0.0082_amd64.deb -P ~/ubuntu-init-tmp
-sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
-sudo apt-get install -fy
+if [ ! -f /usr/bin/sogou-diag ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/sogoupinyin_2.1.0.0082_amd64.deb -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
+    sudo apt-get install -fy
+fi
 ## teamviewer
-wget http://7xvxlx.com1.z0.glb.clouddn.com/teamviewer_i386.deb -P ~/ubuntu-init-tmp
-sudo dpkg -i ~/ubuntu-init-tmp/teamviewer_i386.deb
-sudo apt-get install -fy
+if [ ! -f /usr/bin/teamviewer ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/teamviewer_i386.deb -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/teamviewer_i386.deb
+    sudo apt-get install -fy
+fi
 ## terminator config
-wget http://7xvxlx.com1.z0.glb.clouddn.com/terminator_config -P ~/ubuntu-init-tmp
+wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/terminator_config -P ~/ubuntu-init-tmp
 mkdir -p ~/.config/terminator
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 
@@ -173,8 +189,10 @@ sudo pip install matplotlib sklearn numpy scipy $PIPDO
 # sudo apt-get install -y libmysqlclient-dev
 # sudo pip install MySQL-python $PIPDO
 
-wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstartup.py -P ~/
-
+## python commandline auto-completion
+if [ ! -f ~/.pythonstartup.py ]; then
+    wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/.pythonstartup.py -P ~/
+fi
 ############################################################################################
 ##                      Zsh
 ############################################################################################

@@ -1,0 +1,40 @@
+[global_config]
+  homogeneous_tabbar = False
+  scroll_tabbar = True
+  title_hide_sizetext = True
+[keybindings]
+  close_term = <Primary><Shift>w
+  copy = <Primary><Shift>c
+  full_screen = <Primary>Return
+  new_tab = <Primary>t
+  paste = <Shift>Insert
+  split_horiz = <Primary><Shift>s
+  split_vert = <Primary><Shift>d
+  switch_to_tab_1 = <Primary>1
+  switch_to_tab_2 = <Primary>2
+  switch_to_tab_3 = <Primary>3
+  switch_to_tab_4 = <Primary>4
+  switch_to_tab_5 = <Primary>5
+  toggle_scrollbar = None
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#002833"
+    background_image = None
+    copy_on_selection = True
+    cursor_color = "#f34b00"
+    font = Source Code Pro for Powerline 12
+    foreground_color = "#9cc2c3"
+    palette = "#002831:#d11c24:#6cbe6c:#a57706:#2176c7:#c61c6f:#259286:#eae3cb:#006488:#f5163b:#51ef84:#b27e28:#178ec8:#e24d8e:#00b39e:#fcf4dc"
+    scrollback_infinite = True
+    show_titlebar = False
+    use_system_font = False
