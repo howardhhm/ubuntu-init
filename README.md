@@ -43,26 +43,26 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
  - zsh
 * Other software
  - java
+ - sublime text 3
+ - numlock:Numlock on automatically when login
+ - speedtest
+ - haroopad:Markdown editor
+ - wps
+ - sogou
+ - teamviewer
+ - terminator config
  - exfat:To read exfat filesystem
  - codeblocks
  - wiz:A splendid note software
  - ss:For surfing internet
  - caffeine:Anti-lock screen when watching flash video
- - sublime text 3
  - vokoscreen:Video monitor
- - numlock:Numlock on automatically when login
- - speedtest
  - shutter:Screenshot
- - haroopad:Markdown editor
  <!-- - chrome -->
- - wps
- - sogou
- - teamviewer
- - terminator config
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion
 * Oh my zsh
  - powerline fonts
  - change theme
- - some necessary additional settings
+ - some necessarily additional settings

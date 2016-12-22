@@ -83,39 +83,12 @@ if [ $? -eq 1 ]; then
     sudo sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar' /etc/profile
     sudo sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
 fi
-## exfat
-# mount sdX to /mnt
-# sudo mount -t exfat /dev/sdX /mnt
-sudo add-apt-repository -y ppa:relan/exfat
-sudo apt-get update
-sudo apt-get install -y exfat-utils
-## codeblocks
-## wx-config --version
-## 3.0.2
-sudo add-apt-repository -y ppa:damien-moore/codeblocks
-sudo apt-get update
-sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common codeblocks-contrib
-## wiz
-sudo add-apt-repository -y ppa:wiznote-team
-sudo apt-get update
-sudo apt-get install -y wiznote
-## ss
-sudo add-apt-repository -y ppa:hzwhuang/ss-qt5
-sudo apt-get update
-sudo apt-get install -y shadowsocks-qt5
-## flash anti-lock new version
-sudo add-apt-repository -y ppa:caffeine-developers/ppa
-sudo apt-get update
-sudo apt-get install -y caffeine
 ## sublime text 3
 if [ ! -f /usr/bin/subl ]; then
     wget http://7xvxlx.com1.z0.glb.clouddn.com/sublime-text_build-3126_amd64.deb -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
+    sudo apt-get install -fy
 fi
-## vokoscreen (video monitor)
-sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
-sudo apt-get update
-sudo apt-get install -y vokoscreen
 ## numlock
 ## method 1:
 sudo apt-get -y install numlockx
@@ -133,25 +106,12 @@ if [ ! -f /usr/local/bin/speedtest ]; then
     sudo mv speedtest.py /usr/local/bin/speedtest
     sudo chown root:root /usr/local/bin/speedtest
 fi
-
-
-## shutter (screenshot)
-sudo add-apt-repository -y ppa:shutter/ppa
-sudo apt-get update
-sudo apt-get install -y shutter
 ## haroopad (Markdown editor)
 if [ ! -f /usr/bin/haroopad ]; then
     wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
     sudo apt-get install -fy
 fi
-### To be solved
-### chrome
-# sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
-# wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
-# sudo apt-get update
-# sudo apt-get install -y google-chrome-stable
-
 ## wps
 if [ ! -f /usr/bin/wps ]; then
     wget http://7xvxlx.com1.z0.glb.clouddn.com/wps-office_10.1.0.5672~a21_amd64.deb -P ~/ubuntu-init-tmp
@@ -174,6 +134,44 @@ fi
 wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/terminator_config -P ~/ubuntu-init-tmp
 mkdir -p ~/.config/terminator
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
+
+## exfat
+# mount sdX to /mnt
+# sudo mount -t exfat /dev/sdX /mnt
+sudo add-apt-repository -y ppa:relan/exfat
+## codeblocks
+## wx-config --version
+## 3.0.2
+sudo add-apt-repository -y ppa:damien-moore/codeblocks
+## wiz
+sudo add-apt-repository -y ppa:wiznote-team
+## ss
+sudo add-apt-repository -y ppa:hzwhuang/ss-qt5
+## flash anti-lock new version
+sudo add-apt-repository -y ppa:caffeine-developers/ppa
+## vokoscreen (video monitor)
+sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
+## shutter (screenshot)
+sudo add-apt-repository -y ppa:shutter/ppa
+
+## update the sources
+sudo apt-get update
+## you can separately execute the following command
+# sudo apt-get install -y exfat-utils
+# sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common codeblocks-contrib
+# sudo apt-get install -y wiznote
+# sudo apt-get install -y shadowsocks-qt5
+# sudo apt-get install -y caffeine
+# sudo apt-get install -y vokoscreen
+# sudo apt-get install -y shutter
+sudo apt-get install -y exfat-utils codeblocks libwxgtk3.0-dev wx-common codeblocks-contrib wiznote shadowsocks-qt5 caffeine vokoscreen shutter
+
+### To be solved
+### chrome
+# sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
+# wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
+# sudo apt-get update
+# sudo apt-get install -y google-chrome-stable
 
 ############################################################################################
 ##                      Python & Pip
