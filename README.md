@@ -51,14 +51,14 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
  - sogou
  - teamviewer
  - terminator config
- - exfat:To read exfat filesystem
+ <!-- - exfat:To read exfat filesystem -->
  - codeblocks
  - wiz:A splendid note software
  - ss:For surfing internet
  - caffeine:Anti-lock screen when watching flash video
  - vokoscreen:Video monitor
  - shutter:Screenshot
- <!-- - chrome -->
+ - chrome
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion

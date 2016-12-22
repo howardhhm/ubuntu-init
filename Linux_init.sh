@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
 # @DateTime:     2016-12-21 12:52:26
@@ -135,10 +135,11 @@ wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/terminator_c
 mkdir -p ~/.config/terminator
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 
-## exfat
+## exfat something wrong
 # mount sdX to /mnt
 # sudo mount -t exfat /dev/sdX /mnt
-sudo add-apt-repository -y ppa:relan/exfat
+# sudo add-apt-repository -y ppa:relan/exfat
+
 ## codeblocks
 ## wx-config --version
 ## 3.0.2
@@ -153,6 +154,10 @@ sudo add-apt-repository -y ppa:caffeine-developers/ppa
 sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
 ## shutter (screenshot)
 sudo add-apt-repository -y ppa:shutter/ppa
+### To be tested
+### chrome
+sudo wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/google-chrome.list -P /etc/apt/sources.list.d/
+wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
 
 ## update the sources
 sudo apt-get update
@@ -164,14 +169,11 @@ sudo apt-get update
 # sudo apt-get install -y caffeine
 # sudo apt-get install -y vokoscreen
 # sudo apt-get install -y shutter
-sudo apt-get install -y exfat-utils codeblocks libwxgtk3.0-dev wx-common codeblocks-contrib wiznote shadowsocks-qt5 caffeine vokoscreen shutter
-
-### To be solved
+# sudo apt-get install -y exfat-utils codeblocks libwxgtk3.0-dev wx-common codeblocks-contrib wiznote shadowsocks-qt5 caffeine vokoscreen shutter
+sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common codeblocks-contrib wiznote shadowsocks-qt5 caffeine vokoscreen shutter
+### To be tested
 ### chrome
-# sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
-# wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
-# sudo apt-get update
-# sudo apt-get install -y google-chrome-stable
+sudo apt-get install -y google-chrome-stable
 
 ############################################################################################
 ##                      Python & Pip
