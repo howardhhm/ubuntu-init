@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-22 14:45:02
+# @DateTime:     2016-12-22 23:43:20
 # @Description:  Description
 
 ################################################################################
@@ -166,6 +166,12 @@ wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/terminator_config" -P ~/ubuntu-init-tmp
 mkdir -p ~/.config/terminator
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
+
+## delete old source lists
+# sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(exfat|codeblocks"\
+#"wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(codeblocks"\
+"wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
 
 ## exfat something wrong
 # mount sdX to /mnt
