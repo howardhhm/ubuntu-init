@@ -57,6 +57,7 @@ source /etc/sharerc
 
 ################################################################################
 ##                      Source code pro
+##          https://github.com/adobe-fonts/source-code-pro/downloads
 ################################################################################
 if [ ! -d /usr/share/fonts/SourceCodePro-1.013 ]; then
     wget http://7xvxlx.com1.z0.glb.clouddn.com/SourceCodePro-1.013.tar.gz \
@@ -245,13 +246,16 @@ tar zxvf ~/ubuntu-init-tmp/fonts.tar.gz -C ~/ubuntu-init-tmp
 cd ~/ubuntu-init-tmp/fonts
 sudo ./install.sh
 
+# change the default shell
+sudo chsh -s /bin/zsh
+
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/"\
 "oh-my-zsh/master/tools/install.sh)"
 ## add the following code into ~/.zshrc
 # ZSH_THEME="agnoster"
 ## source /etc/sharerc
 ## [AT THE END OF THE FILE]
-## For python pressing Ctrl-D to exit
+## For python pressing Ctrl-D to exit and prevent from closing the terminator
 # set -o ignoreeof
 ## enable control-s and control-q
 # stty start undef
