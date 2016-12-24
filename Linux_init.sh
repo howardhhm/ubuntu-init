@@ -113,6 +113,7 @@ if [ ! -f /usr/bin/subl ]; then
     sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
     sudo apt-get install -fy
 fi
+
 ## numlock
 ## method 1:
 sudo apt-get -y install numlockx
@@ -164,7 +165,7 @@ fi
 ## terminator config
 wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/terminator_config" -P ~/ubuntu-init-tmp
-mkdir -p ~/.config/terminator
+mkdir -p ~/.config/terminator/
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 
 ## delete old source lists
@@ -236,9 +237,12 @@ sudo apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
 mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
     > ~/.pip/pip.conf
-sudo pip install --upgrade pip $PIPDO
-sudo pip3 install --upgrade pip $PIPDO
-sudo pip install matplotlib sklearn numpy scipy $PIPDO
+sudo pip install --upgrade pip --trusted-host=pypi.douban.com
+sudo pip3 install --upgrade pip --trusted-host=pypi.douban.com
+sudo pip install ipython --trusted-host=pypi.douban.com
+sudo pip install matplotlib sklearn numpy scipy psutil \
+    --trusted-host=pypi.douban.com
+sudo pip install powerline-status --trusted-host=pypi.douban.com
 ## Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
 # sudo pip install MySQL-python $PIPDO
@@ -248,20 +252,50 @@ if [ ! -f ~/.pythonstartup.py ]; then
     wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/.pythonstartup.py" -P ~/
 fi
+
 ################################################################################
-##                      Zsh
+##                      Powerline
+##       http://powerline.readthedocs.io/en/master/usage/other.html
 ################################################################################
+## powerline for ipython
+mkdir -p ~/.ipython/profile_default/
+wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+"master/ipython_config.py" -P ~/.ipython/profile_default/
+
+## powerline for tmux
+grep 'powerline' ~/.tmux.conf
+if [ $? -eq 1 ]; then
+    ## for ubuntu
+    echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
+"tmux/powerline.conf" >> ~/.tmux.conf
+    ## for mac
+    # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
+#"tmux/powerline.conf" >> ~/.tmux.conf
+fi
+
+## powerline for zsh
+## for ubuntu
+#echo "#source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
+#"zsh/powerline.zsh" >> ~/.zshrc
+## for mac
+#echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
+#"zsh/powerline.zsh" >> ~/.zshrc
+
 ## Install fonts for powerline
 wget http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz -P ~/ubuntu-init-tmp
 tar zxvf ~/ubuntu-init-tmp/fonts.tar.gz -C ~/ubuntu-init-tmp
 cd ~/ubuntu-init-tmp/fonts
 sudo ./install.sh
 
+################################################################################
+##                      Zsh
+################################################################################
 # change the default shell
 sudo chsh -s /bin/zsh
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/"\
 "oh-my-zsh/master/tools/install.sh)"
+
 ## add the following code into ~/.zshrc
 # ZSH_THEME="agnoster"
 ## source /etc/sharerc

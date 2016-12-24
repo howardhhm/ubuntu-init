@@ -62,6 +62,11 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion
+* powerline for
+ - ipython
+ - tmux
+ <!-- - zsh -->
+ - fonts
 * Oh my zsh
  - powerline fonts
  - change theme
