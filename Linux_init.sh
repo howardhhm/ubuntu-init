@@ -9,7 +9,9 @@
 ################################################################################
 rm -rvf ~/ubuntu-init-tmp
 mkdir ~/ubuntu-init-tmp
-username=$(whoami)
+## whoami returns root all the time
+# username=$(whoami)
+username=$(echo $SUDO_USER)
 wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/netselect_0.3.ds1-26_amd64.deb" -P ~/ubuntu-init-tmp
 sudo dpkg -i ~/ubuntu-init-tmp/netselect_0.3.ds1-26_amd64.deb
