@@ -169,12 +169,13 @@ mkdir -p ~/.config/terminator/
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 
 ## delete old source lists
-# sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(exfat|codeblocks"\
-#"wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-# sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(codeblocks"\
-#"wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(codeblocks"\
-"wiznote|hzwhuang|caffeine|shutter)")
+cd /etc/apt/sources.list.d
+# sudo rm -rvf $(ls | grep -E "(exfat|codeblocks"\
+#"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+# sudo rm -rvf $(ls | grep -E "(codeblocks"\
+#"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+sudo rm -rvf $(ls | grep -E "(codeblocks|wiznote|hzwhuang|caffeine|shutter)")
+cd
 
 ## exfat something wrong
 # mount sdX to /mnt
