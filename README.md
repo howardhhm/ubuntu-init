@@ -56,7 +56,7 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
  - wiz:A splendid note software
  - ss:For surfing internet
  - caffeine:Anti-lock screen when watching flash video
- - vokoscreen:Video monitor
+ <!-- - vokoscreen:Video monitor -->
  - shutter:Screenshot
  - chrome
 * python

@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-22 23:43:20
+# @DateTime:     2016-12-23 15:04:14
 # @Description:  Description
 
 ################################################################################
@@ -170,8 +170,10 @@ mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 ## delete old source lists
 # sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(exfat|codeblocks"\
 #"wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+# sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(codeblocks"\
+#"wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
 sudo rm -rvf $(ls /etc/apt/sources.list.d | grep -E "(codeblocks"\
-"wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+"wiznote|hzwhuang|caffeine|shutter)")
 
 ## exfat something wrong
 # mount sdX to /mnt
@@ -188,8 +190,8 @@ sudo add-apt-repository -y ppa:wiznote-team
 sudo add-apt-repository -y ppa:hzwhuang/ss-qt5
 ## flash anti-lock new version
 sudo add-apt-repository -y ppa:caffeine-developers/ppa
-## vokoscreen (video monitor)
-sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
+## vokoscreen (video monitor) a little problem
+# sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
 ## shutter (screenshot)
 sudo add-apt-repository -y ppa:shutter/ppa
 ### To be tested
@@ -215,8 +217,11 @@ sudo apt-get update
 # sudo apt-get install -y exfat-utils codeblocks libwxgtk3.0-dev \
 #   wx-common codeblocks-contrib wiznote shadowsocks-qt5 caffeine \
 #   vokoscreen shutter
+# sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
+#     codeblocks-contrib wiznote shadowsocks-qt5 caffeine vokoscreen shutter
 sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
-    codeblocks-contrib wiznote shadowsocks-qt5 caffeine vokoscreen shutter
+    codeblocks-contrib wiznote shadowsocks-qt5 caffeine shutter
+
 ### To be tested
 ### chrome
 sudo apt-get install -y google-chrome-stable
