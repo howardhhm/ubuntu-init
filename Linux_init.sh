@@ -9,6 +9,7 @@
 ################################################################################
 rm -rvf ~/ubuntu-init-tmp
 mkdir ~/ubuntu-init-tmp
+username=$(whoami)
 wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/netselect_0.3.ds1-26_amd64.deb" -P ~/ubuntu-init-tmp
 sudo dpkg -i ~/ubuntu-init-tmp/netselect_0.3.ds1-26_amd64.deb
@@ -39,8 +40,8 @@ if [ ! -f /usr/local/bin/getfastsources ]; then
 "master/get_fast_sources.sh" -P ~/ubuntu-init-tmp
     chmod a+rx ~/ubuntu-init-tmp/get_fast_sources.sh
     sudo mv ~/ubuntu-init-tmp/get_fast_sources.sh /usr/local/bin/getfastsources
-    sudo chown root:root /usr/local/bin/getfastsources
 fi
+sudo chown root:root /usr/local/bin/getfastsources
 
 sudo apt-get update
 sudo apt-get -y upgrade
@@ -65,8 +66,8 @@ if [ ! -d /usr/share/fonts/SourceCodePro-1.013 ]; then
     sudo tar zxvf ~/ubuntu-init-tmp/SourceCodePro-1.013.tar.gz -C \
         /usr/share/fonts
     sudo fc-cache
-    sudo chown root:root -R /usr/share/fonts
 fi
+sudo chown root:root -R /usr/share/fonts
 
 ################################################################################
 ##                      Common Software
@@ -132,8 +133,9 @@ if [ ! -f /usr/local/bin/speedtest ]; then
 "speedtest-cli/master/speedtest.py"
     chmod a+rx speedtest.py
     sudo mv speedtest.py /usr/local/bin/speedtest
-    sudo chown root:root /usr/local/bin/speedtest
 fi
+sudo chown root:root /usr/local/bin/speedtest
+
 ## haroopad (Markdown editor)
 if [ ! -f /usr/bin/haroopad ]; then
     wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P \
@@ -167,6 +169,7 @@ wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/terminator_config" -P ~/ubuntu-init-tmp
 mkdir -p ~/.config/terminator/
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
+sudo chown $username:$username -R ~/.config
 
 ## delete old source lists
 cd /etc/apt/sources.list.d
@@ -238,6 +241,7 @@ sudo apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
 mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
     > ~/.pip/pip.conf
+sudo chown $username:$username -R ~/.pip
 sudo pip install --upgrade pip --trusted-host=pypi.douban.com
 sudo pip3 install --upgrade pip --trusted-host=pypi.douban.com
 sudo pip install ipython matplotlib sklearn numpy scipy \
@@ -253,6 +257,7 @@ if [ ! -f ~/.pythonstartup.py ]; then
     wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/.pythonstartup.py" -P ~/
 fi
+sudo chown $username:$username ~/.pythonstartup.py
 
 ################################################################################
 ##                      Powerline
@@ -263,6 +268,7 @@ mkdir -p ~/.ipython/profile_default/
 wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/ipython_config.py" -P ~/ubuntu-init-tmp/
 mv ~/ubuntu-init-tmp/ipython_config.py ~/.ipython/profile_default/
+sudo chown $username:$username -R ~/.ipython/
 ## powerline for tmux
 grep 'powerline' ~/.tmux.conf
 if [ $? -eq 1 ]; then
@@ -273,6 +279,7 @@ if [ $? -eq 1 ]; then
     # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"tmux/powerline.conf" >> ~/.tmux.conf
 fi
+sudo chown $username:$username ~/.tmux.conf
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
 if [ $? -eq 1 ]; then
@@ -294,6 +301,8 @@ if [ ! -d ~/.config/powerline ]; then
         ~/ubuntu-init-tmp
     tar zxvf ~/ubuntu-init-tmp/powerline_config.tar.gz -C ~/.config
 fi
+sudo chown $username:$username -R ~/.config
+sudo chown $username:$username -R ~/ubuntu-init-tmp
 ################################################################################
 ##                      Zsh
 ################################################################################
@@ -330,4 +339,4 @@ fi
 ################################################################################
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get autoremove
+sudo apt-get -y autoremove
