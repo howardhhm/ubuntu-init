@@ -240,10 +240,10 @@ echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
     > ~/.pip/pip.conf
 sudo pip install --upgrade pip --trusted-host=pypi.douban.com
 sudo pip3 install --upgrade pip --trusted-host=pypi.douban.com
-sudo pip install ipython --trusted-host=pypi.douban.com
-sudo pip install matplotlib sklearn numpy scipy psutil \
+sudo pip install ipython matplotlib sklearn numpy scipy \
     --trusted-host=pypi.douban.com
-sudo pip install powerline-status --trusted-host=pypi.douban.com
+sudo pip install powerline-status powerline-gitstatus psutil \
+    --trusted-host=pypi.douban.com
 ## Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
 # sudo pip install MySQL-python $PIPDO
@@ -261,8 +261,8 @@ fi
 ## powerline for ipython
 mkdir -p ~/.ipython/profile_default/
 wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/ipython_config.py" -P ~/.ipython/profile_default/
-
+"master/ipython_config.py" -P ~/ubuntu-init-tmp/
+mv ~/ubuntu-init-tmp/ipython_config.py ~/.ipython/profile_default/
 ## powerline for tmux
 grep 'powerline' ~/.tmux.conf
 if [ $? -eq 1 ]; then
@@ -273,21 +273,27 @@ if [ $? -eq 1 ]; then
     # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"tmux/powerline.conf" >> ~/.tmux.conf
 fi
-
 ## powerline for zsh
-## for ubuntu
-#echo "#source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
+grep 'powerline' ~/.zshrc
+if [ $? -eq 1 ]; then
+    ## for ubuntu
+    echo "#source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
+"zsh/powerline.zsh" >> ~/.zshrc
+    ## for mac
+    # echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"zsh/powerline.zsh" >> ~/.zshrc
-## for mac
-#echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
-#"zsh/powerline.zsh" >> ~/.zshrc
-
+fi
 ## Install fonts for powerline
 wget http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz -P ~/ubuntu-init-tmp
 tar zxvf ~/ubuntu-init-tmp/fonts.tar.gz -C ~/ubuntu-init-tmp
 cd ~/ubuntu-init-tmp/fonts
 sudo ./install.sh
-
+## ~/.config/powerline
+if [ ! -d ~/.config/powerline ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/powerline_config.tar.gz -P \
+        ~/ubuntu-init-tmp
+    tar zxvf ~/ubuntu-init-tmp/powerline_config.tar.gz -C ~/.config
+fi
 ################################################################################
 ##                      Zsh
 ################################################################################
