@@ -123,6 +123,12 @@ if [ ! -f /usr/bin/subl ]; then
     sudo dpkg -i ~/ubuntu-init-tmp/lantern-installer-beta-64-bit.deb
     sudo apt-get install -fy
 fi
+## remove the letter "#" in line "#/usr/bin/lantern",
+## if you want start lantern automatically when you login
+grep 'lantern' /etc/rc.local
+if [ $? -eq 1 ]; then
+    sudo sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
+fi
 
 ## numlock
 ## method 1:
