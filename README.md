@@ -25,6 +25,7 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
  - ctags
  - curl wget
  - dfc
+ - dos2unix
  - filezilla
  - gcc
  - git
@@ -42,23 +43,24 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
  - vim
  - zsh
 * Other software
- - java
- - sublime text 3
- - numlock:Numlock on automatically when login
- - speedtest
  - haroopad:Markdown editor
- - wps
+ - java
+ - lantern
+ - numlock:Numlock on automatically when login
  - sogou
+ - speedtest
+ - sublime text 3
  - teamviewer
  - terminator config
- <!-- - exfat:To read exfat filesystem -->
- - codeblocks
- - wiz:A splendid note software
- - ss:For surfing internet
+ - wps
  - caffeine:Anti-lock screen when watching flash video
- <!-- - vokoscreen:Video monitor -->
- - shutter:Screenshot
  - chrome
+ - codeblocks
+ <!-- - exfat:To read exfat filesystem -->
+ - shutter:Screenshot
+ - ss:For surfing internet
+ <!-- - vokoscreen:Video monitor -->
+ - wiz:A splendid note software
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion

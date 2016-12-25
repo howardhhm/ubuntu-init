@@ -74,8 +74,8 @@ sudo chown root:root -R /usr/share/fonts
 ################################################################################
 ##                      Common Software
 ################################################################################
-sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc filezilla \
-    gcc git htop meld net-tools ntpdate okular openssh-server pandoc \
+sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc dos2unix \
+    filezilla gcc git htop meld net-tools ntpdate okular openssh-server pandoc \
     speedcrunch subversion terminator tmux unzip vim wget
 sudo ntpdate time.nist.gov
 sudo apt-get install -y zsh
@@ -89,6 +89,13 @@ sudo apt-get install -y zsh
 # sudo apt-get install -y ntpdate
 # sudo ntpdate cn.pool.ntp.org
 
+## haroopad (Markdown editor)
+if [ ! -f /usr/bin/haroopad ]; then
+    wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P \
+        ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
+    sudo apt-get install -fy
+fi
 ## java
 # wget --no-check-certificate --no-cookies --header \
 # "Cookie: oraclelicense=accept-securebackup-cookie" \
@@ -109,11 +116,11 @@ if [ $? -eq 1 ]; then
 ':$JAVA_HOME/lib/tools.jar' /etc/profile
     sudo sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
 fi
-## sublime text 3
+## lantern
 if [ ! -f /usr/bin/subl ]; then
     wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"sublime-text_build-3126_amd64.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
+"lantern-installer-beta-64-bit.deb" -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/lantern-installer-beta-64-bit.deb
     sudo apt-get install -fy
 fi
 
@@ -129,6 +136,13 @@ fi
 # sudo sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ]'\
 #' \&\& numlockx on\n\nexit 0|' /etc/rc.local
 
+## sogou
+if [ ! -f /usr/bin/sogou-diag ]; then
+    wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"sogoupinyin_2.1.0.0082_amd64.deb" -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
+    sudo apt-get install -fy
+fi
 ## speedtest
 if [ ! -f /usr/local/bin/speedtest ]; then
     wget --no-check-certificate "https://raw.githubusercontent.com/sivel/"\
@@ -137,26 +151,11 @@ if [ ! -f /usr/local/bin/speedtest ]; then
     sudo mv speedtest.py /usr/local/bin/speedtest
 fi
 sudo chown root:root /usr/local/bin/speedtest
-
-## haroopad (Markdown editor)
-if [ ! -f /usr/bin/haroopad ]; then
-    wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P \
-        ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
-    sudo apt-get install -fy
-fi
-## wps
-if [ ! -f /usr/bin/wps ]; then
+## sublime text 3
+if [ ! -f /usr/bin/subl ]; then
     wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"wps-office_10.1.0.5672~a21_amd64.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
-    sudo apt-get install -fy
-fi
-## sogou
-if [ ! -f /usr/bin/sogou-diag ]; then
-    wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"sogoupinyin_2.1.0.0082_amd64.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
+"sublime-text_build-3126_amd64.deb" -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
     sudo apt-get install -fy
 fi
 ## teamviewer
@@ -172,6 +171,13 @@ wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 mkdir -p ~/.config/terminator/
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 sudo chown $username:$username -R ~/.config
+## wps
+if [ ! -f /usr/bin/wps ]; then
+    wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"wps-office_10.1.0.5672~a21_amd64.deb" -P ~/ubuntu-init-tmp
+    sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
+    sudo apt-get install -fy
+fi
 
 ## delete old source lists
 cd /etc/apt/sources.list.d
@@ -213,25 +219,26 @@ wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
 ## update the sources
 sudo apt-get update
 ## you can separately execute the following command
-# sudo apt-get install -y exfat-utils
-# sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
-#   codeblocks-contrib
-# sudo apt-get install -y wiznote
-# sudo apt-get install -y shadowsocks-qt5
 # sudo apt-get install -y caffeine
-# sudo apt-get install -y vokoscreen
-# sudo apt-get install -y shutter
-# sudo apt-get install -y exfat-utils codeblocks libwxgtk3.0-dev \
-#   wx-common codeblocks-contrib wiznote shadowsocks-qt5 caffeine \
-#   vokoscreen shutter
-# sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
-#     codeblocks-contrib wiznote shadowsocks-qt5 caffeine vokoscreen shutter
-sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
-    codeblocks-contrib wiznote shadowsocks-qt5 caffeine shutter
 
 ### To be tested
 ### chrome
 sudo apt-get install -y google-chrome-stable
+
+# sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
+#   codeblocks-contrib
+# sudo apt-get install -y exfat-utils
+# sudo apt-get install -y shutter
+# sudo apt-get install -y shadowsocks-qt5
+# sudo apt-get install -y vokoscreen
+# sudo apt-get install -y wiznote
+
+# sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
+#   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
+#   vokoscreen wiznote
+sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
+    codeblocks-contrib shutter shadowsocks-qt5 wiznote
+
 
 ################################################################################
 ##                      Python & Pip
