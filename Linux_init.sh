@@ -12,7 +12,7 @@ mkdir ~/ubuntu-init-tmp
 ## whoami returns root all the time
 # username=$(whoami)
 username=$(echo $SUDO_USER)
-wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/netselect_0.3.ds1-26_amd64.deb" -P ~/ubuntu-init-tmp
 sudo dpkg -i ~/ubuntu-init-tmp/netselect_0.3.ds1-26_amd64.deb
 
@@ -23,7 +23,7 @@ export OLDSOURCE=$(cat /etc/apt/sources.list | egrep  "(deb|# deb)" \
 | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c | sort -rn \
 | sed  's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
 ## not reliable
-# export NEWSOURCE=$(sudo netselect -s1 `wget -q -O- \
+# export NEWSOURCE=$(sudo netselect -s1 `wget --no-cache -q -O- \
 # https://launchpad.net/ubuntu/+archivemirrors \
 # | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
 # | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
@@ -38,7 +38,7 @@ sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 
 ## get fast sources shellscript
 if [ ! -f /usr/local/bin/getfastsources ]; then
-    wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/get_fast_sources.sh" -P ~/ubuntu-init-tmp
     chmod a+rx ~/ubuntu-init-tmp/get_fast_sources.sh
     sudo mv ~/ubuntu-init-tmp/get_fast_sources.sh /usr/local/bin/getfastsources
@@ -53,8 +53,8 @@ sudo apt-file update
 ################################################################################
 ##                      Share Resource
 ################################################################################
-wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/sharerc \
-    -P ~/ubuntu-init-tmp
+wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+"master/sharerc" -P ~/ubuntu-init-tmp
 sudo mv ~/ubuntu-init-tmp/sharerc /etc/sharerc
 source /etc/sharerc
 
@@ -63,8 +63,8 @@ source /etc/sharerc
 ##          https://github.com/adobe-fonts/source-code-pro/downloads
 ################################################################################
 if [ ! -d /usr/share/fonts/SourceCodePro-1.013 ]; then
-    wget http://7xvxlx.com1.z0.glb.clouddn.com/SourceCodePro-1.013.tar.gz \
-        -P ~/ubuntu-init-tmp
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"SourceCodePro-1.013.tar.gz" -P ~/ubuntu-init-tmp
     sudo tar zxvf ~/ubuntu-init-tmp/SourceCodePro-1.013.tar.gz -C \
         /usr/share/fonts
     sudo fc-cache
@@ -91,20 +91,20 @@ sudo apt-get install -y zsh
 
 ## haroopad (Markdown editor)
 if [ ! -f /usr/bin/haroopad ]; then
-    wget http://7xvxlx.com1.z0.glb.clouddn.com/haroopad-v0.13.1-x64.deb -P \
-        ~/ubuntu-init-tmp
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"
+"haroopad-v0.13.1-x64.deb" -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
     sudo apt-get install -fy
 fi
 ## java
-# wget --no-check-certificate --no-cookies --header \
+# wget --no-cache --no-check-certificate --no-cookies --header \
 # "Cookie: oraclelicense=accept-securebackup-cookie" \
 # "http://download.oracle.com/otn-pub/java/jdk/"\
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
 grep 'java' /etc/profile
 if [ $? -eq 1 ]; then
-    wget http://7xvxlx.com1.z0.glb.clouddn.com/jdk-8u112-linux-x64.tar.gz \
-        -P ~/ubuntu-init-tmp
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"jdk-8u112-linux-x64.tar.gz" -P ~/ubuntu-init-tmp
     sudo mkdir -p /usr/local/java/
     sudo tar -zxvf ~/ubuntu-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
         /usr/local/java/
@@ -118,7 +118,7 @@ if [ $? -eq 1 ]; then
 fi
 ## lantern
 if [ ! -f /usr/bin/subl ]; then
-    wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "lantern-installer-beta-64-bit.deb" -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/lantern-installer-beta-64-bit.deb
     sudo apt-get install -fy
@@ -144,42 +144,42 @@ fi
 
 ## sogou
 if [ ! -f /usr/bin/sogou-diag ]; then
-    wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "sogoupinyin_2.1.0.0082_amd64.deb" -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
     sudo apt-get install -fy
 fi
 ## speedtest
 if [ ! -f /usr/local/bin/speedtest ]; then
-    wget --no-check-certificate "https://raw.githubusercontent.com/sivel/"\
-"speedtest-cli/master/speedtest.py"
+    wget --no-cache --no-check-certificate "https://raw.githubusercontent.com/"
+"sivel/speedtest-cli/master/speedtest.py"
     chmod a+rx speedtest.py
     sudo mv speedtest.py /usr/local/bin/speedtest
 fi
 sudo chown root:root /usr/local/bin/speedtest
 ## sublime text 3
 if [ ! -f /usr/bin/subl ]; then
-    wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "sublime-text_build-3126_amd64.deb" -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
     sudo apt-get install -fy
 fi
 ## teamviewer
 if [ ! -f /usr/bin/teamviewer ]; then
-    wget http://7xvxlx.com1.z0.glb.clouddn.com/teamviewer_i386.deb -P \
-        ~/ubuntu-init-tmp
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"teamviewer_i386.deb" -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/teamviewer_i386.deb
     sudo apt-get install -fy
 fi
 ## terminator config
-wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/terminator_config" -P ~/ubuntu-init-tmp
 mkdir -p ~/.config/terminator/
 mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
 sudo chown $username:$username -R ~/.config
 ## wps
 if [ ! -f /usr/bin/wps ]; then
-    wget "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "wps-office_10.1.0.5672~a21_amd64.deb" -P ~/ubuntu-init-tmp
     sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
     sudo apt-get install -fy
@@ -216,10 +216,10 @@ sudo add-apt-repository -y ppa:shutter/ppa
 ### To be tested
 ### chrome
 if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
-    sudo wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/google-chrome.list" -P /etc/apt/sources.list.d/
+    sudo wget --no-cache "https://raw.githubusercontent.com/howardhhm/"\
+"ubuntu-init/master/google-chrome.list" -P /etc/apt/sources.list.d/
 fi
-wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
+wget --no-cache -q -O - https://dl.google.com/linux/linux_signing_key.pub \
     | sudo apt-key add -
 
 ## update the sources
@@ -257,19 +257,22 @@ mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
     > ~/.pip/pip.conf
 sudo chown $username:$username -R ~/.pip
-sudo pip install --upgrade pip --trusted-host=pypi.douban.com
+sudo pip2 install --upgrade pip --trusted-host=pypi.douban.com
 sudo pip3 install --upgrade pip --trusted-host=pypi.douban.com
-sudo pip install ipython matplotlib sklearn numpy scipy \
+sudo
+sudo pip2 install ipython matplotlib sklearn numpy scipy \
     --trusted-host=pypi.douban.com
-sudo pip install powerline-status powerline-gitstatus psutil \
+sudo pip2 install powerline-status powerline-gitstatus psutil \
     --trusted-host=pypi.douban.com
+sudo rm -f /usr/local/bin/pip
+sudo ln -s /usr/local/bin/pip2 /usr/local/bin/pip
 ## Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
-# sudo pip install MySQL-python $PIPDO
+# sudo pip2 install MySQL-python $PIPDO
 
 ## python commandline auto-completion
 if [ ! -f ~/.pythonstartup.py ]; then
-    wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/.pythonstartup.py" -P ~/
 fi
 sudo chown $username:$username ~/.pythonstartup.py
@@ -280,7 +283,7 @@ sudo chown $username:$username ~/.pythonstartup.py
 ################################################################################
 ## powerline for ipython
 mkdir -p ~/.ipython/profile_default/
-wget "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/ipython_config.py" -P ~/ubuntu-init-tmp/
 mv ~/ubuntu-init-tmp/ipython_config.py ~/.ipython/profile_default/
 sudo chown $username:$username -R ~/.ipython/
@@ -295,25 +298,16 @@ if [ $? -eq 1 ]; then
 #"tmux/powerline.conf" >> ~/.tmux.conf
 fi
 sudo chown $username:$username ~/.tmux.conf
-## powerline for zsh
-grep 'powerline' ~/.zshrc
-if [ $? -eq 1 ]; then
-    ## for ubuntu
-    echo "#source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
-"zsh/powerline.zsh" >> ~/.zshrc
-    ## for mac
-    # echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
-#"zsh/powerline.zsh" >> ~/.zshrc
-fi
 ## Install fonts for powerline
-wget http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz -P ~/ubuntu-init-tmp
+wget --no-cache http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz \
+    -P ~/ubuntu-init-tmp
 tar zxvf ~/ubuntu-init-tmp/fonts.tar.gz -C ~/ubuntu-init-tmp
 cd ~/ubuntu-init-tmp/fonts
 sudo ./install.sh
 ## ~/.config/powerline
 if [ ! -d ~/.config/powerline ]; then
-    wget http://7xvxlx.com1.z0.glb.clouddn.com/powerline_config.tar.gz -P \
-        ~/ubuntu-init-tmp
+    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"powerline_config.tar.gz" -P ~/ubuntu-init-tmp
     tar zxvf ~/ubuntu-init-tmp/powerline_config.tar.gz -C ~/.config
 fi
 sudo chown $username:$username -R ~/.config
@@ -348,7 +342,16 @@ if [ $? -eq 1 ]; then
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
 fi
-
+## powerline for zsh
+grep 'powerline' ~/.zshrc
+if [ $? -eq 1 ]; then
+    ## for ubuntu
+    echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
+"zsh/powerline.zsh" >> ~/.zshrc
+    ## for mac
+    # echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
+#"zsh/powerline.zsh" >> ~/.zshrc
+fi
 ################################################################################
 ##                      Last update
 ################################################################################

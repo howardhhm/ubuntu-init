@@ -67,10 +67,10 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
 * powerline for
  - ipython
  - tmux
- <!-- - zsh -->
  - fonts
  - ~/.config/powerline
 * Oh my zsh
  - powerline fonts
  - change theme
  - some necessarily additional settings
+ - powerline
