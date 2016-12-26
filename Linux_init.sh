@@ -345,6 +345,7 @@ fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
 if [ $? -eq 1 ]; then
+    echo "powerline-daemon -q" >> ~/.zshrc
     ## for ubuntu
     echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
 "zsh/powerline.zsh" >> ~/.zshrc
