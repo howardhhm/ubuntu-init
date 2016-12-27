@@ -75,7 +75,7 @@ sudo chown root:root -R /usr/share/fonts
 ##                      Common Software
 ################################################################################
 sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc dos2unix \
-    filezilla gcc git htop meld net-tools ntpdate okular openssh-server pandoc \
+    filezilla build-essential git htop meld net-tools ntpdate okular openssh-server pandoc \
     speedcrunch subversion terminator tmux unzip vim wget
 sudo ntpdate time.nist.gov
 sudo apt-get install -y zsh
