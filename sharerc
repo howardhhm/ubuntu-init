@@ -90,13 +90,13 @@ fi
 # ==================================================================
 # ---------   Linux Local (Not for Mac)
 # ==================================================================
-if [ "$HHM_LOCAL" = "1" -a "$HHM_LINUX" = "1"]; then
+if [ "$HHM_LOCAL" = "1" -a "$HHM_LINUX" = "1" ]; then
     alias st='subl'
 fi
 # ==================================================================
 # ---------   Linux (Not for Mac)
 # ==================================================================
-if [ "$HHM_LINUX" = "1"]; then
+if [ "$HHM_LINUX" = "1" ]; then
     alias cp='cp -iar'
     alias tm='byobu'
     alias tma='byobu a'
@@ -136,3 +136,4 @@ if [ "$HHM_MACINIT" = "1" ]; then
     alias st="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
     alias svn="/usr/local/bin/svn"
 fi
+
