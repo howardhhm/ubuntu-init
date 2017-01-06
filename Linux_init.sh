@@ -196,6 +196,19 @@ if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     mkdir -p ~/.config/terminator/
     mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
     sudo chown $username:$username -R ~/.config
+    ## highlight terminator tab color
+    # grep -F "bg[NORMAL] = shade (1.02, @bg_color)"
+    # /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+    sudo sed -i "s/bg\[NORMAL\] = shade (1.02, @bg_color)/bg\[NORMAL\] = "\
+"shade (1.12, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+    # grep -F "bg[ACTIVE] = shade (0.97, @bg_color)"
+    # /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+    sudo sed -i "s/bg\[ACTIVE\] = shade (0.97, @bg_color)/bg\[ACTIVE\] = "\
+"shade (0.87, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+    ## apple green
+    # grep -F "base_color:#ffffff" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+    sudo sed -i "s/base_color:#ffffff/base_color:#cce8cf/g" \
+        /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     ## wps
     if [ ! -f /usr/bin/wps ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
