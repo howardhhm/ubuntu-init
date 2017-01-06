@@ -1,14 +1,20 @@
 #!/bin/bash
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2016-12-23 15:04:14
+# @DateTime:     2017-01-06 17:02:11
 # @Description:  Description
 
 ################################################################################
 ##                      Preparation
 ################################################################################
+## remove the previous cache
 rm -rvf ~/ubuntu-init-tmp
 mkdir ~/ubuntu-init-tmp
+
+if [ "$HHM_UBUNTUINIT_SERVER" = "" ]; then
+    HHM_UBUNTUINIT_CLIENT="1"
+fi
+
 ## whoami returns root all the time
 # username=$(whoami)
 username=$(echo $SUDO_USER)
@@ -75,8 +81,11 @@ sudo chown root:root -R /usr/share/fonts
 ##                      Common Software
 ################################################################################
 sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc dos2unix \
-    filezilla gcc git htop meld net-tools ntpdate okular openssh-server pandoc \
-    speedcrunch subversion terminator tmux unzip vim wget
+    gcc git htop net-tools ntpdate openssh-server subversion tmux unzip \
+    vim wget
+if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+    sudo apt-get install -y filezilla meld okular pandoc speedcrunch terminator
+fi
 sudo ntpdate time.nist.gov
 sudo apt-get install -y zsh
 ## To be solved
@@ -90,12 +99,15 @@ sudo apt-get install -y zsh
 # sudo ntpdate cn.pool.ntp.org
 
 ## haroopad (Markdown editor)
-if [ ! -f /usr/bin/haroopad ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"
+if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+    if [ ! -f /usr/bin/haroopad ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "haroopad-v0.13.1-x64.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
-    sudo apt-get install -fy
+        sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
+        sudo apt-get install -fy
+    fi
 fi
+
 ## java
 # wget --no-cache --no-check-certificate --no-cookies --header \
 # "Cookie: oraclelicense=accept-securebackup-cookie" \
@@ -116,18 +128,21 @@ if [ $? -eq 1 ]; then
 ':$JAVA_HOME/lib/tools.jar' /etc/profile
     sudo sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
 fi
+
 ## lantern
-if [ ! -f /usr/bin/subl ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+    if [ ! -f /usr/bin/lantern ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "lantern-installer-beta-64-bit.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/lantern-installer-beta-64-bit.deb
-    sudo apt-get install -fy
-fi
-## remove the letter "#" in line "#/usr/bin/lantern",
-## if you want start lantern automatically when you login
-grep 'lantern' /etc/rc.local
-if [ $? -eq 1 ]; then
-    sudo sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
+        sudo dpkg -i ~/ubuntu-init-tmp/lantern-installer-beta-64-bit.deb
+        sudo apt-get install -fy
+    fi
+    ## remove the letter "#" in line "#/usr/bin/lantern",
+    ## if you want start lantern automatically when you login
+    grep 'lantern' /etc/rc.local
+    if [ $? -eq 1 ]; then
+        sudo sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
+    fi
 fi
 
 ## numlock
@@ -143,108 +158,112 @@ fi
 #' \&\& numlockx on\n\nexit 0|' /etc/rc.local
 
 ## sogou
-if [ ! -f /usr/bin/sogou-diag ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+    if [ ! -f /usr/bin/sogou-diag ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "sogoupinyin_2.1.0.0082_amd64.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
-    sudo apt-get install -fy
+        sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
+        sudo apt-get install -fy
+    fi
 fi
 ## speedtest
 if [ ! -f /usr/local/bin/speedtest ]; then
-    wget --no-cache --no-check-certificate "https://raw.githubusercontent.com/"
+    wget --no-cache --no-check-certificate "https://raw.githubusercontent.com/"\
 "sivel/speedtest-cli/master/speedtest.py"
     chmod a+rx speedtest.py
     sudo mv speedtest.py /usr/local/bin/speedtest
 fi
 sudo chown root:root /usr/local/bin/speedtest
-## sublime text 3
-if [ ! -f /usr/bin/subl ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+
+if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+    ## sublime text 3
+    if [ ! -f /usr/bin/subl ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "sublime-text_build-3126_amd64.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
-    sudo apt-get install -fy
-fi
-## teamviewer
-if [ ! -f /usr/bin/teamviewer ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+        sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
+        sudo apt-get install -fy
+    fi
+    ## teamviewer
+    if [ ! -f /usr/bin/teamviewer ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "teamviewer_i386.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/teamviewer_i386.deb
-    sudo apt-get install -fy
-fi
-## terminator config
-wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+        sudo dpkg -i ~/ubuntu-init-tmp/teamviewer_i386.deb
+        sudo apt-get install -fy
+    fi
+    ## terminator config
+    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/terminator_config" -P ~/ubuntu-init-tmp
-mkdir -p ~/.config/terminator/
-mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
-sudo chown $username:$username -R ~/.config
-## wps
-if [ ! -f /usr/bin/wps ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+    mkdir -p ~/.config/terminator/
+    mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
+    sudo chown $username:$username -R ~/.config
+    ## wps
+    if [ ! -f /usr/bin/wps ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "wps-office_10.1.0.5672~a21_amd64.deb" -P ~/ubuntu-init-tmp
-    sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
-    sudo apt-get install -fy
-fi
+        sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
+        sudo apt-get install -fy
+    fi
 
-## delete old source lists
-cd /etc/apt/sources.list.d
-# sudo rm -rvf $(ls | grep -E "(exfat|codeblocks"\
-#"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-# sudo rm -rvf $(ls | grep -E "(codeblocks"\
-#"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-sudo rm -rvf $(ls | grep -E "(codeblocks|wiznote|hzwhuang|caffeine|shutter)")
-cd
+    ## delete old source lists
+    cd /etc/apt/sources.list.d
+    # sudo rm -rvf $(ls | grep -E "(exfat|codeblocks"\
+    #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+    # sudo rm -rvf $(ls | grep -E "(codeblocks"\
+    #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+    sudo rm -rvf $(ls | grep -E "(codeblocks|wiznote|hzwhuang|"\
+"caffeine|shutter)")
+    cd
+    ## exfat something wrong
+    # mount sdX to /mnt
+    # sudo mount -t exfat /dev/sdX /mnt
+    # sudo add-apt-repository -y ppa:relan/exfat
 
-## exfat something wrong
-# mount sdX to /mnt
-# sudo mount -t exfat /dev/sdX /mnt
-# sudo add-apt-repository -y ppa:relan/exfat
-
-## codeblocks
-## wx-config --version
-## 3.0.2
-sudo add-apt-repository -y ppa:damien-moore/codeblocks
-## wiz
-sudo add-apt-repository -y ppa:wiznote-team
-## ss
-sudo add-apt-repository -y ppa:hzwhuang/ss-qt5
-## flash anti-lock new version
-sudo add-apt-repository -y ppa:caffeine-developers/ppa
-## vokoscreen (video monitor) a little problem
-# sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
-## shutter (screenshot)
-sudo add-apt-repository -y ppa:shutter/ppa
-### To be tested
-### chrome
-if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
-    sudo wget --no-cache "https://raw.githubusercontent.com/howardhhm/"\
+    ## codeblocks
+    ## wx-config --version
+    ## 3.0.2
+    sudo add-apt-repository -y ppa:damien-moore/codeblocks
+    ## wiz
+    sudo add-apt-repository -y ppa:wiznote-team
+    ## ss
+    sudo add-apt-repository -y ppa:hzwhuang/ss-qt5
+    ## flash anti-lock new version
+    sudo add-apt-repository -y ppa:caffeine-developers/ppa
+    ## vokoscreen (video monitor) a little problem
+    # sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
+    ## shutter (screenshot)
+    sudo add-apt-repository -y ppa:shutter/ppa
+    ### To be tested
+    ### chrome
+    if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
+        sudo wget --no-cache "https://raw.githubusercontent.com/howardhhm/"\
 "ubuntu-init/master/google-chrome.list" -P /etc/apt/sources.list.d/
+    fi
+    wget --no-cache -q -O - https://dl.google.com/linux/linux_signing_key.pub \
+        | sudo apt-key add -
+
+    ## update the sources
+    sudo apt-get update
+    ## you can separately execute the following command
+    # sudo apt-get install -y caffeine
+
+    ### To be tested
+    ### chrome
+    sudo apt-get install -y google-chrome-stable
+
+    # sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
+    #   codeblocks-contrib
+    # sudo apt-get install -y exfat-utils
+    # sudo apt-get install -y shutter
+    # sudo apt-get install -y shadowsocks-qt5
+    # sudo apt-get install -y vokoscreen
+    # sudo apt-get install -y wiznote
+
+    # sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
+    #   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
+    #   vokoscreen wiznote
+    sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
+        codeblocks-contrib shutter shadowsocks-qt5 wiznote
 fi
-wget --no-cache -q -O - https://dl.google.com/linux/linux_signing_key.pub \
-    | sudo apt-key add -
-
-## update the sources
-sudo apt-get update
-## you can separately execute the following command
-# sudo apt-get install -y caffeine
-
-### To be tested
-### chrome
-sudo apt-get install -y google-chrome-stable
-
-# sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
-#   codeblocks-contrib
-# sudo apt-get install -y exfat-utils
-# sudo apt-get install -y shutter
-# sudo apt-get install -y shadowsocks-qt5
-# sudo apt-get install -y vokoscreen
-# sudo apt-get install -y wiznote
-
-# sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
-#   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
-#   vokoscreen wiznote
-sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
-    codeblocks-contrib shutter shadowsocks-qt5 wiznote
-
 
 ################################################################################
 ##                      Python & Pip
@@ -337,6 +356,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/"\
 grep 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -eq 1 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
+    if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+        sed -i '2 a export HHM_UBUNTUINIT_CLIENT="1"' ~/.zshrc
+    fi
+    if [ "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
+        sed -i '2 a export HHM_UBUNTUINIT_SERVER="1"' ~/.zshrc
+    fi
     sed -i '3 a source /etc/sharerc' ~/.zshrc
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
