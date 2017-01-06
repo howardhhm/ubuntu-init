@@ -81,8 +81,8 @@ sudo chown root:root -R /usr/share/fonts
 ##                      Common Software
 ################################################################################
 sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc dos2unix \
-    gcc git htop net-tools ntpdate openssh-server subversion tmux unzip \
-    vim wget
+    build-essential git htop net-tools ntpdate openssh-server subversion tmux \
+    unzip vim wget
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     sudo apt-get install -y filezilla meld okular pandoc speedcrunch terminator
 fi
