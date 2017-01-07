@@ -196,6 +196,12 @@ if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     mkdir -p ~/.config/terminator/
     mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
     sudo chown $username:$username -R ~/.config
+
+    ## backup gtkrc
+    if [ ! -f /usr/share/themes/Ambiance/gtk-2.0/gtkrc.bak ]; then
+        sudo cp /usr/share/themes/Ambiance/gtk-2.0/gtkrc \
+            /usr/share/themes/Ambiance/gtk-2.0/gtkrc.bak
+    fi
     ## highlight terminator tab color
     # grep -F "bg[NORMAL] = shade (1.02, @bg_color)"
     # /usr/share/themes/Ambiance/gtk-2.0/gtkrc
