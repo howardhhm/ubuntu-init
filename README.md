@@ -32,41 +32,41 @@ sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubuserconten
  - curl wget
  - dfc
  - dos2unix
- - filezilla                        [only for client]
+ - filezilla                        [not for server]
  - gcc
  - git
  - htop
- - meld:Comparison                  [only for client]
+ - meld:Comparison                  [not for server]
  - net-tools
  - ntpdate
- - okular                           [only for client]
+ - okular                           [not for server]
  - openssh-server
- - pandoc:Convert docs              [only for client]
- - terminator                       [only for client]
- - speedcrunch                      [only for client]
+ - pandoc:Convert docs              [not for server]
+ - terminator                       [not for server]
+ - speedcrunch                      [not for server]
  - subversion
  - unzip
  - vim
  - zsh
 * Other software
- - haroopad:Markdown editor         [only for client]
+ - haroopad:Markdown editor         [not for server]
  - java
- - lantern                          [only for client]
+ - lantern                          [not for server]
  - numlock:Numlock on automatically when login
- - sogou                            [only for client]
+ - sogou                            [not for server]
  - speedtest
- - sublime text 3                   [only for client]
- - teamviewer                       [only for client]
- - terminator config                [only for client]
- - wps                              [only for client]
- - caffeine:Anti-lock screen when watching flash video  [only for client]
- - chrome                           [only for client]
- - codeblocks                       [only for client]
+ - sublime text 3                   [not for server]
+ - teamviewer                       [not for server]
+ - terminator config                [not for server]
+ - wps                              [not for server]
+ - caffeine:Anti-lock screen when watching flash video  [not for server]
+ - chrome                           [not for server]
+ - codeblocks                       [not for server]
  <!-- - exfat:To read exfat filesystem -->
- - shutter:Screenshot               [only for client]
- - ss:For surfing internet          [only for client]
+ - shutter:Screenshot               [not for server]
+ - ss:For surfing internet          [not for server]
  <!-- - vokoscreen:Video monitor -->
- - wiz:A splendid note software     [only for client]
+ - wiz:A splendid note software     [not for server]
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion
