@@ -359,7 +359,7 @@ sudo sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 
 # install oh my zsh
 sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"install_oh_my_zsh.sh -O -)"
+"master/install_oh_my_zsh.sh -O -)"
 
 ## add the following code into ~/.zshrc
 # ZSH_THEME="agnoster"
