@@ -354,10 +354,12 @@ sudo chown $username:$username -R ~/ubuntu-init-tmp
 ##                      Zsh
 ################################################################################
 # change the default shell
-sudo chsh -s /bin/zsh
+lineno="$(grep "^${username}" /etc/passwd -n | cut -d ":" -f1)"
+sudo sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/"\
-"oh-my-zsh/master/tools/install.sh)"
+# install oh my zsh
+sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+"install_oh_my_zsh.sh -O -)"
 
 ## add the following code into ~/.zshrc
 # ZSH_THEME="agnoster"
