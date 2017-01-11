@@ -282,6 +282,9 @@ if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     #   vokoscreen wiznote
     sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
         codeblocks-contrib shutter shadowsocks-qt5 wiznote
+
+    # shutdown annoying error messages when login
+    sudo sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
 fi
 
 ################################################################################
@@ -387,6 +390,7 @@ if [ $? -ne 0 ]; then
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
+    echo "set term=screen" >> ~/.zshrc
 fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
