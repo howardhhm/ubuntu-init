@@ -114,7 +114,7 @@ fi
 # "http://download.oracle.com/otn-pub/java/jdk/"\
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
 grep 'java' /etc/profile
-if [ $? -eq 1 ]; then
+if [ $? -ne 0 ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "jdk-8u112-linux-x64.tar.gz" -P ~/ubuntu-init-tmp
     sudo mkdir -p /usr/local/java/
@@ -140,7 +140,7 @@ if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     ## remove the letter "#" in line "#/usr/bin/lantern",
     ## if you want start lantern automatically when you login
     grep 'lantern' /etc/rc.local
-    if [ $? -eq 1 ]; then
+    if [ $? -ne 0 ]; then
         sudo sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
     fi
 fi
@@ -149,7 +149,7 @@ fi
 ## method 1:
 sudo apt-get -y install numlockx
 grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
-if [ $? -eq 1 ]; then
+if [ $? -ne 0 ]; then
     sudo sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
         /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 fi
@@ -327,7 +327,7 @@ mv ~/ubuntu-init-tmp/ipython_config.py ~/.ipython/profile_default/
 sudo chown $username:$username -R ~/.ipython/
 ## powerline for tmux
 grep 'powerline' ~/.tmux.conf
-if [ $? -eq 1 ]; then
+if [ $? -ne 0 ]; then
     ## for ubuntu
     echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
 "tmux/powerline.conf" >> ~/.tmux.conf
@@ -373,7 +373,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/"\
 ## For python automatic completion
 # export PYTHONSTARTUP=~/.pythonstartup.py
 grep 'ZSH_THEME="agnoster"' ~/.zshrc
-if [ $? -eq 1 ]; then
+if [ $? -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
         sed -i '2 a export HHM_UBUNTUINIT_CLIENT="1"' ~/.zshrc
@@ -388,7 +388,7 @@ if [ $? -eq 1 ]; then
 fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
-if [ $? -eq 1 ]; then
+if [ $? -ne 0 ]; then
     echo "powerline-daemon -q" >> ~/.zshrc
     ## for ubuntu
     echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
