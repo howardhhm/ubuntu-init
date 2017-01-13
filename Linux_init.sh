@@ -117,6 +117,7 @@ grep 'java' /etc/profile
 if [ $? -ne 0 ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "jdk-8u112-linux-x64.tar.gz" -P ~/ubuntu-init-tmp
+    sudo apt-get autoremove openjdk-6-jre openjdk-7-jre
     sudo mkdir -p /usr/local/java/
     sudo tar -zxvf ~/ubuntu-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
         /usr/local/java/
@@ -293,20 +294,33 @@ fi
 sudo apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
     libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev \
     python3-pip python3.5 python3.5-dev python-tk
+## if the command above does not work
+## follow these commands
+# curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+# sudo python get-pip.py
+# sudo python3 get-pip.py
 
 mkdir ~/.pip/
 echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
     > ~/.pip/pip.conf
+
 sudo chown $username:$username -R ~/.pip
 sudo pip2 install --upgrade pip --trusted-host=pypi.douban.com
 sudo pip3 install --upgrade pip --trusted-host=pypi.douban.com
-sudo
+
+if [ "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
+    sudo pip3 install jupyter --trusted-host=pypi.douban.com
+fi
+
+sudo rm -f /usr/local/bin/pip
+sudo ln -s /usr/local/bin/pip2 /usr/local/bin/pip
+sudo cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
+
 sudo pip2 install ipython matplotlib sklearn numpy scipy \
     --trusted-host=pypi.douban.com
 sudo pip2 install powerline-status powerline-gitstatus psutil \
     --trusted-host=pypi.douban.com
-sudo rm -f /usr/local/bin/pip
-sudo ln -s /usr/local/bin/pip2 /usr/local/bin/pip
+
 ## Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
 # sudo pip2 install MySQL-python $PIPDO
@@ -381,16 +395,17 @@ grep 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
-        sed -i '2 a export HHM_UBUNTUINIT_CLIENT="1"' ~/.zshrc
+        echo 'export HHM_UBUNTUINIT_CLIENT="1"' >> ~/.hhmrc
     fi
     if [ "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
-        sed -i '2 a export HHM_UBUNTUINIT_SERVER="1"' ~/.zshrc
+        echo 'export HHM_UBUNTUINIT_SERVER="1"' >> ~/.hhmrc
     fi
+    sed -i '2 a source ~/.hhmrc' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
-    echo "set term=screen" >> ~/.zshrc
+    echo "export TERM=xterm-256color" >> ~/.zshrc
 fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
@@ -399,10 +414,16 @@ if [ $? -ne 0 ]; then
     ## for ubuntu
     echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
 "zsh/powerline.zsh" >> ~/.zshrc
+    ## for CentOS
+    # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"\
+# "zsh/powerline.zsh" >> ~/.zshrc
     ## for mac
     # echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"zsh/powerline.zsh" >> ~/.zshrc
 fi
+sudo chown $username:$username ~/.zshrc
+sudo chown $username:$username -R ~/..oh-my-zsh
+sudo chown $username:$username -R ~/.local
 ################################################################################
 ##                      Last update
 ################################################################################

@@ -26,27 +26,32 @@ sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubuserconten
  - ack-grep
  - autojump
  - byobu tmux
+ - classicmenu-indicator            [not for server]
  <!-- - chromium -->
  - cmatrix:Just for fun
  - ctags
  - curl wget
+ - dia:Linux visio                  [not for server]
  - dfc
  - dos2unix
  - filezilla                        [not for server]
  - gcc
  - git
+ - gparted                          [not for server]
  - htop
  - meld:Comparison                  [not for server]
  - net-tools
  - ntpdate
- - okular                           [not for server]
+ - okular:pdf reader                [not for server]
  - openssh-server
  - pandoc:Convert docs              [not for server]
  - terminator                       [not for server]
  - speedcrunch                      [not for server]
  - subversion
  - unzip
+ - variety:wallpapers               [not for server]
  - vim
+ - vlc:video player                 [not for server]
  - zsh
 * Other software
  - haroopad:Markdown editor         [not for server]
