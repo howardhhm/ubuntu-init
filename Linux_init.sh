@@ -25,22 +25,22 @@ sudo dpkg -i ~/ubuntu-init-tmp/netselect_0.3.ds1-26_amd64.deb
 ################################################################################
 ##                      Ubuntu Source List Modification
 ################################################################################
-export OLDSOURCE=$(cat /etc/apt/sources.list | egrep  "(deb|# deb)" \
-| sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c | sort -rn \
-| sed  's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
-## not reliable
-# export NEWSOURCE=$(sudo netselect -s1 `wget --no-cache -q -O- \
-# https://launchpad.net/ubuntu/+archivemirrors \
-# | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
-# | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
-# change into aliyun source lists
-export NEWSOURCE="http://mirrors.aliyun.com/ubuntu/"
-
-if [ ! -f /etc/apt/sources.list.bak ]; then
-    sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
+    export OLDSOURCE=$(cat /etc/apt/sources.list | egrep  "(deb|# deb)" \
+    | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c | sort -rn \
+    | sed  's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
+    ## not reliable
+    # export NEWSOURCE=$(sudo netselect -s1 `wget --no-cache -q -O- \
+    # https://launchpad.net/ubuntu/+archivemirrors \
+    # | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
+    # | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
+    # change into aliyun source lists
+    export NEWSOURCE="http://mirrors.aliyun.com/ubuntu/"
+    if [ ! -f /etc/apt/sources.list.bak ]; then
+        sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+    fi
+    sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 fi
-
-sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 
 ## get fast sources shellscript
 if [ ! -f /usr/local/bin/getfastsources ]; then
