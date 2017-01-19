@@ -422,7 +422,8 @@ if [ $? -ne 0 ]; then
 #"zsh/powerline.zsh" >> ~/.zshrc
 fi
 sudo chown $username:$username ~/.zshrc
-sudo chown $username:$username -R ~/..oh-my-zsh
+sudo chown $username:$username ~/.hhmrc
+sudo chown $username:$username -R ~/.oh-my-zsh
 sudo chown $username:$username -R ~/.local
 ################################################################################
 ##                      Last update
