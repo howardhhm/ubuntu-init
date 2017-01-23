@@ -15,6 +15,12 @@ if [ "$HHM_UBUNTUINIT_SERVER" = "" ]; then
     HHM_UBUNTUINIT_CLIENT="1"
 fi
 
+if [ "$HHM_INTERNATIONAL" = "1" ]; then
+    HHM_PIP_TRUST_HOST="--trusted-host=pypi.douban.com"
+else
+    HHM_PIP_TRUST_HOST=""
+fi
+
 ## whoami returns root all the time
 # username=$(whoami)
 username=$(echo $SUDO_USER)
@@ -305,21 +311,21 @@ echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
     > ~/.pip/pip.conf
 
 sudo chown $username:$username -R ~/.pip
-sudo pip2 install --upgrade pip --trusted-host=pypi.douban.com
-sudo pip3 install --upgrade pip --trusted-host=pypi.douban.com
+sudo pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
+sudo pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
 
 if [ "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
-    sudo pip3 install jupyter --trusted-host=pypi.douban.com
+    sudo pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
 
 sudo rm -f /usr/local/bin/pip
 sudo ln -s /usr/local/bin/pip2 /usr/local/bin/pip
 sudo cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
-sudo pip2 install ipython matplotlib sklearn numpy scipy \
-    --trusted-host=pypi.douban.com
+sudo pip2 install ipython matplotlib numpy scipy setuptools sklearn\
+    $HHM_PIP_TRUST_HOST
 sudo pip2 install powerline-status powerline-gitstatus psutil \
-    --trusted-host=pypi.douban.com
+    $HHM_PIP_TRUST_HOST
 
 ## Install MySQL-python
 # sudo apt-get install -y libmysqlclient-dev
