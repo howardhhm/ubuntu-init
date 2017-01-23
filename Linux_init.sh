@@ -16,9 +16,9 @@ if [ "$HHM_UBUNTUINIT_SERVER" = "" ]; then
 fi
 
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
-    HHM_PIP_TRUST_HOST="--trusted-host=pypi.douban.com"
-else
     HHM_PIP_TRUST_HOST=""
+else
+    HHM_PIP_TRUST_HOST="--trusted-host=pypi.douban.com"
 fi
 
 ## whoami returns root all the time
@@ -306,9 +306,11 @@ sudo apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
 # sudo python get-pip.py
 # sudo python3 get-pip.py
 
-mkdir ~/.pip/
-echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
-    > ~/.pip/pip.conf
+if [ "$HHM_INTERNATIONAL" = "" ]; then
+    mkdir ~/.pip/
+    echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
+        > ~/.pip/pip.conf
+fi
 
 sudo chown $username:$username -R ~/.pip
 sudo pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
