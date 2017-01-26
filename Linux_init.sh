@@ -91,9 +91,12 @@ chown root:root -R /usr/share/fonts
 ################################################################################
 ##                      Common Software
 ################################################################################
-apt-get install -y ack-grep autojump byobu cmatrix ctags dfc dos2unix \
-    build-essential git htop net-tools ntpdate openssh-server subversion tmux \
+apt-get install -y ack-grep autojump build-essential byobu cmatrix dos2unix \
+    exuberant-ctags git htop net-tools ntpdate openssh-server subversion tmux \
     unzip vim wget
+if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
+    apt-get install -y dfc
+fi
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     apt-get install -y filezilla meld okular pandoc speedcrunch terminator
 fi
@@ -157,17 +160,19 @@ if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     fi
 fi
 
-## numlock
-## method 1:
-apt-get -y install numlockx
-grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
-if [ $? -ne 0 ]; then
-    sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
-        /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
+    ## numlock
+    ## method 1:
+    apt-get -y install numlockx
+    grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+    if [ $? -ne 0 ]; then
+        sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
+            /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+    fi
+    ## method 2:
+    # sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ]'\
+    #' \&\& numlockx on\n\nexit 0|' /etc/rc.local
 fi
-## method 2:
-# sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ]'\
-#' \&\& numlockx on\n\nexit 0|' /etc/rc.local
 
 ## sogou
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then

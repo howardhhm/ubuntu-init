@@ -25,6 +25,7 @@ sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubuserconten
 * Common software
  - ack-grep
  - autojump
+ - build-essential
  - byobu tmux
  - classicmenu-indicator            [not for server]
  <!-- - chromium -->
@@ -32,10 +33,10 @@ sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubuserconten
  - ctags
  - curl wget
  - dia:Linux visio                  [not for server]
- - dfc
+ - dfc                              [not for debian]
  - dos2unix
+ - exuberant-ctags
  - filezilla                        [not for server]
- - gcc
  - git
  - gparted                          [not for server]
  - htop
