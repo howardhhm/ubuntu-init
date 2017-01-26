@@ -308,13 +308,16 @@ fi
 ##                      Python & Pip
 ################################################################################
 apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
-    libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev \
-    python3-pip python3.5 python3.5-dev python-tk
+    libxml2-dev libxslt-dev
+apt-get install -y python-dev python-pip python2.7 python2.7-dev
+apt-get install -y python3-pip python3.5 python3.5-dev python-tk
 ## if the command above does not work
 ## follow these commands
-# curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-# python get-pip.py
-# python3 get-pip.py
+if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
+    curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    python get-pip.py
+    python3 get-pip.py
+fi
 
 if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
