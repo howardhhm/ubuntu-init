@@ -11,7 +11,7 @@
 rm -rvf ~/debian-init-tmp
 mkdir ~/debian-init-tmp
 
-if [ "$HHM_UBUNTUINIT_SERVER" = "" -o "$HHM_DEBIANINIT_SERVER" = "" ]; then
+if [ "$HHM_UBUNTUINIT_SERVER" = "" -a "$HHM_DEBIANINIT_SERVER" = "" ]; then
     HHM_UBUNTUINIT_CLIENT="1"
 fi
 
@@ -128,7 +128,7 @@ grep 'java' /etc/profile
 if [ $? -ne 0 ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "jdk-8u112-linux-x64.tar.gz" -P ~/debian-init-tmp
-    apt-get autoremove openjdk-6-jre openjdk-7-jre
+    apt-get autoremove -y openjdk-6-jre openjdk-7-jre
     mkdir -p /usr/local/java/
     tar -zxvf ~/debian-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
         /usr/local/java/
