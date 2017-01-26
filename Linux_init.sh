@@ -8,10 +8,10 @@
 ##                      Preparation
 ################################################################################
 ## remove the previous cache
-rm -rvf ~/ubuntu-init-tmp
-mkdir ~/ubuntu-init-tmp
+rm -rvf ~/debian-init-tmp
+mkdir ~/debian-init-tmp
 
-if [ "$HHM_UBUNTUINIT_SERVER" = "" ]; then
+if [ "$HHM_UBUNTUINIT_SERVER" = "" -o "$HHM_DEBIANINIT_SERVER" = "" ]; then
     HHM_UBUNTUINIT_CLIENT="1"
 fi
 
@@ -25,8 +25,8 @@ fi
 # username=$(whoami)
 username=$(echo $SUDO_USER)
 wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/netselect_0.3.ds1-26_amd64.deb" -P ~/ubuntu-init-tmp
-sudo dpkg -i ~/ubuntu-init-tmp/netselect_0.3.ds1-26_amd64.deb
+"master/netselect_0.3.ds1-26_amd64.deb" -P ~/debian-init-tmp
+dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
 
 ################################################################################
 ##                      Ubuntu Source List Modification
@@ -36,38 +36,43 @@ if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
     | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c | sort -rn \
     | sed  's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
     ## not reliable
-    # export NEWSOURCE=$(sudo netselect -s1 `wget --no-cache -q -O- \
+    # export NEWSOURCE=$(netselect -s1 `wget --no-cache -q -O- \
     # https://launchpad.net/ubuntu/+archivemirrors \
     # | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
     # | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
-    # change into aliyun source lists
-    export NEWSOURCE="http://mirrors.aliyun.com/ubuntu/"
-    if [ ! -f /etc/apt/sources.list.bak ]; then
-        sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+    if [ "$HHM_DEBIANINIT_SERVER" = "1" ]; then
+        # change into 163 source lists
+        export NEWSOURCE="http://mirrors.163.com/debian/"
+    else
+        # change into aliyun source lists
+        export NEWSOURCE="http://mirrors.aliyun.com/ubuntu/"
     fi
-    sudo sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
+    if [ ! -f /etc/apt/sources.list.bak ]; then
+        cp /etc/apt/sources.list /etc/apt/sources.list.bak
+    fi
+    sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 fi
 
 ## get fast sources shellscript
 if [ ! -f /usr/local/bin/getfastsources ]; then
     wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/get_fast_sources.sh" -P ~/ubuntu-init-tmp
-    chmod a+rx ~/ubuntu-init-tmp/get_fast_sources.sh
-    sudo mv ~/ubuntu-init-tmp/get_fast_sources.sh /usr/local/bin/getfastsources
+"master/get_fast_sources.sh" -P ~/debian-init-tmp
+    chmod a+rx ~/debian-init-tmp/get_fast_sources.sh
+    mv ~/debian-init-tmp/get_fast_sources.sh /usr/local/bin/getfastsources
 fi
-sudo chown root:root /usr/local/bin/getfastsources
+chown root:root /usr/local/bin/getfastsources
 
-sudo apt-get update
-sudo apt-get -y upgrade
-sudo apt-get install -y apt-file
-sudo apt-file update
+apt-get update
+apt-get -y upgrade
+apt-get install -y apt-file
+apt-file update
 
 ################################################################################
 ##                      Share Resource
 ################################################################################
 wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/sharerc" -P ~/ubuntu-init-tmp
-sudo mv ~/ubuntu-init-tmp/sharerc /etc/sharerc
+"master/sharerc" -P ~/debian-init-tmp
+mv ~/debian-init-tmp/sharerc /etc/sharerc
 source /etc/sharerc
 
 ################################################################################
@@ -76,41 +81,41 @@ source /etc/sharerc
 ################################################################################
 if [ ! -d /usr/share/fonts/SourceCodePro-1.013 ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"SourceCodePro-1.013.tar.gz" -P ~/ubuntu-init-tmp
-    sudo tar zxvf ~/ubuntu-init-tmp/SourceCodePro-1.013.tar.gz -C \
+"SourceCodePro-1.013.tar.gz" -P ~/debian-init-tmp
+    tar zxvf ~/debian-init-tmp/SourceCodePro-1.013.tar.gz -C \
         /usr/share/fonts
-    sudo fc-cache
+    fc-cache
 fi
-sudo chown root:root -R /usr/share/fonts
+chown root:root -R /usr/share/fonts
 
 ################################################################################
 ##                      Common Software
 ################################################################################
-sudo apt-get install -y ack-grep autojump byobu cmatrix ctags dfc dos2unix \
+apt-get install -y ack-grep autojump byobu cmatrix ctags dfc dos2unix \
     build-essential git htop net-tools ntpdate openssh-server subversion tmux \
     unzip vim wget
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
-    sudo apt-get install -y filezilla meld okular pandoc speedcrunch terminator
+    apt-get install -y filezilla meld okular pandoc speedcrunch terminator
 fi
-sudo ntpdate time.nist.gov
-sudo apt-get install -y zsh
+ntpdate time.nist.gov
+apt-get install -y zsh
 ## To be solved
-# sudo apt-get install -y chromium
+# apt-get install -y chromium
 
 ## The commands below should be executed
 ## if the PC was installed windows and ubuntu
-# sudo timedatectl set-local-rtc 1 --adjust-system-clock
-# sudo timedatectl set-ntp 0
-# sudo apt-get install -y ntpdate
-# sudo ntpdate cn.pool.ntp.org
+# timedatectl set-local-rtc 1 --adjust-system-clock
+# timedatectl set-ntp 0
+# apt-get install -y ntpdate
+# ntpdate cn.pool.ntp.org
 
 ## haroopad (Markdown editor)
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     if [ ! -f /usr/bin/haroopad ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"haroopad-v0.13.1-x64.deb" -P ~/ubuntu-init-tmp
-        sudo dpkg -i ~/ubuntu-init-tmp/haroopad-v0.13.1-x64.deb
-        sudo apt-get install -fy
+"haroopad-v0.13.1-x64.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
+        apt-get install -fy
     fi
 fi
 
@@ -122,55 +127,55 @@ fi
 grep 'java' /etc/profile
 if [ $? -ne 0 ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"jdk-8u112-linux-x64.tar.gz" -P ~/ubuntu-init-tmp
-    sudo apt-get autoremove openjdk-6-jre openjdk-7-jre
-    sudo mkdir -p /usr/local/java/
-    sudo tar -zxvf ~/ubuntu-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
+"jdk-8u112-linux-x64.tar.gz" -P ~/debian-init-tmp
+    apt-get autoremove openjdk-6-jre openjdk-7-jre
+    mkdir -p /usr/local/java/
+    tar -zxvf ~/debian-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
         /usr/local/java/
-    sudo sed -i '$ a # java' /etc/profile
-    sudo sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_112' \
+    sed -i '$ a # java' /etc/profile
+    sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_112' \
         /etc/profile
-    sudo sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
-    sudo sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'\
+    sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
+    sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'\
 ':$JAVA_HOME/lib/tools.jar' /etc/profile
-    sudo sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
+    sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
 fi
 
 ## lantern
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     if [ ! -f /usr/bin/lantern ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"lantern-installer-beta-64-bit.deb" -P ~/ubuntu-init-tmp
-        sudo dpkg -i ~/ubuntu-init-tmp/lantern-installer-beta-64-bit.deb
-        sudo apt-get install -fy
+"lantern-installer-beta-64-bit.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/lantern-installer-beta-64-bit.deb
+        apt-get install -fy
     fi
     ## remove the letter "#" in line "#/usr/bin/lantern",
     ## if you want start lantern automatically when you login
     grep 'lantern' /etc/rc.local
     if [ $? -ne 0 ]; then
-        sudo sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
+        sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
     fi
 fi
 
 ## numlock
 ## method 1:
-sudo apt-get -y install numlockx
+apt-get -y install numlockx
 grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 if [ $? -ne 0 ]; then
-    sudo sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
+    sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
         /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 fi
 ## method 2:
-# sudo sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ]'\
+# sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ]'\
 #' \&\& numlockx on\n\nexit 0|' /etc/rc.local
 
 ## sogou
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     if [ ! -f /usr/bin/sogou-diag ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"sogoupinyin_2.1.0.0082_amd64.deb" -P ~/ubuntu-init-tmp
-        sudo dpkg -i ~/ubuntu-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
-        sudo apt-get install -fy
+"sogoupinyin_2.1.0.0082_amd64.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
+        apt-get install -fy
     fi
 fi
 ## speedtest
@@ -178,133 +183,133 @@ if [ ! -f /usr/local/bin/speedtest ]; then
     wget --no-cache --no-check-certificate "https://raw.githubusercontent.com/"\
 "sivel/speedtest-cli/master/speedtest.py"
     chmod a+rx speedtest.py
-    sudo mv speedtest.py /usr/local/bin/speedtest
+    mv speedtest.py /usr/local/bin/speedtest
 fi
-sudo chown root:root /usr/local/bin/speedtest
+chown root:root /usr/local/bin/speedtest
 
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     ## sublime text 3
     if [ ! -f /usr/bin/subl ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"sublime-text_build-3126_amd64.deb" -P ~/ubuntu-init-tmp
-        sudo dpkg -i ~/ubuntu-init-tmp/sublime-text_build-3126_amd64.deb
-        sudo apt-get install -fy
+"sublime-text_build-3126_amd64.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/sublime-text_build-3126_amd64.deb
+        apt-get install -fy
     fi
     ## teamviewer
     if [ ! -f /usr/bin/teamviewer ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"teamviewer_i386.deb" -P ~/ubuntu-init-tmp
-        sudo dpkg -i ~/ubuntu-init-tmp/teamviewer_i386.deb
-        sudo apt-get install -fy
+"teamviewer_i386.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/teamviewer_i386.deb
+        apt-get install -fy
     fi
     ## terminator config
     wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/terminator_config" -P ~/ubuntu-init-tmp
+"master/terminator_config" -P ~/debian-init-tmp
     mkdir -p ~/.config/terminator/
-    mv ~/ubuntu-init-tmp/terminator_config ~/.config/terminator/config
-    sudo chown $username:$username -R ~/.config
+    mv ~/debian-init-tmp/terminator_config ~/.config/terminator/config
+    chown $username:$username -R ~/.config
 
     ## backup gtkrc
     if [ ! -f /usr/share/themes/Ambiance/gtk-2.0/gtkrc.bak ]; then
-        sudo cp /usr/share/themes/Ambiance/gtk-2.0/gtkrc \
+        cp /usr/share/themes/Ambiance/gtk-2.0/gtkrc \
             /usr/share/themes/Ambiance/gtk-2.0/gtkrc.bak
     fi
     ## highlight terminator tab color
     # grep -F "bg[NORMAL] = shade (1.02, @bg_color)"
     # /usr/share/themes/Ambiance/gtk-2.0/gtkrc
-    sudo sed -i "s/bg\[NORMAL\] = shade (1.02, @bg_color)/bg\[NORMAL\] = "\
+    sed -i "s/bg\[NORMAL\] = shade (1.02, @bg_color)/bg\[NORMAL\] = "\
 "shade (1.12, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     # grep -F "bg[ACTIVE] = shade (0.97, @bg_color)"
     # /usr/share/themes/Ambiance/gtk-2.0/gtkrc
-    sudo sed -i "s/bg\[ACTIVE\] = shade (0.97, @bg_color)/bg\[ACTIVE\] = "\
+    sed -i "s/bg\[ACTIVE\] = shade (0.97, @bg_color)/bg\[ACTIVE\] = "\
 "shade (0.87, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     ## apple green
     # grep -F "base_color:#ffffff" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
-    sudo sed -i "s/base_color:#ffffff/base_color:#cce8cf/g" \
+    sed -i "s/base_color:#ffffff/base_color:#cce8cf/g" \
         /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     ## wps
     if [ ! -f /usr/bin/wps ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"wps-office_10.1.0.5672~a21_amd64.deb" -P ~/ubuntu-init-tmp
-        sudo dpkg -i ~/ubuntu-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
-        sudo apt-get install -fy
+"wps-office_10.1.0.5672~a21_amd64.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
+        apt-get install -fy
     fi
 
     ## delete old source lists
     cd /etc/apt/sources.list.d
-    # sudo rm -rvf $(ls | grep -E "(exfat|codeblocks"\
+    # rm -rvf $(ls | grep -E "(exfat|codeblocks"\
     #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-    # sudo rm -rvf $(ls | grep -E "(codeblocks"\
+    # rm -rvf $(ls | grep -E "(codeblocks"\
     #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-    sudo rm -rvf $(ls | grep -E "(codeblocks|wiznote|hzwhuang|"\
+    rm -rvf $(ls | grep -E "(codeblocks|wiznote|hzwhuang|"\
 "caffeine|shutter)")
     cd
     ## exfat something wrong
     # mount sdX to /mnt
-    # sudo mount -t exfat /dev/sdX /mnt
-    # sudo add-apt-repository -y ppa:relan/exfat
+    # mount -t exfat /dev/sdX /mnt
+    # add-apt-repository -y ppa:relan/exfat
 
     ## codeblocks
     ## wx-config --version
     ## 3.0.2
-    sudo add-apt-repository -y ppa:damien-moore/codeblocks
+    add-apt-repository -y ppa:damien-moore/codeblocks
     ## wiz
-    sudo add-apt-repository -y ppa:wiznote-team
+    add-apt-repository -y ppa:wiznote-team
     ## ss
-    sudo add-apt-repository -y ppa:hzwhuang/ss-qt5
+    add-apt-repository -y ppa:hzwhuang/ss-qt5
     ## flash anti-lock new version
-    sudo add-apt-repository -y ppa:caffeine-developers/ppa
+    add-apt-repository -y ppa:caffeine-developers/ppa
     ## vokoscreen (video monitor) a little problem
-    # sudo add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
+    # add-apt-repository -y ppa:vokoscreen-dev/vokoscreen
     ## shutter (screenshot)
-    sudo add-apt-repository -y ppa:shutter/ppa
+    add-apt-repository -y ppa:shutter/ppa
     ### To be tested
     ### chrome
     if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
-        sudo wget --no-cache "https://raw.githubusercontent.com/howardhhm/"\
+        wget --no-cache "https://raw.githubusercontent.com/howardhhm/"\
 "ubuntu-init/master/google-chrome.list" -P /etc/apt/sources.list.d/
     fi
     wget --no-cache -q -O - https://dl.google.com/linux/linux_signing_key.pub \
-        | sudo apt-key add -
+        | apt-key add -
 
     ## update the sources
-    sudo apt-get update
+    apt-get update
     ## you can separately execute the following command
-    # sudo apt-get install -y caffeine
+    # apt-get install -y caffeine
 
     ### To be tested
     ### chrome
-    sudo apt-get install -y google-chrome-stable
+    apt-get install -y google-chrome-stable
 
-    # sudo apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
+    # apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
     #   codeblocks-contrib
-    # sudo apt-get install -y exfat-utils
-    # sudo apt-get install -y shutter
-    # sudo apt-get install -y shadowsocks-qt5
-    # sudo apt-get install -y vokoscreen
-    # sudo apt-get install -y wiznote
+    # apt-get install -y exfat-utils
+    # apt-get install -y shutter
+    # apt-get install -y shadowsocks-qt5
+    # apt-get install -y vokoscreen
+    # apt-get install -y wiznote
 
-    # sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
+    # apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
     #   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
     #   vokoscreen wiznote
-    sudo apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
+    apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
         codeblocks-contrib shutter shadowsocks-qt5 wiznote
 
     # shutdown annoying error messages when login
-    sudo sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
+    sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
 fi
 
 ################################################################################
 ##                      Python & Pip
 ################################################################################
-sudo apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
+apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
     libxml2-dev libxslt-dev python-dev python-pip python2.7 python2.7-dev \
     python3-pip python3.5 python3.5-dev python-tk
 ## if the command above does not work
 ## follow these commands
 # curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-# sudo python get-pip.py
-# sudo python3 get-pip.py
+# python get-pip.py
+# python3 get-pip.py
 
 if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
@@ -312,33 +317,33 @@ if [ "$HHM_INTERNATIONAL" = "" ]; then
         > ~/.pip/pip.conf
 fi
 
-sudo chown $username:$username -R ~/.pip
-sudo pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
-sudo pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
+chown $username:$username -R ~/.pip
+pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
+pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
 
 if [ "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
-    sudo pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
+    pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
 
-sudo rm -f /usr/local/bin/pip
-sudo ln -s /usr/local/bin/pip2 /usr/local/bin/pip
-sudo cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
+rm -f /usr/local/bin/pip
+ln -s /usr/local/bin/pip2 /usr/local/bin/pip
+cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
-sudo pip2 install ipython matplotlib numpy scipy setuptools sklearn\
+pip2 install ipython matplotlib numpy scipy setuptools sklearn\
     $HHM_PIP_TRUST_HOST
-sudo pip2 install powerline-status powerline-gitstatus psutil \
+pip2 install powerline-status powerline-gitstatus psutil \
     $HHM_PIP_TRUST_HOST
 
 ## Install MySQL-python
-# sudo apt-get install -y libmysqlclient-dev
-# sudo pip2 install MySQL-python $PIPDO
+# apt-get install -y libmysqlclient-dev
+# pip2 install MySQL-python $PIPDO
 
 ## python commandline auto-completion
 if [ ! -f ~/.pythonstartup.py ]; then
     wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/.pythonstartup.py" -P ~/
 fi
-sudo chown $username:$username ~/.pythonstartup.py
+chown $username:$username ~/.pythonstartup.py
 
 ################################################################################
 ##                      Powerline
@@ -347,9 +352,9 @@ sudo chown $username:$username ~/.pythonstartup.py
 ## powerline for ipython
 mkdir -p ~/.ipython/profile_default/
 wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/ipython_config.py" -P ~/ubuntu-init-tmp/
-mv ~/ubuntu-init-tmp/ipython_config.py ~/.ipython/profile_default/
-sudo chown $username:$username -R ~/.ipython/
+"master/ipython_config.py" -P ~/debian-init-tmp/
+mv ~/debian-init-tmp/ipython_config.py ~/.ipython/profile_default/
+chown $username:$username -R ~/.ipython/
 ## powerline for tmux
 grep 'powerline' ~/.tmux.conf
 if [ $? -ne 0 ]; then
@@ -360,27 +365,27 @@ if [ $? -ne 0 ]; then
     # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"tmux/powerline.conf" >> ~/.tmux.conf
 fi
-sudo chown $username:$username ~/.tmux.conf
+chown $username:$username ~/.tmux.conf
 ## Install fonts for powerline
 wget --no-cache http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz \
-    -P ~/ubuntu-init-tmp
-tar zxvf ~/ubuntu-init-tmp/fonts.tar.gz -C ~/ubuntu-init-tmp
-cd ~/ubuntu-init-tmp/fonts
-sudo ./install.sh
+    -P ~/debian-init-tmp
+tar zxvf ~/debian-init-tmp/fonts.tar.gz -C ~/debian-init-tmp
+cd ~/debian-init-tmp/fonts
+./install.sh
 ## ~/.config/powerline
 if [ ! -d ~/.config/powerline ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"powerline_config.tar.gz" -P ~/ubuntu-init-tmp
-    tar zxvf ~/ubuntu-init-tmp/powerline_config.tar.gz -C ~/.config
+"powerline_config.tar.gz" -P ~/debian-init-tmp
+    tar zxvf ~/debian-init-tmp/powerline_config.tar.gz -C ~/.config
 fi
-sudo chown $username:$username -R ~/.config
-sudo chown $username:$username -R ~/ubuntu-init-tmp
+chown $username:$username -R ~/.config
+chown $username:$username -R ~/debian-init-tmp
 ################################################################################
 ##                      Zsh
 ################################################################################
 # change the default shell
 lineno="$(grep "^${username}" /etc/passwd -n | cut -d ":" -f1)"
-sudo sed -i "${lineno}s|bash|zsh|g" /etc/passwd
+sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 
 # install oh my zsh
 sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
@@ -429,13 +434,13 @@ if [ $? -ne 0 ]; then
     # echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"zsh/powerline.zsh" >> ~/.zshrc
 fi
-sudo chown $username:$username ~/.zshrc
-sudo chown $username:$username ~/.hhmrc
-sudo chown $username:$username -R ~/.oh-my-zsh
-sudo chown $username:$username -R ~/.local
+chown $username:$username ~/.zshrc
+chown $username:$username ~/.hhmrc
+chown $username:$username -R ~/.oh-my-zsh
+chown $username:$username -R ~/.local
 ################################################################################
 ##                      Last update
 ################################################################################
-sudo apt-get update
-sudo apt-get -y upgrade
-sudo apt-get -y autoremove
+apt-get update
+apt-get -y upgrade
+apt-get -y autoremove
