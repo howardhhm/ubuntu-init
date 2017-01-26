@@ -91,7 +91,7 @@ chown root:root -R /usr/share/fonts
 ################################################################################
 ##                      Common Software
 ################################################################################
-apt-get install -y ack-grep autojump build-essential byobu cmatrix dos2unix \
+apt-get install -y ack-grep autojump byobu cmatrix dos2unix \
     exuberant-ctags git htop net-tools ntpdate openssh-server subversion tmux \
     unzip vim wget
 if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
@@ -315,6 +315,7 @@ apt-get install -y python3-pip python3.5 python3.5-dev python-tk
 ## follow these commands
 if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
     curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    rm -f ~/.pip/pip.conf
     python get-pip.py
     python3 get-pip.py
 fi
@@ -384,6 +385,7 @@ cd ~/debian-init-tmp/fonts
 if [ ! -d ~/.config/powerline ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "powerline_config.tar.gz" -P ~/debian-init-tmp
+    mkdir ~/.config
     tar zxvf ~/debian-init-tmp/powerline_config.tar.gz -C ~/.config
 fi
 chown $username:$username -R ~/.config

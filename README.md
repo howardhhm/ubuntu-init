@@ -25,7 +25,6 @@ sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubuserconten
 * Common software
  - ack-grep
  - autojump
- - build-essential
  - byobu tmux
  - classicmenu-indicator            [not for server]
  <!-- - chromium -->
