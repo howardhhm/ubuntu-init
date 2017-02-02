@@ -99,6 +99,7 @@ if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
 fi
 if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     apt-get install -y filezilla meld okular pandoc speedcrunch terminator
+    apt-get install -y classicmenu-indicator dia gparted variety vlc
 fi
 ntpdate time.nist.gov
 apt-get install -y zsh
