@@ -92,8 +92,8 @@ chown root:root -R /usr/share/fonts
 ##                      Common Software
 ################################################################################
 apt-get install -y ack-grep autojump byobu cmatrix dos2unix \
-    exuberant-ctags git htop net-tools ntpdate openssh-server subversion tmux \
-    unzip vim wget
+    exuberant-ctags git htop net-tools ntpdate openssh-server screenfetch \
+    subversion tmux unzip vim wget
 if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
     apt-get install -y dfc
 fi

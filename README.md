@@ -46,6 +46,7 @@ sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubuserconten
  - openssh-server
  - pandoc:Convert docs              [not for server]
  - terminator                       [not for server]
+ - screenfetch
  - speedcrunch                      [not for server]
  - subversion
  - unzip
