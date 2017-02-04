@@ -320,6 +320,7 @@ if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
     python get-pip.py
     python3 get-pip.py
 fi
+env-update && source /etc/profile
 
 if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
