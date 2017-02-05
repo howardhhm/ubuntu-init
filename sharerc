@@ -93,11 +93,7 @@ fi
 # ---------   Linux Local (Not for Mac)
 # ==================================================================
 if [ "$HHM_LOCAL" = "1" -a "$HHM_LINUX" = "1" ]; then
-    if [ "$HHM_ARCHLINUXINIT_CLIENT" = "" ]; then
         alias st='subl'
-    else
-        alias st='subl3'
-    fi
 fi
 # ==================================================================
 # ---------   Linux (Not for Mac)
