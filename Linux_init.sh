@@ -18,7 +18,7 @@ fi
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
     HHM_PIP_TRUST_HOST=""
 else
-    HHM_PIP_TRUST_HOST="--trusted-host=pypi.douban.com"
+    HHM_PIP_TRUST_HOST="--trusted-host=mirrors.aliyun.com"
 fi
 
 ## whoami returns root all the time
@@ -324,7 +324,8 @@ env-update && source /etc/profile
 
 if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
-    echo "[global]\ntimeout = 60\nindex-url = http://pypi.douban.com/simple" \
+    echo "[global]\ntrusted-host = mirrors.aliyun.com\n"\
+"index-url = http://mirrors.aliyun.com/pypi/simple\n" \
         > ~/.pip/pip.conf
 fi
 
