@@ -8,6 +8,7 @@
 # HHM_UBUNTUINIT_CLIENT
 # HHM_UBUNTUINIT_SERVER
 # HHM_CENTOSINIT_SERVER
+# HHM_ARCHLINUXINIT_CLIENT
 # HHM_MACINIT
 #
 # HHM_SERVER
@@ -19,7 +20,8 @@ if [ "$HHM_UBUNTUINIT_SERVER" = "1" -o "$HHM_CENTOSINIT_SERVER" = "1" ]; then
     HHM_SERVER="1"
 fi
 # get HHM_LOCAL
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" -o "$HHM_MACINIT" = "1" ]; then
+if [ "$HHM_UBUNTUINIT_CLIENT" = "1" -o "$HHM_MACINIT" = "1" -o \
+    "$HHM_ARCHLINUXINIT_CLIENT" = "1" ]; then
     HHM_LOCAL="1"
 fi
 # get HHM_LINUX
@@ -91,7 +93,11 @@ fi
 # ---------   Linux Local (Not for Mac)
 # ==================================================================
 if [ "$HHM_LOCAL" = "1" -a "$HHM_LINUX" = "1" ]; then
-    alias st='subl'
+    if [ "$HHM_ARCHLINUXINIT_CLIENT" = "" ]; then
+        alias st='subl'
+    else
+        alias st='subl3'
+    fi
 fi
 # ==================================================================
 # ---------   Linux (Not for Mac)
