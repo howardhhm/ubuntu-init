@@ -376,6 +376,8 @@ if [ $? -ne 0 ]; then
     ## for mac
     # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"tmux/powerline.conf" >> ~/.tmux.conf
+
+    echo "set-window-option -g xterm-keys on" >> ~/.tmux.conf
 fi
 chown $username:$username ~/.tmux.conf
 ## Install fonts for powerline
