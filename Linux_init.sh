@@ -440,6 +440,7 @@ if [ $? -ne 0 ]; then
     fi
     sed -i '2 a source ~/.hhmrc' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
+    sed -i 's|^plugins=(git)|plugins=(git extract)|g' ~/.zshrc
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
