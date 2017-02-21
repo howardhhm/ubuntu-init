@@ -1,7 +1,7 @@
 #!/bin/bash
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
-# @DateTime:     2017-01-06 17:02:11
+# @DateTime:     2017-02-21 10:59:06
 # @Description:  Description
 
 ################################################################################
@@ -11,8 +11,15 @@
 rm -rvf ~/debian-init-tmp
 mkdir ~/debian-init-tmp
 
-if [ "$HHM_UBUNTUINIT_SERVER" = "" -a "$HHM_DEBIANINIT_SERVER" = "" ]; then
-    HHM_UBUNTUINIT_CLIENT="1"
+# HHM_UBUNTU_INIT_CLIENT
+# HHM_UBUNTU_INIT_SERVER
+# HHM_DEBIAN_INIT_SERVER
+# HHM_SKIP_SOURCES_SELECTION
+# HHM_INTERNATIONAL
+# HHM_FAST_INIT
+
+if [ "$HHM_UBUNTU_INIT_SERVER" = "" -a "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
+    HHM_UBUNTU_INIT_CLIENT="1"
 fi
 
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
@@ -40,7 +47,7 @@ if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
     # https://launchpad.net/ubuntu/+archivemirrors \
     # | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
     # | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
-    if [ "$HHM_DEBIANINIT_SERVER" = "1" ]; then
+    if [ "$HHM_DEBIAN_INIT_SERVER" = "1" ]; then
         # change into 163 source lists
         export NEWSOURCE="http://mirrors.163.com/debian/"
     else
@@ -63,7 +70,9 @@ fi
 chown root:root /usr/local/bin/getfastsources
 
 apt-get update
-apt-get -y upgrade
+if [ "$HHM_FAST_INIT" = "" ]; then
+    apt-get -y upgrade
+fi
 apt-get install -y apt-file
 apt-file update
 
@@ -94,10 +103,10 @@ chown root:root -R /usr/share/fonts
 apt-get install -y ack-grep autojump byobu cmatrix dos2unix \
     exuberant-ctags git htop net-tools ntpdate openssh-server screenfetch \
     subversion tmux unzip vim wget
-if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
+if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
 fi
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y filezilla meld okular pandoc speedcrunch terminator
     apt-get install -y classicmenu-indicator dia gparted variety vlc
 fi
@@ -114,7 +123,7 @@ apt-get install -y zsh
 # ntpdate cn.pool.ntp.org
 
 ## haroopad (Markdown editor)
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     if [ ! -f /usr/bin/haroopad ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "haroopad-v0.13.1-x64.deb" -P ~/debian-init-tmp
@@ -146,7 +155,7 @@ if [ $? -ne 0 ]; then
 fi
 
 ## lantern
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     if [ ! -f /usr/bin/lantern ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "lantern-installer-beta-64-bit.deb" -P ~/debian-init-tmp
@@ -161,7 +170,7 @@ if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
     fi
 fi
 
-if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
+if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     ## numlock
     ## method 1:
     apt-get -y install numlockx
@@ -176,7 +185,7 @@ if [ "$HHM_DEBIANINIT_SERVER" = "" ]; then
 fi
 
 ## sogou
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     if [ ! -f /usr/bin/sogou-diag ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "sogoupinyin_2.1.0.0082_amd64.deb" -P ~/debian-init-tmp
@@ -193,7 +202,7 @@ if [ ! -f /usr/local/bin/speedtest ]; then
 fi
 chown root:root /usr/local/bin/speedtest
 
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## sublime text 3
     if [ ! -f /usr/bin/subl ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
@@ -333,7 +342,7 @@ chown $username:$username -R ~/.pip
 pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
 pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
 
-if [ "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
     pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
 
@@ -422,11 +431,11 @@ sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 grep 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
-    if [ "$HHM_UBUNTUINIT_CLIENT" = "1" ]; then
-        echo 'export HHM_UBUNTUINIT_CLIENT="1"' >> ~/.hhmrc
+    if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+        echo 'export HHM_UBUNTU_INIT_CLIENT="1"' >> ~/.hhmrc
     fi
-    if [ "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
-        echo 'export HHM_UBUNTUINIT_SERVER="1"' >> ~/.hhmrc
+    if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
+        echo 'export HHM_UBUNTU_INIT_SERVER="1"' >> ~/.hhmrc
     fi
     sed -i '2 a source ~/.hhmrc' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
@@ -457,5 +466,7 @@ chown $username:$username -R ~/.local
 ##                      Last update
 ################################################################################
 apt-get update
-apt-get -y upgrade
-apt-get -y autoremove
+if [ "$HHM_FAST_INIT" = "" ]; then
+    apt-get -y upgrade
+    apt-get -y autoremove
+fi

@@ -5,27 +5,27 @@
 # ==================================================================
 # ---------   Macro
 # ==================================================================
-# HHM_UBUNTUINIT_CLIENT
-# HHM_UBUNTUINIT_SERVER
-# HHM_CENTOSINIT_SERVER
-# HHM_ARCHLINUXINIT_CLIENT
-# HHM_MACINIT
+# HHM_UBUNTU_INIT_CLIENT
+# HHM_UBUNTU_INIT_SERVER
+# HHM_CENTOS_INIT_SERVER
+# HHM_ARCHLINUX_INIT_CLIENT
+# HHM_MAC_INIT
 #
 # HHM_SERVER
 # HHM_LOCAL
 # HHM_LINUX
 
 # get HHM_SERVER
-if [ "$HHM_UBUNTUINIT_SERVER" = "1" -o "$HHM_CENTOSINIT_SERVER" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_SERVER" = "1" -o "$HHM_CENTOS_INIT_SERVER" = "1" ]; then
     HHM_SERVER="1"
 fi
 # get HHM_LOCAL
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" -o "$HHM_MACINIT" = "1" -o \
-    "$HHM_ARCHLINUXINIT_CLIENT" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_MAC_INIT" = "1" -o \
+    "$HHM_ARCHLINUX_INIT_CLIENT" = "1" ]; then
     HHM_LOCAL="1"
 fi
 # get HHM_LINUX
-if [ "$HHM_MACINIT" = "" ]; then
+if [ "$HHM_MAC_INIT" = "" ]; then
     HHM_LINUX="1"
 fi
 
@@ -126,14 +126,14 @@ fi
 # ==================================================================
 # ---------   Only for Ubuntu (Not for CentOS)
 # ==================================================================
-if [ "$HHM_UBUNTUINIT_CLIENT" = "1" -o "$HHM_UBUNTUINIT_SERVER" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
     alias ack="ack-grep"
 fi
 
 # ==================================================================
 # ---------   Only for Mac
 # ==================================================================
-if [ "$HHM_MACINIT" = "1" ]; then
+if [ "$HHM_MAC_INIT" = "1" ]; then
     alias cp='cp -iaR'
     alias st="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
     alias svn="/usr/local/bin/svn"
