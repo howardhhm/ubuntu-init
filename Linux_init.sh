@@ -326,9 +326,10 @@ apt-get install -y python3-pip python3.5 python3.5-dev python-tk
 ## follow these commands
 if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
     curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    mv get-pip.py ~/debian-init-tmp/get-pip.py
     rm -f ~/.pip/pip.conf
-    python get-pip.py
-    python3 get-pip.py
+    python ~/debian-init-tmp/get-pip.py
+    python3 ~/debian-init-tmp/get-pip.py
 fi
 env-update && source /etc/profile
 

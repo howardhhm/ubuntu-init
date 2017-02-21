@@ -111,7 +111,7 @@ if [ "$HHM_LINUX" = "1" ]; then
 # caution: mac got below is divided by ':'
 # mac $(ip link show p4p1 | grep 'link\/ether' | sed 's/^.*link\/ether //g' \
 # | cut -d ' ' -f1)
-# 显示所有网卡名称
+# list all network cards
 # ls /sys/class/net
 # alias ip0="ip addr show enp0s3 | grep 'inet ' | sed 's/^.*inet //g' "\
 # "| cut -d ' ' -f1 | sed 's/\/.*$//g' | sed 's/\./-/g'"
@@ -138,4 +138,3 @@ if [ "$HHM_MAC_INIT" = "1" ]; then
     alias st="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
     alias svn="/usr/local/bin/svn"
 fi
-
