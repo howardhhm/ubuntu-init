@@ -13,7 +13,7 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
 ## ubuntu-init for server
 Execute the command below
 ```shell
-sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/init_linux.sh -O -)"
+sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/init_linux.sh -O -)"
 ```
 
 ## Contents
