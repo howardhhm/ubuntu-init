@@ -3,7 +3,7 @@ A shell script for installing common software and initializing relative settings
 
 Just execute the command below
 ```shell
-sudo sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh -O -)"
+sudo sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/init_linux.sh -O -)"
 ```
 <!-- or
 ```shell
@@ -13,7 +13,7 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
 ## ubuntu-init for server
 Execute the command below
 ```shell
-sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh -O -)"
+sudo sh -c "export HHM_UBUNTUINIT_SERVER='1';$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/init_linux.sh -O -)"
 ```
 
 ## Contents
