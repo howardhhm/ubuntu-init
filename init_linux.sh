@@ -11,17 +11,20 @@
 rm -rvf ~/debian-init-tmp
 mkdir ~/debian-init-tmp
 
-# HHM_UBUNTU_INIT_CLIENT
-# HHM_UBUNTU_INIT_SERVER
-# HHM_DEBIAN_INIT_SERVER
-# HHM_SKIP_SOURCES_SELECTION
-# HHM_INTERNATIONAL
-# HHM_FAST_INIT
+### the macros
+## HHM_UBUNTU_INIT_CLIENT
+## HHM_UBUNTU_INIT_SERVER
+## HHM_DEBIAN_INIT_SERVER
+## HHM_SKIP_SOURCES_SELECTION
+## HHM_INTERNATIONAL
+## HHM_FAST_INIT
 
+## ubuntu client
 if [ "$HHM_UBUNTU_INIT_SERVER" = "" -a "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     HHM_UBUNTU_INIT_CLIENT="1"
 fi
 
+## pip source
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
     HHM_PIP_TRUST_HOST=""
 else
@@ -31,6 +34,7 @@ fi
 ## whoami returns root all the time
 # username=$(whoami)
 username=$(echo $SUDO_USER)
+## a tool for source selection
 wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/netselect_0.3.ds1-26_amd64.deb" -P ~/debian-init-tmp
 dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
@@ -39,6 +43,7 @@ dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
 ##                      Ubuntu Source List Modification
 ################################################################################
 if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
+    ## get old sources
     export OLDSOURCE=$(cat /etc/apt/sources.list | egrep  "(deb|# deb)" \
     | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c | sort -rn \
     | sed  's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
@@ -47,6 +52,7 @@ if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
     # https://launchpad.net/ubuntu/+archivemirrors \
     # | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
     # | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
+    ## for debian or ubuntu
     if [ "$HHM_DEBIAN_INIT_SERVER" = "1" ]; then
         # change into 163 source lists
         export NEWSOURCE="http://mirrors.163.com/debian/"
@@ -54,9 +60,11 @@ if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
         # change into aliyun source lists
         export NEWSOURCE="http://mirrors.aliyun.com/ubuntu/"
     fi
+    ## backup
     if [ ! -f /etc/apt/sources.list.bak ]; then
         cp /etc/apt/sources.list /etc/apt/sources.list.bak
     fi
+    ## replacement
     sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
 fi
 
@@ -69,6 +77,7 @@ if [ ! -f /usr/local/bin/getfastsources ]; then
 fi
 chown root:root /usr/local/bin/getfastsources
 
+## update
 apt-get update
 if [ "$HHM_FAST_INIT" = "" ]; then
     apt-get -y upgrade
@@ -101,7 +110,7 @@ chown root:root -R /usr/share/fonts
 ##                      Common Software
 ################################################################################
 apt-get install -y ack-grep autojump byobu cmatrix dos2unix \
-    exuberant-ctags git htop net-tools ntpdate openssh-server \
+    exuberant-ctags htop net-tools ntpdate openssh-server \
     subversion tmux unzip vim wget
 apt-get install -y screenfetch
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
@@ -112,6 +121,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y classicmenu-indicator dia gparted variety vlc
 fi
 ntpdate time.nist.gov
+apt-get install -y git
+apt-get install -y curl
 apt-get install -y zsh
 ## To be solved
 # apt-get install -y chromium
@@ -146,6 +157,7 @@ if [ $? -ne 0 ]; then
     mkdir -p /usr/local/java/
     tar -zxvf ~/debian-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
         /usr/local/java/
+    ## add envs into /etc/profile
     sed -i '$ a # java' /etc/profile
     sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_112' \
         /etc/profile
@@ -311,7 +323,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
         codeblocks-contrib shutter shadowsocks-qt5 wiznote
 
-    # shutdown annoying error messages when login
+    ## shutdown annoying error messages when login
     sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
 fi
 
@@ -333,6 +345,7 @@ if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
 fi
 env-update && source /etc/profile
 
+## pip source
 if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
     echo "[global]\ntrusted-host = mirrors.aliyun.com\n"\
@@ -344,16 +357,20 @@ chown $username:$username -R ~/.pip
 pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
 pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
 
+## jupyter
 if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
     pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
 
+## soft link pip2
 rm -f /usr/local/bin/pip
 ln -s /usr/local/bin/pip2 /usr/local/bin/pip
 cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
+## packages for machine learning
 pip2 install ipython matplotlib numpy scipy setuptools sklearn\
     $HHM_PIP_TRUST_HOST
+## packages for powerline
 pip2 install powerline-status powerline-gitstatus psutil \
     $HHM_PIP_TRUST_HOST
 
@@ -387,7 +404,7 @@ if [ $? -ne 0 ]; then
     ## for mac
     # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
 #"tmux/powerline.conf" >> ~/.tmux.conf
-
+    ## enable ctrl+left/right in tmux
     echo "set-window-option -g xterm-keys on" >> ~/.tmux.conf
 fi
 chown $username:$username ~/.tmux.conf
@@ -413,38 +430,36 @@ chown $username:$username -R ~/debian-init-tmp
 lineno="$(grep "^${username}" /etc/passwd -n | cut -d ":" -f1)"
 sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 
-# install oh my zsh
+# install oh_my_zsh
 sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/install_oh_my_zsh.sh -O -)"
 
 ## add the following code into ~/.zshrc
-# ZSH_THEME="agnoster"
-## source /etc/sharerc
-## [AT THE END OF THE FILE]
-## For python pressing Ctrl-D to exit and prevent from closing the terminator
-# set -o ignoreeof
-## enable control-s and control-q
-# stty start undef
-# stty stop undef
-# setopt noflowcontrol
-# source /usr/share/autojump/autojump.zsh
-## For python automatic completion
-# export PYTHONSTARTUP=~/.pythonstartup.py
 grep 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -ne 0 ]; then
+    ## change oh_my_zsh theme
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
+    ## add env into ~/.hhmrc
     if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         echo 'export HHM_UBUNTU_INIT_CLIENT="1"' >> ~/.hhmrc
     fi
     if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
         echo 'export HHM_UBUNTU_INIT_SERVER="1"' >> ~/.hhmrc
     fi
+    ## source ~/.hhmrc and /etc/sharerc
     sed -i '2 a source ~/.hhmrc' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
+    ## enable oh_my_zsh "x" command
     sed -i 's|^plugins=(git)|plugins=(git extract)|g' ~/.zshrc
+    ### [AT THE END OF THE FILE]
+    ## enable control-s and control-q
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
+    ## For python pressing Ctrl-D to exit and prevent from closing the terminator
+    ## zsh autojump
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
+    ## ipython auto-completion
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
+    ## tmux color problem
     echo "export TERM=xterm-256color" >> ~/.zshrc
 fi
 ## powerline for zsh
