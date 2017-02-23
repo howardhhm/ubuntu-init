@@ -89,3 +89,5 @@ sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';"\
  - change theme
  - some necessarily additional settings
  - powerline
+* modify sshd_config
+* config ~/.vimrc

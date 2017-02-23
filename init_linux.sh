@@ -449,8 +449,8 @@ if [ $? -ne 0 ]; then
     ## source ~/.hhmrc and /etc/sharerc
     sed -i '2 a source ~/.hhmrc' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
-    ## enable oh_my_zsh "x" command
-    sed -i 's|^plugins=(git)|plugins=(git extract)|g' ~/.zshrc
+    ## enable oh_my_zsh "x" and "wd" command
+    sed -i 's|^plugins=(git)|plugins=(git extract wd)|g' ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
@@ -480,6 +480,14 @@ chown $username:$username ~/.zshrc
 chown $username:$username ~/.hhmrc
 chown $username:$username -R ~/.oh-my-zsh
 chown $username:$username -R ~/.local
+
+## modify sshd_config
+sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
+"ubuntu-init/master/modify_sshd_config.sh -O -)"
+
+## config ~/.vimrc
+sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
+"ubuntu-init/master/config_vimrc.sh -O -)"
 ################################################################################
 ##                      Last update
 ################################################################################
