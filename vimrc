@@ -11,4 +11,17 @@ set ts=4 "TAB 4个空格
 set expandtab "把TAB转换成空格！！ :
 set relativenumber
 " 打开文件自动跳转到上次修改位置
-au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif"'")"'")"'")
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif
+" ===================================
+"        << Ctrl + Shift + k ： 上移当前行 >>
+"        << Ctrl + Shift + j ： 下移当前行 >>
+" ===================================
+nnoremap <C-S-j> :m .+1<CR>==
+nnoremap <C-S-k> :m .-2<CR>==
+inoremap <C-S-j> <Esc>:m .+1<CR>==gi
+inoremap <C-S-k> <Esc>:m .-2<CR>==gi
+vnoremap <C-S-j> :m '>+1<CR>gv=gv
+vnoremap <C-S-k> :m '<-2<CR>gv=gv
