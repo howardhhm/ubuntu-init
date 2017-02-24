@@ -417,9 +417,9 @@ cd ~/debian-init-tmp/fonts
 ## ~/.config/powerline
 if [ ! -d ~/.config/powerline ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"powerline_config.tar.gz" -P ~/debian-init-tmp
+"powerline_configuration.tar.gz" -P ~/debian-init-tmp
     mkdir ~/.config
-    tar zxvf ~/debian-init-tmp/powerline_config.tar.gz -C ~/.config
+    tar zxvf ~/debian-init-tmp/powerline_configuration.tar.gz -C ~/.config
 fi
 chown $username:$username -R ~/.config
 chown $username:$username -R ~/debian-init-tmp
