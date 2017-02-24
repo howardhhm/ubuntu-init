@@ -97,10 +97,10 @@ source /etc/sharerc
 ##                      Source code pro
 ##          https://github.com/adobe-fonts/source-code-pro/downloads
 ################################################################################
-if [ ! -d /usr/share/fonts/SourceCodePro-1.013 ]; then
+if [ ! -d /usr/share/fonts/source-code-pro-2.030R-ro-1.050R-it ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"SourceCodePro-1.013.tar.gz" -P ~/debian-init-tmp
-    tar zxvf ~/debian-init-tmp/SourceCodePro-1.013.tar.gz -C \
+"source-code-pro-2.030R-ro-1.050R-it.tar.gz" -P ~/debian-init-tmp
+    tar zxvf ~/debian-init-tmp/source-code-pro-2.030R-ro-1.050R-it.tar.gz -C \
         /usr/share/fonts
     fc-cache
 fi
