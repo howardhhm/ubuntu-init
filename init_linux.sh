@@ -371,7 +371,8 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 pip2 install ipython matplotlib numpy scipy setuptools sklearn\
     $HHM_PIP_TRUST_HOST
 ## packages for powerline
-pip2 install powerline-status powerline-gitstatus psutil \
+## caution: svnstatus needs reboot
+pip2 install powerline-status powerline-gitstatus powerline-svnstatus psutil \
     $HHM_PIP_TRUST_HOST
 
 ## Install MySQL-python
