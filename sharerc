@@ -69,6 +69,10 @@ alias mc="make clean"
 alias mi="make install"
 alias scp="scp -r"
 
+alias tm='tmux'
+alias tma='tmux a'
+alias tml='tmux ls'
+
 alias psa='ps aux'
 alias code="LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-10};echo;"
 alias ipp="wget http://ipecho.net/plain -O - -q; echo "
@@ -105,9 +109,9 @@ fi
 ## ==================================================================
 if [ "$HHM_LINUX" = "1" ]; then
     alias cp='cp -iar'
-    alias tm='byobu'
-    alias tma='byobu a'
-    alias tml='byobu ls'
+    # alias tm='byobu'
+    # alias tma='byobu a'
+    # alias tml='byobu ls'
 
     ### caution 'p4p1'
     ### caution: ip got below is divided by '.'
