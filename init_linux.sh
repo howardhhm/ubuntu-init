@@ -455,7 +455,8 @@ if [ $? -ne 0 ]; then
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
-    ## For python pressing Ctrl-D to exit and prevent from closing the terminator
+    ## For python pressing Ctrl-D to exit and prevent
+    ## from closing the terminator
     ## zsh autojump
     echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
     ## ipython auto-completion
