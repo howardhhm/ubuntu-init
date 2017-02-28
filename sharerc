@@ -74,8 +74,18 @@ alias tma='tmux a'
 alias tml='tmux ls'
 
 alias psa='ps aux'
-alias code="LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-10};echo;"
-alias ipp="wget http://ipecho.net/plain -O - -q; echo "
+code()
+{
+    LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-10}
+    echo
+}
+
+ipp()
+{
+    wget http://ipecho.net/plain -O - -q
+    echo
+}
+
 
 ## ==================================================================
 ## ---------   Local (Not for Server)
@@ -127,9 +137,13 @@ if [ "$HHM_LINUX" = "1" ]; then
     # alias mac0="ip link show enp0s3 | grep 'link\/ether' "\
     # "| sed 's/^.*link\/ether //g'| cut -d ' ' -f1 | sed 's/:/-/g'"
     alias myfs="ls  /lib/modules/$(uname -r)/kernel/fs"
-    alias allip='ip addr show | grep "inet " | sed "s/^.*inet //g" '\
-'| cut -d " " -f1,4,6,7 | sed "s/scope //g" | sed "s/dynamic //g" '\
-'| awk "{ print \$2 \"\t\" \$1 }"'
+    allip()
+    {
+        ip addr show | grep "inet " | sed "s/^.*inet //g" \
+        | cut -d " " -f1,4,6,7 | sed "s/scope //g" | sed "s/dynamic //g" \
+        | awk "{ print \$2 \"\t\" \$1 }"
+    }
+
 fi
 
 ## ==================================================================
