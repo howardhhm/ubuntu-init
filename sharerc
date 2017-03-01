@@ -119,9 +119,6 @@ fi
 ## ==================================================================
 if [ "$HHM_LINUX" = "1" ]; then
     alias cp='cp -iar'
-    # alias tm='byobu'
-    # alias tma='byobu a'
-    # alias tml='byobu ls'
 
     ### caution 'p4p1'
     ### caution: ip got below is divided by '.'

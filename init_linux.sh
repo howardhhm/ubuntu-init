@@ -109,7 +109,7 @@ chown root:root -R /usr/share/fonts
 ################################################################################
 ##                      Common Software
 ################################################################################
-apt-get install -y ack-grep autojump byobu cmatrix dos2unix \
+apt-get install -y ack-grep autojump cmatrix dos2unix \
     exuberant-ctags htop net-tools ntpdate openssh-server \
     subversion tmux unzip vim wget
 apt-get install -y screenfetch
@@ -396,19 +396,7 @@ wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/ipython_config.py" -P ~/debian-init-tmp/
 mv ~/debian-init-tmp/ipython_config.py ~/.ipython/profile_default/
 chown $username:$username -R ~/.ipython/
-## powerline for tmux
-grep 'powerline' ~/.tmux.conf
-if [ $? -ne 0 ]; then
-    ## for ubuntu
-    echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
-"tmux/powerline.conf" >> ~/.tmux.conf
-    ## for mac
-    # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
-#"tmux/powerline.conf" >> ~/.tmux.conf
-    ## enable ctrl+left/right in tmux
-    echo "set-window-option -g xterm-keys on" >> ~/.tmux.conf
-fi
-chown $username:$username ~/.tmux.conf
+
 ## Install fonts for powerline
 wget --no-cache http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz \
     -P ~/debian-init-tmp
@@ -424,6 +412,29 @@ if [ ! -d ~/.config/powerline ]; then
 fi
 chown $username:$username -R ~/.config
 chown $username:$username -R ~/debian-init-tmp
+################################################################################
+##                      tmux
+################################################################################
+## powerline for tmux
+grep 'powerline' ~/.tmux.conf
+if [ $? -ne 0 ]; then
+    ## for ubuntu
+    echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
+"tmux/powerline.conf" >> ~/.tmux.conf
+    ## for mac
+    # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
+#"tmux/powerline.conf" >> ~/.tmux.conf
+    ## enable ctrl+left/right in tmux
+    echo "set-window-option -g xterm-keys on" >> ~/.tmux.conf
+fi
+chown $username:$username ~/.tmux.conf
+# tmuxinator
+gpg --keyserver hkp://keys.gnupg.net --recv-keys \
+    409B6B1796C275462A1703113804BB82D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
+rvm install 2.3
+gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
+gem install tmuxinator
 ################################################################################
 ##                      Zsh
 ################################################################################
@@ -463,6 +474,10 @@ if [ $? -ne 0 ]; then
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
     ## tmux color problem
     echo "export TERM=xterm-256color" >> ~/.zshrc
+    ## tmuxinator
+    echo "export EDITOR='vim'" >> ~/.zshrc
+    echo "source /var/lib/gems/2.3.0/gems/tmuxinator-0.9.0/completion/"\
+"tmuxinator.zsh" >> ~/.zshrc
 fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc

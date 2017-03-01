@@ -1,3 +1,4 @@
+" =========== added by hhm ===========
 "这个档案的双引号 (") 是批注
 set hlsearch "高亮度反白
 set backspace=2 "可随时用退格键删除
@@ -10,6 +11,8 @@ syntax on "进行语法检验，颜色显示。
 set ts=4 "TAB 4个空格
 set expandtab "把TAB转换成空格！！ :
 set relativenumber
+" in case of the display problem in tmux
+set term=screen
 " 打开文件自动跳转到上次修改位置
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
@@ -25,3 +28,4 @@ inoremap <C-S-j> <Esc>:m .+1<CR>==gi
 inoremap <C-S-k> <Esc>:m .-2<CR>==gi
 vnoremap <C-S-j> :m '>+1<CR>gv=gv
 vnoremap <C-S-k> :m '<-2<CR>gv=gv
+" =========== added by hhm ===========

@@ -26,7 +26,7 @@ do
 done
 echo "+++++++++++++++ LATEST images end +++++++++++++++"
 echo
-OLD=$(dpkg --get-selections | grep -v linux-image-extra \
+export OLD=$(dpkg --get-selections | grep -v linux-image-extra \
 | grep -e "linux-image-[0-9]"| cut -f1 | sed "s|-generic||g;s|"\
 "linux-image-||g" | grep -v $LATEST)
 for i in $OLD

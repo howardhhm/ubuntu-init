@@ -28,7 +28,6 @@ sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';"\
 * Common software
  - ack-grep
  - autojump
- - byobu tmux
  - classicmenu-indicator            [not for server]
  <!-- - chromium -->
  - cmatrix:Just for fun
