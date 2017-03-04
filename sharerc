@@ -97,6 +97,7 @@ if [ "$HHM_LOCAL" = "1" ]; then
     alias srm='svn rm --force'
     alias sad='svn add'
     alias sta='svn status'
+    alias sd='svn diff'
 fi
 
 ## ==================================================================

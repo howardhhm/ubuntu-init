@@ -476,8 +476,8 @@ if [ $? -ne 0 ]; then
     echo "export TERM=xterm-256color" >> ~/.zshrc
     ## tmuxinator
     echo "export EDITOR='vim'" >> ~/.zshrc
-    echo "source /var/lib/gems/2.3.0/gems/tmuxinator-0.9.0/completion/"\
-"tmuxinator.zsh" >> ~/.zshrc
+    echo "source $(dirname $(which tmuxinator))/../gems/tmuxinator-0.9.0/"\
+"completion/tmuxinator.zsh" >> ~/.zshrc
 fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
