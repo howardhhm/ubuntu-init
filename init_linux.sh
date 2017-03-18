@@ -78,13 +78,13 @@ fi
 chown root:root /usr/local/bin/get_fast_sources
 
 ## update all pip packages
-if [ ! -f /usr/local/bin/pip_update_all ]; then
+if [ ! -f /usr/local/bin/update_pip_all ]; then
     wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/pip_update_all" -P ~/debian-init-tmp
-    chmod a+rx ~/debian-init-tmp/pip_update_all
-    mv ~/debian-init-tmp/pip_update_all /usr/local/bin/pip_update_all
+"master/update_pip_all" -P ~/debian-init-tmp
+    chmod a+rx ~/debian-init-tmp/update_pip_all
+    mv ~/debian-init-tmp/update_pip_all /usr/local/bin/update_pip_all
 fi
-chown root:root /usr/local/bin/pip_update_all
+chown root:root /usr/local/bin/update_pip_all
 
 ## update
 apt-get update
