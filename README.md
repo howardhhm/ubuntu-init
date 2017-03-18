@@ -21,7 +21,8 @@ sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';"\
 
 ## Contents
 * Update the Ubuntu sources.list:Change the source to the fastest one
-* getfastsources shellscript
+* get_fast_sources shellscript
+* pip_update_all shellscript
 * apt-file
 * /etc/sharerc:Useful alias settings
 * Source Code Pro

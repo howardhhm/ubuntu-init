@@ -69,13 +69,22 @@ if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
 fi
 
 ## get fast sources shellscript
-if [ ! -f /usr/local/bin/getfastsources ]; then
+if [ ! -f /usr/local/bin/get_fast_sources ]; then
     wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/get_fast_sources.sh" -P ~/debian-init-tmp
     chmod a+rx ~/debian-init-tmp/get_fast_sources.sh
-    mv ~/debian-init-tmp/get_fast_sources.sh /usr/local/bin/getfastsources
+    mv ~/debian-init-tmp/get_fast_sources.sh /usr/local/bin/get_fast_sources
 fi
-chown root:root /usr/local/bin/getfastsources
+chown root:root /usr/local/bin/get_fast_sources
+
+## update all pip packages
+if [ ! -f /usr/local/bin/pip_update_all ]; then
+    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+"master/pip_update_all" -P ~/debian-init-tmp
+    chmod a+rx ~/debian-init-tmp/pip_update_all
+    mv ~/debian-init-tmp/pip_update_all /usr/local/bin/pip_update_all
+fi
+chown root:root /usr/local/bin/pip_update_all
 
 ## update
 apt-get update
@@ -110,7 +119,7 @@ chown root:root -R /usr/share/fonts
 ##                      Common Software
 ################################################################################
 apt-get install -y ack-grep autojump cmatrix dos2unix \
-    exuberant-ctags htop net-tools ntpdate openssh-server \
+    exuberant-ctags geogebra htop net-tools ntpdate openssh-server \
     subversion tmux unzip vim wget
 apt-get install -y screenfetch
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
@@ -368,12 +377,12 @@ ln -s /usr/local/bin/pip2 /usr/local/bin/pip
 cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 ## packages for machine learning
-pip2 install ipython matplotlib numpy scipy setuptools sklearn\
-    $HHM_PIP_TRUST_HOST
+pip2 install ipython matplotlib numpy scipy setuptools sklearn requests pylint\
+    flake8 pandas $HHM_PIP_TRUST_HOST
 ## packages for powerline
 ## caution: svnstatus needs reboot
 pip2 install powerline-status powerline-gitstatus powerline-svnstatus psutil \
-    $HHM_PIP_TRUST_HOST
+    flake8 $HHM_PIP_TRUST_HOST
 
 ## Install MySQL-python
 # apt-get install -y libmysqlclient-dev

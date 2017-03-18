@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+ @Author:      howardhhm
+ @Email:       howardhhm@126.com
+ @DateTime:    2017-03-18 09:51:16
+ @Description: Description
+'''
+
+import pip
+from subprocess import call
+
+call("pip list --outdated --format=columns", shell=True)
+
+for dist in pip.get_installed_distributions():
+    call("pip install --upgrade " + dist.project_name, shell=True)
