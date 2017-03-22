@@ -119,15 +119,18 @@ chown root:root -R /usr/share/fonts
 ##                      Common Software
 ################################################################################
 apt-get install -y ack-grep autojump cmatrix dos2unix \
-    exuberant-ctags geogebra htop net-tools ntpdate openssh-server \
+    exuberant-ctags htop net-tools ntpdate openssh-server \
     subversion tmux unzip vim wget
 apt-get install -y screenfetch
+
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
 fi
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y filezilla meld okular pandoc speedcrunch terminator
     apt-get install -y classicmenu-indicator dia gparted variety vlc
+    apt-get install -y mypaint
+    apt-get install -y geogebra
 fi
 ntpdate time.nist.gov
 apt-get install -y git
@@ -272,6 +275,14 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         apt-get install -fy
     fi
 
+    ## a screen shot app developed by deepin
+    if [ ! -f /usr/bin/deepin-scrot ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"deepin-scrot_2.0-0deepin_all.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/deepin-scrot_2.0-0deepin_all.deb
+        apt-get install -fy
+    fi
+
     ## delete old source lists
     cd /etc/apt/sources.list.d
     # rm -rvf $(ls | grep -E "(exfat|codeblocks"\
@@ -378,7 +389,7 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 ## packages for machine learning
 pip2 install ipython matplotlib numpy scipy setuptools sklearn requests pylint\
-    flake8 pandas $HHM_PIP_TRUST_HOST
+    flake8 pandas spyder supervisor $HHM_PIP_TRUST_HOST
 ## packages for powerline
 ## caution: svnstatus needs reboot
 pip2 install powerline-status powerline-gitstatus powerline-svnstatus psutil \

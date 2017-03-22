@@ -1,3 +1,4 @@
+
 ## ##############################################################
 ## - DateTime:2017-01-06 16:53:16
 ## ##############################################################
@@ -46,6 +47,7 @@ export PIPDO='--trusted-host=mirrors.aliyun.com'
 ## ==================================================================
 alias rm='rm -irv'
 alias rmr='rm -rvf'
+alias rmcmake='rm -rvf CMakeCache.txt CMakeFiles cmake_install.cmake Makefile'
 alias mv='mv -iv'
 alias lm='ls -al'
 alias ll='ls -alF'
@@ -98,6 +100,8 @@ if [ "$HHM_LOCAL" = "1" ]; then
     alias sad='svn add'
     alias sta='svn status'
     alias sd='svn diff'
+    alias sls='svn propget svn:ignore'
+    alias sig='svn propedit svn:ignore .'
 fi
 
 ## ==================================================================
@@ -119,7 +123,7 @@ fi
 ## ---------   Linux (Not for Mac)
 ## ==================================================================
 if [ "$HHM_LINUX" = "1" ]; then
-    alias cp='cp -iar'
+    alias cp='cp -iarv'
 
     ### caution 'p4p1'
     ### caution: ip got below is divided by '.'
@@ -155,7 +159,7 @@ fi
 ## ---------   Only for Mac
 ## ==================================================================
 if [ "$HHM_MAC_INIT" = "1" ]; then
-    alias cp='cp -iaR'
+    alias cp='cp -iaRv'
     alias st="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
     alias svn="/usr/local/bin/svn"
 fi
