@@ -55,8 +55,8 @@ alias lf='lm --full-time'
 alias h='history'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
-alias tex="tar zxvf"
-alias tec="tar zcvf"
+alias tex="tar -zxvf"
+alias tec="tar -zcvf"
 alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
@@ -78,7 +78,7 @@ alias tml='tmux ls'
 alias psa='ps aux'
 code()
 {
-    LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-10}
+    LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}
     echo
 }
 

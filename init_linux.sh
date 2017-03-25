@@ -118,7 +118,7 @@ chown root:root -R /usr/share/fonts
 ################################################################################
 ##                      Common Software
 ################################################################################
-apt-get install -y ack-grep autojump cmatrix dos2unix \
+apt-get install -y ack-grep autojump autossh cmatrix dos2unix \
     exuberant-ctags htop net-tools ntpdate openssh-server \
     subversion tmux unzip vim wget
 apt-get install -y screenfetch
@@ -379,7 +379,8 @@ pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
 
 ## jupyter
 if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
-    pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
+    # pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
+    pip2 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
 
 ## soft link pip2
