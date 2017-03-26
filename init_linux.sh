@@ -382,6 +382,10 @@ if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
     # pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
     pip2 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
+## jupyter
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+    pip2 install spyder flake8 $HHM_PIP_TRUST_HOST
+fi
 
 ## soft link pip2
 rm -f /usr/local/bin/pip
@@ -390,11 +394,11 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 ## packages for machine learning
 pip2 install ipython matplotlib numpy scipy setuptools sklearn requests pylint\
-    flake8 pandas spyder supervisor $HHM_PIP_TRUST_HOST
+    pandas supervisor $HHM_PIP_TRUST_HOST
 ## packages for powerline
 ## caution: svnstatus needs reboot
 pip2 install powerline-status powerline-gitstatus powerline-svnstatus psutil \
-    flake8 $HHM_PIP_TRUST_HOST
+    $HHM_PIP_TRUST_HOST
 
 ## Install MySQL-python
 # apt-get install -y libmysqlclient-dev
