@@ -122,6 +122,7 @@ apt-get install -y ack-grep autojump autossh cmatrix dos2unix \
     exuberant-ctags htop net-tools ntpdate openssh-server \
     subversion tmux unzip vim wget
 apt-get install -y screenfetch
+apt-get install -y privoxy
 
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
@@ -440,18 +441,9 @@ chown $username:$username -R ~/debian-init-tmp
 ################################################################################
 ##                      tmux
 ################################################################################
-## powerline for tmux
-grep 'powerline' ~/.tmux.conf
-if [ $? -ne 0 ]; then
-    ## for ubuntu
-    echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
-"tmux/powerline.conf" >> ~/.tmux.conf
-    ## for mac
-    # echo "source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
-#"tmux/powerline.conf" >> ~/.tmux.conf
-    ## enable ctrl+left/right in tmux
-    echo "set-window-option -g xterm-keys on" >> ~/.tmux.conf
-fi
+## configuration for tmux
+wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+"master/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
 # tmuxinator
 gpg --keyserver hkp://keys.gnupg.net --recv-keys \
@@ -501,8 +493,7 @@ if [ $? -ne 0 ]; then
     echo "export TERM=xterm-256color" >> ~/.zshrc
     ## tmuxinator
     echo "export EDITOR='vim'" >> ~/.zshrc
-    echo "source $(dirname $(which tmuxinator))/../gems/tmuxinator-0.9.0/"\
-"completion/tmuxinator.zsh" >> ~/.zshrc
+    echo "source $HOME/.tmuxinator/tmuxinator.zsh" >> ~/.zshrc
 fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
