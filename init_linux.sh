@@ -137,6 +137,11 @@ ntpdate time.nist.gov
 apt-get install -y git
 apt-get install -y curl
 apt-get install -y zsh
+## nodejs
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install nodejs
+# npm config set registry http://registry.npm.taobao.org
+
 ## To be solved
 # apt-get install -y chromium
 
@@ -487,7 +492,7 @@ if [ $? -ne 0 ]; then
     sed -i '2 a source ~/.hhmrc' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
-    sed -i 's|^plugins=(git)|plugins=(git extract wd)|g' ~/.zshrc
+    sed -i 's|^plugins=(git)|plugins=(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
     echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
