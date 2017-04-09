@@ -138,6 +138,7 @@ apt-get install -y git
 apt-get install -y curl
 apt-get install -y zsh
 apt-get install -y convmv
+apt-get install -y unrar
 apt-get install -y speedtest-cli
 ## nodejs
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
