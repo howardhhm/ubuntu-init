@@ -7,10 +7,26 @@
  @Description: Description
 '''
 
-import pip
+# import pip
+import os
 from subprocess import call
 
-call("pip list --outdated --format=columns", shell=True)
+# call("pip list --outdated --format=columns", shell=True)
 
-for dist in pip.get_installed_distributions():
-    call("pip install --upgrade " + dist.project_name, shell=True)
+cmdline = 'pip list --outdated --format=columns'
+packages = os.popen(cmdline).readlines()
+outdated = []
+for package in packages:
+    print package.strip('\n')
+    outdated.append(package.split(' ')[0])
+
+outdated = outdated[2:]
+if len(outdated) > 0:
+    print
+    # print outdated
+    for dist in outdated:
+        call("pip install --upgrade " + dist, shell=True)
+    # for dist in pip.get_installed_distributions():
+    #     call("pip install --upgrade " + dist.project_name, shell=True)
+else:
+    print "All packages are lastest!"

@@ -456,9 +456,17 @@ chown $username:$username ~/.tmux.conf
 gpg --keyserver hkp://keys.gnupg.net --recv-keys \
     409B6B1796C275462A1703113804BB82D39DC0E3
 curl -sSL https://get.rvm.io | bash -s stable
+source ~/.bash_profile
+source ~/.bashrc
 rvm install 2.4
 gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
 gem install tmuxinator
+mkdir ~/.tmuxinator
+source ~/.bash_profile
+source ~/.bashrc
+ln -s "$(dirname $(which tmuxinator))/../gems/tmuxinator-0.9.0/completion/"\
+"tmuxinator.zsh" ~/.tmuxinator
+chown $username:$username -R ~/.tmuxinator
 ################################################################################
 ##                      Zsh
 ################################################################################
