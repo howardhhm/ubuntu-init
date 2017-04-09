@@ -137,10 +137,12 @@ ntpdate time.nist.gov
 apt-get install -y git
 apt-get install -y curl
 apt-get install -y zsh
+apt-get install -y convmv
+apt-get install -y speedtest-cli
 ## nodejs
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-sudo apt-get install nodejs
-# npm config set registry http://registry.npm.taobao.org
+apt-get install nodejs
+npm config set registry http://registry.npm.taobao.org
 
 ## To be solved
 # apt-get install -y chromium
@@ -224,14 +226,14 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         apt-get install -fy
     fi
 fi
-## speedtest
-if [ ! -f /usr/local/bin/speedtest ]; then
-    wget --no-cache --no-check-certificate "https://raw.githubusercontent.com/"\
-"sivel/speedtest-cli/master/speedtest.py"
-    chmod a+rx speedtest.py
-    mv speedtest.py /usr/local/bin/speedtest
-fi
-chown root:root /usr/local/bin/speedtest
+# ## speedtest
+# if [ ! -f /usr/local/bin/speedtest ]; then
+#     wget --no-cache --no-check-certificate "https://raw.githubusercontent.com/"\
+# "sivel/speedtest-cli/master/speedtest.py"
+#     chmod a+rx speedtest.py
+#     mv speedtest.py /usr/local/bin/speedtest
+# fi
+# chown root:root /usr/local/bin/speedtest
 
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## sublime text 3
@@ -400,7 +402,7 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 ## packages for machine learning
 pip2 install ipython matplotlib numpy scipy setuptools sklearn requests pylint\
-    pandas supervisor $HHM_PIP_TRUST_HOST
+    pandas supervisor xgboost gensim nltk beautifulsoup4 $HHM_PIP_TRUST_HOST
 ## packages for powerline
 ## caution: svnstatus needs reboot
 pip2 install powerline-status powerline-gitstatus powerline-svnstatus psutil \
