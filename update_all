@@ -1,0 +1,8 @@
+#!/bin/bash
+# @Author:       howardhhm
+# @Email:        howardhhm@126.com
+# @DateTime:     2017-04-10 09:57:23
+# @Description:  Description
+
+apt-get upgrade -y
+update_pip_all
