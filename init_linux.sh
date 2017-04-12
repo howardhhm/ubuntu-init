@@ -14,6 +14,8 @@ mkdir ~/debian-init-tmp
 ### the macros
 ## HHM_UBUNTU_INIT_CLIENT
 ## HHM_UBUNTU_INIT_SERVER
+## HHM_HOMEBREW
+## HHM_VMWARE
 ## HHM_DEBIAN_INIT_SERVER
 ## HHM_SKIP_SOURCES_SELECTION
 ## HHM_INTERNATIONAL
@@ -118,8 +120,11 @@ chown root:root -R /usr/share/fonts
 ################################################################################
 ##                      Common Software
 ################################################################################
-apt-get install -y ack-grep autojump autossh cmatrix dos2unix \
-    exuberant-ctags htop net-tools ntpdate openssh-server \
+if [ "$HHM_VMWARE" = "1" ]; then
+    apt-get install -y open-vm-tools-desktop
+fi
+apt-get install -y ack-grep autojump autossh cmatrix colordiff dos2unix \
+    exuberant-ctags gawk htop net-tools ntpdate openssh-server \
     subversion tmux unzip vim wget
 apt-get install -y screenfetch
 apt-get install -y privoxy
@@ -128,25 +133,21 @@ if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
 fi
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
-    apt-get install -y filezilla meld okular pandoc speedcrunch terminator
-    apt-get install -y classicmenu-indicator dia gparted variety vlc
-    apt-get install -y mypaint
-    apt-get install -y geogebra
+    apt-get install -y dia filezilla geogebra gparted meld mypaint \
+        okular pandoc speedcrunch terminator variety vlc
+    apt-get install -fy
+    apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
+        gnome-mines gnome-orca gnome-sudoku landscape-client-ui-install \
+        libreoffice-common onboard rhythmbox simple-scan thunderbird totem \
+        transmission-common unity-webapps-common webbrowser-app
 fi
 ntpdate time.nist.gov
-apt-get install -y git
-apt-get install -y curl
-apt-get install -y zsh
-apt-get install -y convmv
-apt-get install -y unrar
-apt-get install -y speedtest-cli
-## nodejs
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-apt-get install nodejs
-npm config set registry http://registry.npm.taobao.org
-
-## To be solved
-# apt-get install -y chromium
+apt-get install -y git curl zsh convmv unrar ruby speedtest-cli
+apt-get install -fy
+# ## nodejs
+# curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+# apt-get install nodejs
+# npm config set registry http://registry.npm.taobao.org
 
 ## The commands below should be executed
 ## if the PC was installed windows and ubuntu
@@ -155,14 +156,13 @@ npm config set registry http://registry.npm.taobao.org
 # apt-get install -y ntpdate
 # ntpdate cn.pool.ntp.org
 
-## haroopad (Markdown editor)
-if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
-    if [ ! -f /usr/bin/haroopad ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"haroopad-v0.13.1-x64.deb" -P ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
-        apt-get install -fy
-    fi
+## syncthing
+if [ ! -f /usr/bin/syncthing ]; then
+    curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
+    echo "deb https://apt.syncthing.net/ syncthing stable" | \
+        tee /etc/apt/sources.list.d/syncthing.list
+    apt-get update
+    apt-get install -y syncthing
 fi
 
 ## java
@@ -188,23 +188,29 @@ if [ $? -ne 0 ]; then
     sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
 fi
 
-## lantern
-if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
-    if [ ! -f /usr/bin/lantern ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"lantern-installer-beta-64-bit.deb" -P ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/lantern-installer-beta-64-bit.deb
-        apt-get install -fy
-    fi
-    ## remove the letter "#" in line "#/usr/bin/lantern",
-    ## if you want start lantern automatically when you login
-    grep 'lantern' /etc/rc.local
-    if [ $? -ne 0 ]; then
-        sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
-    fi
-fi
+# ## lantern
+# if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+#     if [ ! -f /usr/bin/lantern ]; then
+#         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+# "lantern-installer-beta-64-bit.deb" -P ~/debian-init-tmp
+#         dpkg -i ~/debian-init-tmp/lantern-installer-beta-64-bit.deb
+#         apt-get install -fy
+#     fi
+#     ## remove the letter "#" in line "#/usr/bin/lantern",
+#     ## if you want start lantern automatically when you login
+#     grep 'lantern' /etc/rc.local
+#     if [ $? -ne 0 ]; then
+#         sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
+#     fi
+# fi
 
-if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+    ## disable guest
+    grep 'allow-guest' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+    if [ $? -ne 0 ]; then
+        sed -i '$ a allow-guest=false' \
+            /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+    fi
     ## numlock
     ## method 1:
     apt-get -y install numlockx
@@ -216,27 +222,22 @@ if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     ## method 2:
     # sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ]'\
     #' \&\& numlockx on\n\nexit 0|' /etc/rc.local
-fi
 
-## sogou
-if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+     ## haroopad (Markdown editor)
+    if [ ! -f /usr/bin/haroopad ]; then
+        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
+"haroopad-v0.13.1-x64.deb" -P ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
+        apt-get install -fy
+    fi
+
+    ## sogou
     if [ ! -f /usr/bin/sogou-diag ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "sogoupinyin_2.1.0.0082_amd64.deb" -P ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
         apt-get install -fy
     fi
-fi
-# ## speedtest
-# if [ ! -f /usr/local/bin/speedtest ]; then
-#     wget --no-cache --no-check-certificate "https://raw.githubusercontent.com/"\
-# "sivel/speedtest-cli/master/speedtest.py"
-#     chmod a+rx speedtest.py
-#     mv speedtest.py /usr/local/bin/speedtest
-# fi
-# chown root:root /usr/local/bin/speedtest
-
-if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## sublime text 3
     if [ ! -f /usr/bin/subl ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
@@ -244,6 +245,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         dpkg -i ~/debian-init-tmp/sublime-text_build-3126_amd64.deb
         apt-get install -fy
     fi
+    sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
+"ubuntu-init/master/repair_st_input.sh -O -)"
     ## teamviewer
     if [ ! -f /usr/bin/teamviewer ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
@@ -306,6 +309,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # mount -t exfat /dev/sdX /mnt
     # add-apt-repository -y ppa:relan/exfat
 
+
+    add-apt-repository ppa:nilarimogard/webupd8
     ## codeblocks
     ## wx-config --version
     ## 3.0.2
@@ -341,16 +346,13 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
     #   codeblocks-contrib
     # apt-get install -y exfat-utils
-    # apt-get install -y shutter
-    # apt-get install -y shadowsocks-qt5
     # apt-get install -y vokoscreen
-    # apt-get install -y wiznote
 
     # apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
     #   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
     #   vokoscreen wiznote
-    apt-get install -y caffeine codeblocks libwxgtk3.0-dev wx-common \
-        codeblocks-contrib shutter shadowsocks-qt5 wiznote
+    apt-get install -y albert caffeine codeblocks shutter \
+        shadowsocks-qt5 wiznote
 
     ## shutdown annoying error messages when login
     sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
@@ -372,7 +374,7 @@ if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
     python ~/debian-init-tmp/get-pip.py
     python3 ~/debian-init-tmp/get-pip.py
 fi
-env-update && source /etc/profile
+# env-update && source /etc/profile
 
 ## pip source
 if [ "$HHM_INTERNATIONAL" = "" ]; then
@@ -392,7 +394,7 @@ if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
     pip2 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
 ## jupyter
-if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -a "$HHM_HOMEBREW" = "" ]; then
     pip2 install spyder flake8 $HHM_PIP_TRUST_HOST
 fi
 
@@ -401,17 +403,20 @@ rm -f /usr/local/bin/pip
 ln -s /usr/local/bin/pip2 /usr/local/bin/pip
 cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
-## packages for machine learning
-pip2 install ipython matplotlib numpy scipy setuptools sklearn requests pylint\
-    pandas supervisor xgboost gensim nltk beautifulsoup4 $HHM_PIP_TRUST_HOST
-## packages for powerline
-## caution: svnstatus needs reboot
-pip2 install powerline-status powerline-gitstatus powerline-svnstatus psutil \
-    $HHM_PIP_TRUST_HOST
+if [ "$HHM_HOMEBREW" = "" ]; then
+    ## packages for machine learning
+    pip2 install ipython matplotlib numpy scipy setuptools sklearn requests \
+        pylint pandas supervisor xgboost gensim nltk beautifulsoup4 \
+        $HHM_PIP_TRUST_HOST
+    ## packages for powerline
+    ## caution: svnstatus needs reboot
+    pip2 install powerline-status powerline-gitstatus powerline-svnstatus \
+        psutil $HHM_PIP_TRUST_HOST
 
-## Install MySQL-python
-# apt-get install -y libmysqlclient-dev
-# pip2 install MySQL-python $PIPDO
+    ## Install MySQL-python
+    # apt-get install -y libmysqlclient-dev
+    # pip2 install MySQL-python $PIPDO
+fi
 
 ## python commandline auto-completion
 if [ ! -f ~/.pythonstartup.py ]; then
@@ -453,21 +458,6 @@ chown $username:$username -R ~/debian-init-tmp
 wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
-# tmuxinator
-gpg --keyserver hkp://keys.gnupg.net --recv-keys \
-    409B6B1796C275462A1703113804BB82D39DC0E3
-curl -sSL https://get.rvm.io | bash -s stable
-source ~/.bash_profile
-source ~/.bashrc
-rvm install 2.4
-gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
-gem install tmuxinator
-mkdir ~/.tmuxinator
-source ~/.bash_profile
-source ~/.bashrc
-ln -s "$(dirname $(which tmuxinator))/../gems/tmuxinator-0.9.0/completion/"\
-"tmuxinator.zsh" ~/.tmuxinator
-chown $username:$username -R ~/.tmuxinator
 ################################################################################
 ##                      Zsh
 ################################################################################
@@ -486,14 +476,14 @@ if [ $? -ne 0 ]; then
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     ## add env into ~/.hhmrc
     if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
-        echo 'export HHM_UBUNTU_INIT_CLIENT="1"' >> ~/.hhmrc
+        sed -i '2 a export HHM_UBUNTU_INIT_CLIENT="1"' ~/.zshrc
     fi
     if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
-        echo 'export HHM_UBUNTU_INIT_SERVER="1"' >> ~/.hhmrc
+        sed -i '2 a export HHM_UBUNTU_INIT_SERVER="1"' ~/.zshrc
     fi
     ## source ~/.hhmrc and /etc/sharerc
-    sed -i '2 a source ~/.hhmrc' ~/.zshrc
     sed -i '3 a source /etc/sharerc' ~/.zshrc
+    sed -i '4 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
     sed -i 's|^plugins=(git)|plugins=(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
     ### [AT THE END OF THE FILE]
@@ -502,28 +492,33 @@ if [ $? -ne 0 ]; then
     ## For python pressing Ctrl-D to exit and prevent
     ## from closing the terminator
     ## zsh autojump
-    echo "set -o ignoreeof\nsource /usr/share/autojump/autojump.zsh" >> ~/.zshrc
+    echo "set -o ignoreeof" >> ~/.zshrc
     ## ipython auto-completion
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
     ## tmux color problem
     echo "export TERM=xterm-256color" >> ~/.zshrc
     ## tmuxinator
     echo "export EDITOR='vim'" >> ~/.zshrc
-    echo "source $HOME/.tmuxinator/tmuxinator.zsh" >> ~/.zshrc
+    echo 'source $HOME/.tmuxinator/tmuxinator.zsh' >> ~/.zshrc
+    if [ "$HHM_HOMEBREW" = "" ]; then
+        echo 'source /usr/share/autojump/autojump.zsh' >> ~/.zshrc
+    fi
 fi
 ## powerline for zsh
 grep 'powerline' ~/.zshrc
 if [ $? -ne 0 ]; then
     echo "powerline-daemon -q" >> ~/.zshrc
-    ## for ubuntu
-    echo "source /usr/local/lib/python2.7/dist-packages/powerline/bindings/"\
-"zsh/powerline.zsh" >> ~/.zshrc
-    ## for CentOS
-    # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"\
+    if [ "$HHM_HOMEBREW" = "" ]; then
+        ## for ubuntu
+        echo "source /usr/local/lib/python2.7/dist-packages/powerline/"\
+"bindings/zsh/powerline.zsh" >> ~/.zshrc
+        ## for CentOS
+        # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"\
 # "zsh/powerline.zsh" >> ~/.zshrc
-    ## for mac
-    # echo "#source /usr/local/lib/python2.7/site-packages/powerline/bindings/"\
-#"zsh/powerline.zsh" >> ~/.zshrc
+        ## for mac
+        # echo "#source /usr/local/lib/python2.7/site-packages/powerline/"\
+# "bindings/zsh/powerline.zsh" >> ~/.zshrc
+    fi
 fi
 chown $username:$username ~/.zshrc
 chown $username:$username ~/.hhmrc
@@ -545,3 +540,15 @@ if [ "$HHM_FAST_INIT" = "" ]; then
     apt-get -y upgrade
     apt-get -y autoremove
 fi
+
+################################################################################
+##                      Others
+################################################################################
+export LANG=en_US
+su $username -c "export LANG=en_US;xdg-user-dirs-gtk-update"
+cp "/usr/share/applications/{sublime_text.desktop,variety.desktop,"\
+"shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
+chown $username:$username ~/.config/autostart
+su $username -c "ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa"
+su $username -c "touch ~/.ssh/authorized_keys && chmod 700 ~/.ssh "\
+"&& chmod 600 ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
