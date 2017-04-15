@@ -10,10 +10,17 @@
 # import pip
 import os
 from subprocess import call
+import sys
 
 # call("pip list --outdated --format=columns", shell=True)
 
-cmdline = 'pip list --outdated --format=columns'
+if (len(sys.argv) > 1 and sys.argv[1] == "--user"):
+    cmdline = 'pip list --outdated --format=columns --user'
+    updatestr = "pip install --upgrade --user "
+else:
+    cmdline = 'pip list --outdated --format=columns'
+    updatestr = "pip install --upgrade "
+
 packages = os.popen(cmdline).readlines()
 outdated = []
 for package in packages:
@@ -25,8 +32,8 @@ if len(outdated) > 0:
     print
     # print outdated
     for dist in outdated:
-        call("pip install --upgrade " + dist, shell=True)
+        call(updatestr + dist, shell=True)
     # for dist in pip.get_installed_distributions():
-    #     call("pip install --upgrade " + dist.project_name, shell=True)
+    #     call(updatestr + dist.project_name, shell=True)
 else:
     print "All packages are lastest!"

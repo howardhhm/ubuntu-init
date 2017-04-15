@@ -68,6 +68,7 @@ if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
     fi
     ## replacement
     sed -i "s|$OLDSOURCE|$NEWSOURCE|g" /etc/apt/sources.list
+    sed -i "s|deb http://security|#deb http://security|g" ~/sources.list
 fi
 
 ## get fast sources shellscript
@@ -88,6 +89,12 @@ if [ ! -f /usr/local/bin/update_pip_all ]; then
 fi
 chown root:root /usr/local/bin/update_pip_all
 
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+    apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
+        gnome-mines gnome-orca gnome-sudoku landscape-client-ui-install \
+        libreoffice-common onboard rhythmbox simple-scan thunderbird totem \
+        transmission-common unity-webapps-common webbrowser-app
+fi
 ## update
 apt-get update
 if [ "$HHM_FAST_INIT" = "" ]; then
@@ -120,12 +127,12 @@ chown root:root -R /usr/share/fonts
 ################################################################################
 ##                      Common Software
 ################################################################################
-if [ "$HHM_VMWARE" = "1" ]; then
-    apt-get install -y open-vm-tools-desktop
-fi
-apt-get install -y ack-grep autojump autossh cmatrix colordiff dos2unix \
-    exuberant-ctags gawk htop net-tools ntpdate openssh-server \
-    subversion tmux unzip vim wget
+# if [ "$HHM_VMWARE" = "1" ]; then
+#     apt-get install -y open-vm-tools-desktop
+# fi
+apt-get install -y ack-grep astyle autoconf autojump autossh cmake cmatrix \
+    colordiff dos2unix exuberant-ctags gawk htop libtool net-tools ntpdate \
+    openssh-server smartmontools subversion tmux tree unzip vim wget
 apt-get install -y screenfetch
 apt-get install -y privoxy
 
@@ -133,13 +140,14 @@ if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
 fi
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
-    apt-get install -y dia filezilla geogebra gparted meld mypaint \
+    apt-get install -y dia filezilla geogebra gparted gpick meld mypaint \
         okular pandoc speedcrunch terminator variety vlc
     apt-get install -fy
-    apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
-        gnome-mines gnome-orca gnome-sudoku landscape-client-ui-install \
-        libreoffice-common onboard rhythmbox simple-scan thunderbird totem \
-        transmission-common unity-webapps-common webbrowser-app
+    apt-get install -y build-essential pkg-config
+    apt-get install -y libavcodec-dev libavformat-dev libdc1394-22-dev \
+        libevent-dev libgtk2.0-dev libjasper-dev libjpeg-dev libpng-dev \
+        libssl-dev libswscale-dev libtbb-dev libtbb2 libtiff-dev libxml2-dev \
+        libxslt-dev
 fi
 ntpdate time.nist.gov
 apt-get install -y git curl zsh convmv unrar ruby speedtest-cli
@@ -174,7 +182,7 @@ grep 'java' /etc/profile
 if [ $? -ne 0 ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "jdk-8u112-linux-x64.tar.gz" -P ~/debian-init-tmp
-    apt-get autoremove -y openjdk-6-jre openjdk-7-jre
+    # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
     mkdir -p /usr/local/java/
     tar -zxvf ~/debian-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
         /usr/local/java/
@@ -245,8 +253,10 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         dpkg -i ~/debian-init-tmp/sublime-text_build-3126_amd64.deb
         apt-get install -fy
     fi
-    sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
-"ubuntu-init/master/repair_st_input.sh -O -)"
+    wget "https://raw.githubusercontent.com/howardhhm/"\
+"ubuntu-init/master/repair_st_input.sh" -P ~/debian-init-tmp
+    chmod a+x ~/debian-init-tmp/repair_st_input.sh
+    sh ~/debian-init-tmp/repair_st_input.sh
     ## teamviewer
     if [ ! -f /usr/bin/teamviewer ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
@@ -310,7 +320,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # add-apt-repository -y ppa:relan/exfat
 
 
-    add-apt-repository ppa:nilarimogard/webupd8
+    add-apt-repository -y ppa:nilarimogard/webupd8
     ## codeblocks
     ## wx-config --version
     ## 3.0.2
@@ -351,8 +361,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
     #   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
     #   vokoscreen wiznote
-    apt-get install -y albert caffeine codeblocks shutter \
-        shadowsocks-qt5 wiznote
+    # apt-get install -y albert caffeine codeblocks shutter \
+    #     shadowsocks-qt5 wiznote
 
     ## shutdown annoying error messages when login
     sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
@@ -361,10 +371,9 @@ fi
 ################################################################################
 ##                      Python & Pip
 ################################################################################
-apt-get install -y build-essential libevent-dev libjpeg-dev libssl-dev \
-    libxml2-dev libxslt-dev
-apt-get install -y python-dev python-pip python2.7 python2.7-dev
-apt-get install -y python3-pip python3.5 python3.5-dev python-tk
+apt-get install -y python-dev python-pip python2.7 python2.7-dev python-numpy \
+    python-tk
+apt-get install -y python3-pip python3.5 python3.5-dev
 ## if the command above does not work
 ## follow these commands
 if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
@@ -395,7 +404,7 @@ if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
 fi
 ## jupyter
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -a "$HHM_HOMEBREW" = "" ]; then
-    pip2 install spyder flake8 $HHM_PIP_TRUST_HOST
+    pip2 install --user spyder flake8 $HHM_PIP_TRUST_HOST
 fi
 
 ## soft link pip2
@@ -405,12 +414,12 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
-    pip2 install ipython matplotlib numpy scipy setuptools sklearn requests \
+    pip2 install --user ipython matplotlib numpy scipy setuptools sklearn requests \
         pylint pandas supervisor xgboost gensim nltk beautifulsoup4 \
         $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
-    pip2 install powerline-status powerline-gitstatus powerline-svnstatus \
+    pip2 install --user powerline-status powerline-gitstatus powerline-svnstatus \
         psutil $HHM_PIP_TRUST_HOST
 
     ## Install MySQL-python
@@ -488,7 +497,9 @@ if [ $? -ne 0 ]; then
     sed -i 's|^plugins=(git)|plugins=(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
-    echo "stty start undef\nstty stop undef\nsetopt noflowcontrol\n" >> ~/.zshrc
+    echo "stty start undef" >> ~/.zshrc
+    echo "stty stop undef" >> ~/.zshrc
+    echo "setopt noflowcontrol" >> ~/.zshrc
     ## For python pressing Ctrl-D to exit and prevent
     ## from closing the terminator
     ## zsh autojump
@@ -510,7 +521,7 @@ if [ $? -ne 0 ]; then
     echo "powerline-daemon -q" >> ~/.zshrc
     if [ "$HHM_HOMEBREW" = "" ]; then
         ## for ubuntu
-        echo "source /usr/local/lib/python2.7/dist-packages/powerline/"\
+        echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"\
 "bindings/zsh/powerline.zsh" >> ~/.zshrc
         ## for CentOS
         # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"\
@@ -544,11 +555,20 @@ fi
 ################################################################################
 ##                      Others
 ################################################################################
-export LANG=en_US
-su $username -c "export LANG=en_US;xdg-user-dirs-gtk-update"
-cp "/usr/share/applications/{sublime_text.desktop,variety.desktop,"\
-"shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
-chown $username:$username ~/.config/autostart
 su $username -c "ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa"
 su $username -c "touch ~/.ssh/authorized_keys && chmod 700 ~/.ssh "\
 "&& chmod 600 ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
+
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+    export LANG=en_US
+    mkdir ~/.config/autostart
+    su $username -c "export LANG=en_US;xdg-user-dirs-gtk-update"
+    # cp "/usr/share/applications/{sublime_text.desktop,variety.desktop,"\
+# "shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
+# chown $username:$username ~/.config/autostart
+
+    echo "*********Please install the following software by yourself*********"
+    echo "sudo apt-get install -y albert caffeine codeblocks shutter "\
+    "shadowsocks-qt5 wiznote"
+    echo "*********Please install the following software by yourself*********"
+fi
