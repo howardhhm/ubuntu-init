@@ -46,9 +46,9 @@ dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
 ################################################################################
 if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
     ## get old sources
-    export OLDSOURCE=$(cat /etc/apt/sources.list | egrep  "(deb|# deb)" \
-    | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c | sort -rn \
-    | sed  's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
+    export OLDSOURCE=$(cat /etc/apt/sources.list | egrep "(deb|# deb)" \
+    | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c \
+    | sort -rn | sed 's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
     ## not reliable
     # export NEWSOURCE=$(netselect -s1 `wget --no-cache -q -O- \
     # https://launchpad.net/ubuntu/+archivemirrors \
@@ -178,7 +178,7 @@ fi
 # "Cookie: oraclelicense=accept-securebackup-cookie" \
 # "http://download.oracle.com/otn-pub/java/jdk/"\
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
-grep 'java' /etc/profile
+grep -q 'java' /etc/profile
 if [ $? -ne 0 ]; then
     wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "jdk-8u112-linux-x64.tar.gz" -P ~/debian-init-tmp
@@ -206,7 +206,7 @@ fi
 #     fi
 #     ## remove the letter "#" in line "#/usr/bin/lantern",
 #     ## if you want start lantern automatically when you login
-#     grep 'lantern' /etc/rc.local
+#     grep -q 'lantern' /etc/rc.local
 #     if [ $? -ne 0 ]; then
 #         sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
 #     fi
@@ -214,7 +214,8 @@ fi
 
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## disable guest
-    grep 'allow-guest' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+    grep -q 'allow-guest' \
+        /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     if [ $? -ne 0 ]; then
         sed -i '$ a allow-guest=false' \
             /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
@@ -222,7 +223,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## numlock
     ## method 1:
     apt-get -y install numlockx
-    grep 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+    grep -q 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     if [ $? -ne 0 ]; then
         sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
             /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
@@ -414,13 +415,13 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
-    pip2 install --user ipython matplotlib numpy scipy setuptools sklearn requests \
-        pylint pandas supervisor xgboost gensim nltk beautifulsoup4 \
+    pip2 install --user ipython matplotlib numpy scipy setuptools sklearn \
+        requests pylint pandas supervisor xgboost gensim nltk beautifulsoup4 \
         $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
-    pip2 install --user powerline-status powerline-gitstatus powerline-svnstatus \
-        psutil $HHM_PIP_TRUST_HOST
+    pip2 install --user powerline-status powerline-gitstatus \
+        powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
 
     ## Install MySQL-python
     # apt-get install -y libmysqlclient-dev
@@ -479,7 +480,7 @@ sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/install_oh_my_zsh.sh -O -)"
 
 ## add the following code into ~/.zshrc
-grep 'ZSH_THEME="agnoster"' ~/.zshrc
+grep -q 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -ne 0 ]; then
     ## change oh_my_zsh theme
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
@@ -490,11 +491,15 @@ if [ $? -ne 0 ]; then
     if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
         sed -i '2 a export HHM_UBUNTU_INIT_SERVER="1"' ~/.zshrc
     fi
+    if [ "$HHM_INTERNATIONAL" = "1" ]; then
+        sed -i '3 a export HHM_INTERNATIONAL="1"' ~/.zshrc
+    fi
     ## source ~/.hhmrc and /etc/sharerc
-    sed -i '3 a source /etc/sharerc' ~/.zshrc
-    sed -i '4 a source ~/.hhmrc' ~/.zshrc
+    sed -i '4 a source /etc/sharerc' ~/.zshrc
+    sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
-    sed -i 's|^plugins=(git)|plugins=(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
+    sed -i 's|^plugins=(git)|plugins='\
+'(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
     echo "stty start undef" >> ~/.zshrc
@@ -516,7 +521,7 @@ if [ $? -ne 0 ]; then
     fi
 fi
 ## powerline for zsh
-grep 'powerline' ~/.zshrc
+grep -q 'powerline' ~/.zshrc
 if [ $? -ne 0 ]; then
     echo "powerline-daemon -q" >> ~/.zshrc
     if [ "$HHM_HOMEBREW" = "" ]; then
