@@ -503,7 +503,7 @@ if [ $? -ne 0 ]; then
     ## For python pressing Ctrl-D to exit and prevent
     ## from closing the terminator
     ## zsh autojump
-    echo "set -o ignoreeof" >> ~/.zshrc
+    echo "# set -o ignoreeof" >> ~/.zshrc
     ## ipython auto-completion
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
     ## tmux color problem
