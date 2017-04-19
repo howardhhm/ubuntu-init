@@ -8,6 +8,8 @@
 ## ==================================================================
 ## HHM_UBUNTU_INIT_CLIENT
 ## HHM_UBUNTU_INIT_SERVER
+## HHM_CLOUD
+## HHM_INTERNATIONAL
 ## HHM_CENTOS_INIT_SERVER
 ## HHM_ARCHLINUX_INIT_CLIENT
 ## HHM_MAC_INIT
@@ -18,16 +20,27 @@
 
 ## get HHM_SERVER
 if [ "$HHM_UBUNTU_INIT_SERVER" = "1" -o "$HHM_CENTOS_INIT_SERVER" = "1" ]; then
-    HHM_SERVER="1"
+    export HHM_SERVER="1"
 fi
 ## get HHM_LOCAL
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_MAC_INIT" = "1" -o \
     "$HHM_ARCHLINUX_INIT_CLIENT" = "1" ]; then
-    HHM_LOCAL="1"
+    export HHM_LOCAL="1"
 fi
 ## get HHM_LINUX
 if [ "$HHM_MAC_INIT" = "" ]; then
-    HHM_LINUX="1"
+    export HHM_LINUX="1"
+fi
+
+## get HHM_UBUNTU
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
+    export HHM_UBUNTU="1"
+fi
+
+## get HHM_LINUX_INIT_CLIENT
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_ARCHLINUX_INIT_CLIENT" = "1" ]
+then
+    export HHM_LINUX_INIT_CLIENT="1"
 fi
 
 ## ==================================================================
@@ -132,19 +145,19 @@ fi
 if [ "$HHM_LINUX" = "1" ]; then
     alias cp='cp -iarv'
 
-    ### caution 'p4p1'
-    ### caution: ip got below is divided by '.'
-    ## ip0 $(ip addr show p4p1 | grep 'inet ' | sed 's/^.*inet //g' \
-    ## | cut -d ' ' -f1 | sed 's/\/.*$//g')
-    ### caution: mac got below is divided by ':'
-    ## mac $(ip link show p4p1 | grep 'link\/ether' | sed 's/^.*link\/ether //g' \
-    ## | cut -d ' ' -f1)
-    ## list all network cards
-    # ls /sys/class/net
-    # alias ip0="ip addr show enp0s3 | grep 'inet ' | sed 's/^.*inet //g' "\
-    # "| cut -d ' ' -f1 | sed 's/\/.*$//g' | sed 's/\./-/g'"
-    # alias mac0="ip link show enp0s3 | grep 'link\/ether' "\
-    # "| sed 's/^.*link\/ether //g'| cut -d ' ' -f1 | sed 's/:/-/g'"
+### caution 'p4p1'
+### caution: ip got below is divided by '.'
+## ip0 $(ip addr show p4p1 | grep 'inet ' | sed 's/^.*inet //g' \
+## | cut -d ' ' -f1 | sed 's/\/.*$//g')
+### caution: mac got below is divided by ':'
+## mac $(ip link show p4p1 | grep 'link\/ether' | sed 's/^.*link\/ether //g' \
+## | cut -d ' ' -f1)
+## list all network cards
+# ls /sys/class/net
+# alias ip0="ip addr show enp0s3 | grep 'inet ' | sed 's/^.*inet //g' "\
+# "| cut -d ' ' -f1 | sed 's/\/.*$//g' | sed 's/\./-/g'"
+# alias mac0="ip link show enp0s3 | grep 'link\/ether' "\
+# "| sed 's/^.*link\/ether //g'| cut -d ' ' -f1 | sed 's/:/-/g'"
     alias myfs="ls  /lib/modules/$(uname -r)/kernel/fs"
     allip()
     {
