@@ -1,6 +1,5 @@
-
 ## ##############################################################
-## - DateTime:2017-01-06 16:53:16
+## - DateTime:2017-04-23 20:02:51
 ## ##############################################################
 
 ## ==================================================================
@@ -113,15 +112,15 @@ alias gch="git checkout"
 ## ==================================================================
 if [ "$HHM_LOCAL" = "1" ]; then
     ## subversion
-    alias sco='svn commit -m ""'
-    alias sup='svn update'
-    alias srm='svn rm --force'
     alias sad='svn add'
-    alias sta='svn status'
+    alias sco='svn commit -m ""'
     alias sd='svn diff'
-    alias sls='svn propget svn:ignore'
     alias sig='svn propedit svn:ignore .'
-fi
+    alias sls='svn propget svn:ignore'
+    alias smv='svn mv'
+    alias srm='svn rm --force'
+    alias sta='svn status'
+    alias sup='svn update'fi
 
 ## ==================================================================
 ## ---------   Only for Server

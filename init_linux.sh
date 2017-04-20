@@ -155,17 +155,6 @@ fi
 ntpdate time.nist.gov
 apt-get install -y git curl zsh convmv unrar ruby speedtest-cli
 apt-get install -fy
-# ## nodejs
-# curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-# apt-get install nodejs
-# npm config set registry http://registry.npm.taobao.org
-
-## The commands below should be executed
-## if the PC was installed windows and ubuntu
-# timedatectl set-local-rtc 1 --adjust-system-clock
-# timedatectl set-ntp 0
-# apt-get install -y ntpdate
-# ntpdate cn.pool.ntp.org
 
 ## syncthing
 if [ ! -f /usr/bin/syncthing ]; then
@@ -224,25 +213,19 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
             /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     fi
     ## numlock
-    ## method 1:
     apt-get -y install numlockx
     grep -q 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     if [ $? -ne 0 ]; then
         sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
             /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     fi
-    ## method 2:
-    # sed -i 's|^exit 0.*$|# Numlock enable\n[ -x /usr/bin/numlockx ]'\
-    #' \&\& numlockx on\n\nexit 0|' /etc/rc.local
-
-     ## haroopad (Markdown editor)
+    ## haroopad (Markdown editor)
     if [ ! -f /usr/bin/haroopad ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
 "haroopad-v0.13.1-x64.deb" -P ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
         apt-get install -fy
     fi
-
     ## sogou
     if [ ! -f /usr/bin/sogou-diag ]; then
         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
@@ -323,6 +306,11 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # mount -t exfat /dev/sdX /mnt
     # add-apt-repository -y ppa:relan/exfat
 
+    ## Typora
+    ## optional, but recommended
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
+    ## add Typora's repository
+    add-apt-repository 'deb https://typora.io ./linux/'
 
     add-apt-repository -y ppa:nilarimogard/webupd8
     ## codeblocks
@@ -440,7 +428,7 @@ if [ ! -f ~/.pythonstartup.py ]; then
 fi
 chown $username:$username ~/.pythonstartup.py
 ## tldr : man page
-if [ ! -f ~/.pythonstartup.py ]; then
+if [ ! -f /usr/local/bin/m ]; then
     wget --no-cache "https://raw.githubusercontent.com/raylee/tldr/"\
 "master/tldr" -P ~/debian-init-tmp
     mv ~/debian-init-tmp/tldr /usr/local/bin/m
@@ -586,6 +574,20 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
 
     echo "*********Please install the following software by yourself*********"
     echo "sudo apt-get install -y albert caffeine codeblocks shutter "\
-    "shadowsocks-qt5 wiznote"
+    "shadowsocks-qt5 typora wiznote"
     echo "*********Please install the following software by yourself*********"
 fi
+
+
+## nodejs
+# curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+# apt-get install -y nodejs
+# npm config set registry http://registry.npm.taobao.org
+# npm config get registry
+## The commands below should be executed
+## if the PC was installed windows and ubuntu
+# timedatectl set-local-rtc 1 --adjust-system-clock
+# timedatectl set-ntp 0
+# apt-get install -y ntpdate
+# ntpdate cn.pool.ntp.org
+
