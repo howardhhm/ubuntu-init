@@ -131,8 +131,9 @@ chown root:root -R /usr/share/fonts
 #     apt-get install -y open-vm-tools-desktop
 # fi
 apt-get install -y ack-grep astyle autoconf autojump autossh cmake cmatrix \
-    colordiff dos2unix exuberant-ctags gawk htop libtool net-tools ntpdate \
-    openssh-server smartmontools subversion tmux tree unzip vim wget
+    colordiff dos2unix exuberant-ctags gawk htop libtool most nbtscan \
+    net-tools ntpdate openssh-server ranger smartmontools subversion tmux tree \
+    unzip vim wget
 apt-get install -y screenfetch
 apt-get install -y privoxy
 
@@ -140,9 +141,11 @@ if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
 fi
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
-    apt-get install -y dia filezilla geogebra gparted gpick meld mypaint \
-        okular pandoc speedcrunch terminator variety vlc
+    apt-get install -y dia filezilla geogebra gparted gpick krita meld mypaint \
+        okular pandoc speedcrunch terminator thunar variety vlc
     apt-get install -fy
+    ## youtube-dl url-to-video
+    # apt-get install -y youtube-dl
     apt-get install -y build-essential pkg-config
     apt-get install -y libavcodec-dev libavformat-dev libdc1394-22-dev \
         libevent-dev libgtk2.0-dev libjasper-dev libjpeg-dev libpng-dev \
@@ -375,6 +378,7 @@ fi
 apt-get install -y python-dev python-pip python2.7 python2.7-dev python-numpy \
     python-tk
 apt-get install -y python3-pip python3.5 python3.5-dev
+apt-get install -y python-pyqt5 python-pyqt5.qtsvg python-pyqt5.qtwebkit
 ## if the command above does not work
 ## follow these commands
 if [ ! -f /usr/pip -o ! -f /usr/pip3 ]; then
@@ -405,7 +409,8 @@ if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
 fi
 ## jupyter
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -a "$HHM_HOMEBREW" = "" ]; then
-    pip2 install --user spyder flake8 $HHM_PIP_TRUST_HOST
+    pip2 install --user flake8 $HHM_PIP_TRUST_HOST
+    pip2 install spyder $HHM_PIP_TRUST_HOST
 fi
 
 ## soft link pip2
@@ -415,8 +420,8 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
-    pip2 install --user ipython matplotlib numpy scipy setuptools sklearn \
-        requests pylint pandas supervisor xgboost gensim nltk beautifulsoup4 \
+    pip2 install --user beautifulsoup4 gensim ipython matplotlib nltk numpy \
+        pandas pylint requests scipy setuptools sklearn supervisor xgboost \
         $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
@@ -434,6 +439,13 @@ if [ ! -f ~/.pythonstartup.py ]; then
 "master/.pythonstartup.py" -P ~/
 fi
 chown $username:$username ~/.pythonstartup.py
+## tldr : man page
+if [ ! -f ~/.pythonstartup.py ]; then
+    wget --no-cache "https://raw.githubusercontent.com/raylee/tldr/"\
+"master/tldr" -P ~/debian-init-tmp
+    mv ~/debian-init-tmp/tldr /usr/local/bin/m
+fi
+chmod +x /usr/local/bin/m
 
 ################################################################################
 ##                      Powerline
