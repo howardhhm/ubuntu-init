@@ -67,8 +67,8 @@ alias lf='lm --full-time'
 alias h='history'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
-alias tex="tar -zxvf"
-alias tec="tar -zcvf"
+alias trx="tar -zxvf"
+alias trc="tar -zcvf"
 alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
@@ -120,7 +120,8 @@ if [ "$HHM_LOCAL" = "1" ]; then
     alias smv='svn mv'
     alias srm='svn rm --force'
     alias sta='svn status'
-    alias sup='svn update'fi
+    alias sup='svn update'
+fi
 
 ## ==================================================================
 ## ---------   Only for Server
