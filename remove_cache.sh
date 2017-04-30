@@ -15,10 +15,10 @@ echo "+++++++++++++++ all images end +++++++++++++++"
 echo
 export ALL=$(dpkg --get-selections | grep -v linux-image-extra \
 | grep -e "linux-image-[0-9]"| cut -f1 | sed "s|-generic||g;s|"\
-"linux-image-||g" | sort -r)
+"linux-image-||g" | sort -rV)
 export LATEST=$(dpkg --get-selections | grep -v linux-image-extra \
 | grep -e "linux-image-[0-9]"| cut -f1 | sed "s|-generic||g;s|"\
-"linux-image-||g" | sort -r | head -n 1)
+"linux-image-||g" | sort -rV | head -n 1)
 echo "+++++++++++++++ LATEST images start +++++++++++++++"
 for i in $LATEST
 do
