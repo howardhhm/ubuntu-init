@@ -20,10 +20,15 @@ mkdir ~/debian-init-tmp
 ## HHM_SKIP_SOURCES_SELECTION
 ## HHM_INTERNATIONAL
 ## HHM_FAST_INIT
+## HHM_MKSWAP
 
 ## ubuntu client
 if [ "$HHM_UBUNTU_INIT_SERVER" = "" -a "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     HHM_UBUNTU_INIT_CLIENT="1"
+else
+    ## time zone
+    rm -rvf /etc/localtime
+    ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 fi
 
 ## pip source
@@ -40,6 +45,21 @@ username=$(echo $SUDO_USER)
 wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/netselect_0.3.ds1-26_amd64.deb" -P ~/debian-init-tmp
 dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
+
+## make swap
+if [ ! -f /opt/image/swap -a "$HHM_MKSWAP" = "1" ]; then
+    mkdir -p /opt/image/
+    dd if=/dev/zero of=/opt/image/swap bs=1024 count=2048000
+    mkswap /opt/image/swap
+    swapon /opt/image/swap
+    sed -i '$ a /opt/image/swap     swap      swap defaults 0 0' /etc/fstab
+fi
+
+## set locale
+if [ "$HHM_INTERNATIONAL" = "1" ]; then
+    echo 'LANG="zh_CN.UTF-8"' > /etc/default/locale
+    locale-gen zh_CN.UTF-8
+fi
 
 ################################################################################
 ##                      Ubuntu Source List Modification
@@ -71,14 +91,14 @@ if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
     sed -i "s|deb http://security|#deb http://security|g" ~/sources.list
 fi
 
-## get fast sources shellscript
-if [ ! -f /usr/local/bin/get_fast_sources ]; then
-    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/get_fast_sources.sh" -P ~/debian-init-tmp
-    chmod a+rx ~/debian-init-tmp/get_fast_sources.sh
-    mv ~/debian-init-tmp/get_fast_sources.sh /usr/local/bin/get_fast_sources
-fi
-chown root:root /usr/local/bin/get_fast_sources
+# ## get fast sources shellscript
+# if [ ! -f /usr/local/bin/get_fast_sources ]; then
+#     wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
+# "master/get_fast_sources.sh" -P ~/debian-init-tmp
+#     chmod a+rx ~/debian-init-tmp/get_fast_sources.sh
+#     mv ~/debian-init-tmp/get_fast_sources.sh /usr/local/bin/get_fast_sources
+# fi
+# chown root:root /usr/local/bin/get_fast_sources
 
 ## update all pip packages
 if [ ! -f /usr/local/bin/update_pip_all ]; then
@@ -413,8 +433,13 @@ if [ "$HHM_HOMEBREW" = "" ]; then
         $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
-    pip2 install --user powerline-status powerline-gitstatus \
-        powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
+    if [ "$username" = "root" ]; then
+        pip2 install powerline-status powerline-gitstatus \
+            powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
+    else
+        pip2 install --user powerline-status powerline-gitstatus \
+            powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
+    fi
 
     ## Install MySQL-python
     # apt-get install -y libmysqlclient-dev
@@ -468,6 +493,12 @@ chown $username:$username -R ~/debian-init-tmp
 wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
 "master/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
+gem install --user tmuxinator
+mkdir ~/.tmuxinator
+ln -s $HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh \
+    ~/.tmuxinator
+chown $username:$username -R ~/.tmuxinator
+chown $username:$username -R ~/.gem
 ################################################################################
 ##                      Zsh
 ################################################################################
@@ -526,8 +557,13 @@ if [ $? -ne 0 ]; then
     echo "powerline-daemon -q" >> ~/.zshrc
     if [ "$HHM_HOMEBREW" = "" ]; then
         ## for ubuntu
-        echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"\
+        if [ "$username" = "root" ]; then
+            echo "source /usr/local/lib/python2.7/dist-packages/powerline/"\
 "bindings/zsh/powerline.zsh" >> ~/.zshrc
+        else
+            echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"\
+"bindings/zsh/powerline.zsh" >> ~/.zshrc
+        fi
         ## for CentOS
         # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"\
 # "zsh/powerline.zsh" >> ~/.zshrc
@@ -563,6 +599,22 @@ fi
 su $username -c "ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa"
 su $username -c "touch ~/.ssh/authorized_keys && chmod 700 ~/.ssh "\
 "&& chmod 600 ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
+
+if [ "$HHM_INTERNATIONAL" = "1" ]; then
+    ## disable privoxy
+    service privoxy stop
+    systemctl disable privoxy
+    ## install docker
+    apt-get install apt-transport-https ca-certificates \
+        software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+        | sudo apt-key add -
+    apt-key fingerprint 0EBFCD88
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/"\
+"linux/ubuntu $(lsb_release -cs) stable"
+    apt-get update
+    apt-get install docker-ce
+fi
 
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     export LANG=en_US
