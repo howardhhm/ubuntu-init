@@ -22,6 +22,10 @@ mkdir ~/debian-init-tmp
 ## HHM_FAST_INIT
 ## HHM_MKSWAP
 
+## macros
+GITFILES="https://raw.githubusercontent.com/howardhhm/ubuntu-init/master"
+CLOUDFILES="http://7xvxlx.com1.z0.glb.clouddn.com"
+
 ## ubuntu client
 if [ "$HHM_UBUNTU_INIT_SERVER" = "" -a "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     HHM_UBUNTU_INIT_CLIENT="1"
@@ -42,8 +46,7 @@ fi
 # username=$(whoami)
 username=$(echo $SUDO_USER)
 ## a tool for source selection
-wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/netselect_0.3.ds1-26_amd64.deb" -P ~/debian-init-tmp
+wget --no-cache "${GITFILES}/netselect_0.3.ds1-26_amd64.deb" -P ~/debian-init-tmp
 dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
 
 ## make swap
@@ -93,8 +96,7 @@ fi
 
 # ## get fast sources shellscript
 # if [ ! -f /usr/local/bin/get_fast_sources ]; then
-#     wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-# "master/get_fast_sources.sh" -P ~/debian-init-tmp
+#     wget --no-cache "${GITFILES}/get_fast_sources.sh" -P ~/debian-init-tmp
 #     chmod a+rx ~/debian-init-tmp/get_fast_sources.sh
 #     mv ~/debian-init-tmp/get_fast_sources.sh /usr/local/bin/get_fast_sources
 # fi
@@ -102,8 +104,7 @@ fi
 
 ## update all pip packages
 if [ ! -f /usr/local/bin/update_pip_all ]; then
-    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/update_pip_all" -P ~/debian-init-tmp
+    wget --no-cache "${GITFILES}/update_pip_all" -P ~/debian-init-tmp
     chmod a+rx ~/debian-init-tmp/update_pip_all
     mv ~/debian-init-tmp/update_pip_all /usr/local/bin/update_pip_all
 fi
@@ -126,8 +127,7 @@ apt-file update
 ################################################################################
 ##                      Share Resource
 ################################################################################
-wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/sharerc" -P ~/debian-init-tmp
+wget --no-cache "${GITFILES}/sharerc" -P ~/debian-init-tmp
 mv ~/debian-init-tmp/sharerc /etc/sharerc
 source /etc/sharerc
 
@@ -136,8 +136,8 @@ source /etc/sharerc
 ##          https://github.com/adobe-fonts/source-code-pro/downloads
 ################################################################################
 if [ ! -d /usr/share/fonts/source-code-pro-2.030R-ro-1.050R-it ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"source-code-pro-2.030R-ro-1.050R-it.tar.gz" -P ~/debian-init-tmp
+    wget --no-cache "${CLOUDFILES}/source-code-pro-2.030R-ro-1.050R-it.tar.gz" \
+        -P ~/debian-init-tmp
     tar zxvf ~/debian-init-tmp/source-code-pro-2.030R-ro-1.050R-it.tar.gz -C \
         /usr/share/fonts
     fc-cache
@@ -150,10 +150,10 @@ chown root:root -R /usr/share/fonts
 # if [ "$HHM_VMWARE" = "1" ]; then
 #     apt-get install -y open-vm-tools-desktop
 # fi
-apt-get install -y ack-grep astyle autoconf autojump autossh cmake cmatrix \
-    colordiff dos2unix exuberant-ctags gawk htop libtool most nbtscan \
-    net-tools ntpdate openssh-server ranger smartmontools subversion tmux tree \
-    unzip vim wget
+apt-get install -y ack-grep astyle autoconf autojump autossh axel cloc cmake \
+    cmatrix colordiff dos2unix exuberant-ctags gawk htop libtool most nbtscan \
+    net-tools ntpdate openssh-server ranger shellcheck smartmontools \
+    subversion tig tmux tree unzip vim wget
 apt-get install -y screenfetch
 apt-get install -y privoxy
 
@@ -192,8 +192,8 @@ fi
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
 grep -q 'java' /etc/profile
 if [ $? -ne 0 ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"jdk-8u112-linux-x64.tar.gz" -P ~/debian-init-tmp
+    wget --no-cache "${CLOUDFILES}/jdk-8u112-linux-x64.tar.gz" -P \
+        ~/debian-init-tmp
     # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
     mkdir -p /usr/local/java/
     tar -zxvf ~/debian-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
@@ -211,8 +211,8 @@ fi
 # ## lantern
 # if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
 #     if [ ! -f /usr/bin/lantern ]; then
-#         wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-# "lantern-installer-beta-64-bit.deb" -P ~/debian-init-tmp
+#         wget --no-cache "${CLOUDFILES}/lantern-installer-beta-64-bit.deb" \
+#             -P ~/debian-init-tmp
 #         dpkg -i ~/debian-init-tmp/lantern-installer-beta-64-bit.deb
 #         apt-get install -fy
 #     fi
@@ -241,39 +241,36 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     fi
     ## haroopad (Markdown editor)
     if [ ! -f /usr/bin/haroopad ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"haroopad-v0.13.1-x64.deb" -P ~/debian-init-tmp
+        wget --no-cache "${CLOUDFILES}/haroopad-v0.13.1-x64.deb" -P \
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
         apt-get install -fy
     fi
     ## sogou
     if [ ! -f /usr/bin/sogou-diag ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"sogoupinyin_2.1.0.0082_amd64.deb" -P ~/debian-init-tmp
+        wget --no-cache "${CLOUDFILES}/sogoupinyin_2.1.0.0082_amd64.deb" -P \
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
         apt-get install -fy
     fi
     ## sublime text 3
     if [ ! -f /usr/bin/subl ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"sublime-text_build-3126_amd64.deb" -P ~/debian-init-tmp
+        wget --no-cache "${CLOUDFILES}/sublime-text_build-3126_amd64.deb" -P \
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/sublime-text_build-3126_amd64.deb
         apt-get install -fy
     fi
-    wget "https://raw.githubusercontent.com/howardhhm/"\
-"ubuntu-init/master/repair_st_input.sh" -P ~/debian-init-tmp
+    wget --no-cache "${GITFILES}/repair_st_input.sh" -P ~/debian-init-tmp
     chmod a+x ~/debian-init-tmp/repair_st_input.sh
     sh ~/debian-init-tmp/repair_st_input.sh
     ## teamviewer
     if [ ! -f /usr/bin/teamviewer ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"teamviewer_i386.deb" -P ~/debian-init-tmp
+        wget --no-cache "${CLOUDFILES}/teamviewer_i386.deb" -P ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/teamviewer_i386.deb
         apt-get install -fy
     fi
     ## terminator config
-    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/terminator_config" -P ~/debian-init-tmp
+    wget --no-cache "${GITFILES}/terminator_config" -P ~/debian-init-tmp
     mkdir -p ~/.config/terminator/
     mv ~/debian-init-tmp/terminator_config ~/.config/terminator/config
     chown $username:$username -R ~/.config
@@ -298,16 +295,16 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     ## wps
     if [ ! -f /usr/bin/wps ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"wps-office_10.1.0.5672~a21_amd64.deb" -P ~/debian-init-tmp
+        wget --no-cache "${CLOUDFILES}/wps-office_10.1.0.5672~a21_amd64.deb" \
+            -P ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
         apt-get install -fy
     fi
 
     ## a screen shot app developed by deepin
     if [ ! -f /usr/bin/deepin-scrot ]; then
-        wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"deepin-scrot_2.0-0deepin_all.deb" -P ~/debian-init-tmp
+        wget --no-cache "${CLOUDFILES}/deepin-scrot_2.0-0deepin_all.deb" -P \
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/deepin-scrot_2.0-0deepin_all.deb
         apt-get install -fy
     fi
@@ -350,8 +347,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ### To be tested
     ### chrome
     if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
-        wget --no-cache "https://raw.githubusercontent.com/howardhhm/"\
-"ubuntu-init/master/google-chrome.list" -P /etc/apt/sources.list.d/
+        wget --no-cache "--no-cache/google-chrome.list" -P \
+            /etc/apt/sources.list.d/
     fi
     wget --no-cache -q -O - https://dl.google.com/linux/linux_signing_key.pub \
         | apt-key add -
@@ -448,8 +445,7 @@ fi
 
 ## python commandline auto-completion
 if [ ! -f ~/.pythonstartup.py ]; then
-    wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/.pythonstartup.py" -P ~/
+    wget --no-cache "${GITFILES}/.pythonstartup.py" -P ~/
 fi
 chown $username:$username ~/.pythonstartup.py
 ## tldr : man page
@@ -466,21 +462,19 @@ chmod +x /usr/local/bin/m
 ################################################################################
 ## powerline for ipython
 mkdir -p ~/.ipython/profile_default/
-wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/ipython_config.py" -P ~/debian-init-tmp/
+wget --no-cache "${GITFILES}/ipython_config.py" -P ~/debian-init-tmp/
 mv ~/debian-init-tmp/ipython_config.py ~/.ipython/profile_default/
 chown $username:$username -R ~/.ipython/
 
 ## Install fonts for powerline
-wget --no-cache http://7xvxlx.com1.z0.glb.clouddn.com/fonts.tar.gz \
-    -P ~/debian-init-tmp
+wget --no-cache ${CLOUDFILES}/fonts.tar.gz -P ~/debian-init-tmp
 tar zxvf ~/debian-init-tmp/fonts.tar.gz -C ~/debian-init-tmp
 cd ~/debian-init-tmp/fonts
 ./install.sh
 ## ~/.config/powerline
 if [ ! -d ~/.config/powerline ]; then
-    wget --no-cache "http://7xvxlx.com1.z0.glb.clouddn.com/"\
-"powerline_configuration.tar.gz" -P ~/debian-init-tmp
+    wget --no-cache "${CLOUDFILES}/powerline_configuration.tar.gz" -P \
+        ~/debian-init-tmp
     mkdir ~/.config
     tar zxvf ~/debian-init-tmp/powerline_configuration.tar.gz -C ~/.config
 fi
@@ -490,8 +484,7 @@ chown $username:$username -R ~/debian-init-tmp
 ##                      tmux
 ################################################################################
 ## configuration for tmux
-wget --no-cache "https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/.tmux.conf" -P ~/
+wget --no-cache "${GITFILES}/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
 gem install --user tmuxinator
 mkdir ~/.tmuxinator
@@ -507,8 +500,7 @@ lineno="$(grep "^${username}" /etc/passwd -n | cut -d ":" -f1)"
 sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 
 # install oh_my_zsh
-sh -c "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/install_oh_my_zsh.sh -O -)"
+sh -c "$(wget ${GITFILES}/install_oh_my_zsh.sh -O -)"
 
 ## add the following code into ~/.zshrc
 grep -q 'ZSH_THEME="agnoster"' ~/.zshrc
@@ -578,12 +570,10 @@ chown $username:$username -R ~/.oh-my-zsh
 chown $username:$username -R ~/.local
 
 ## modify sshd_config
-sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
-"ubuntu-init/master/modify_sshd_config.sh -O -)"
+sh -c "$(wget ${GITFILES}/modify_sshd_config.sh -O -)"
 
 ## config ~/.vimrc
-sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
-"ubuntu-init/master/config_vimrc.sh -O -)"
+sh -c "$(wget ${GITFILES}/config_vimrc.sh -O -)"
 ################################################################################
 ##                      Last update
 ################################################################################
