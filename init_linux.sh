@@ -155,7 +155,15 @@ apt-get install -y ack-grep astyle autoconf autojump autossh axel cloc cmake \
     net-tools ntpdate openssh-server ranger shellcheck smartmontools \
     subversion tig tmux tree unzip vim wget
 apt-get install -y screenfetch
-apt-get install -y privoxy
+# apt-get install -y privoxy
+apt-get install -y polipo
+## disable privoxy dnsmasq polipo
+# service privoxy stop
+service dnsmasq stop
+service polipo stop
+# systemctl disable privoxy.service
+systemctl disable dnsmasq.service
+systemctl disable polipo.service
 
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
@@ -414,7 +422,6 @@ if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
 fi
 ## jupyter
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -a "$HHM_HOMEBREW" = "" ]; then
-    pip2 install --user flake8 $HHM_PIP_TRUST_HOST
     pip2 install spyder $HHM_PIP_TRUST_HOST
 fi
 
@@ -425,9 +432,9 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
-    pip2 install --user beautifulsoup4 gensim ipython matplotlib nltk numpy \
-        pandas pylint requests scipy setuptools sklearn supervisor xgboost \
-        $HHM_PIP_TRUST_HOST
+    pip2 install --user autopep8 beautifulsoup4 flake8 gensim ipython \
+        matplotlib nltk numpy pandas pylint requests scipy setuptools sklearn \
+        supervisor xgboost yapf $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
     if [ "$username" = "root" ]; then
@@ -486,12 +493,20 @@ chown $username:$username -R ~/debian-init-tmp
 ## configuration for tmux
 wget --no-cache "${GITFILES}/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
-gem install --user tmuxinator
 mkdir ~/.tmuxinator
-ln -s $HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh \
-    ~/.tmuxinator
+if [ "$username" = "root" ]; then
+    gem install tmuxinator
+    tmpdir=$(gem environment | grep -v 'USER' | grep 'INSTALLATION DIRECTORY' \
+        | cut -d ":" -f2 | sed "s/ //g")
+    ln -s ${tmpdir}/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh \
+        ~/.tmuxinator
+else
+    gem install --user tmuxinator
+    ln -s "$HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.9.0/completion/"\
+"tmuxinator.zsh" ~/.tmuxinator
+    chown $username:$username -R ~/.gem
+fi
 chown $username:$username -R ~/.tmuxinator
-chown $username:$username -R ~/.gem
 ################################################################################
 ##                      Zsh
 ################################################################################
@@ -519,7 +534,7 @@ if [ $? -ne 0 ]; then
     fi
     ## source ~/.hhmrc and /etc/sharerc
     sed -i '4 a source /etc/sharerc' ~/.zshrc
-    sed -i '5 a source ~/.hhmrc' ~/.zshrc
+    # sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
     sed -i 's|^plugins=(git)|plugins='\
 '(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
@@ -575,15 +590,6 @@ sh -c "$(wget ${GITFILES}/modify_sshd_config.sh -O -)"
 ## config ~/.vimrc
 sh -c "$(wget ${GITFILES}/config_vimrc.sh -O -)"
 ################################################################################
-##                      Last update
-################################################################################
-apt-get update
-if [ "$HHM_FAST_INIT" = "" ]; then
-    apt-get -y upgrade
-    apt-get -y autoremove
-fi
-
-################################################################################
 ##                      Others
 ################################################################################
 su $username -c "ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa"
@@ -591,20 +597,18 @@ su $username -c "touch ~/.ssh/authorized_keys && chmod 700 ~/.ssh "\
 "&& chmod 600 ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
 
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
-    ## disable privoxy
-    service privoxy stop
-    systemctl disable privoxy
     ## install docker
-    apt-get install apt-transport-https ca-certificates \
+    apt-get install -y apt-transport-https ca-certificates \
         software-properties-common
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
         | sudo apt-key add -
     apt-key fingerprint 0EBFCD88
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/"\
+    add-apt-repository -y "deb [arch=amd64] https://download.docker.com/"\
 "linux/ubuntu $(lsb_release -cs) stable"
     apt-get update
-    apt-get install docker-ce
+    apt-get install -y docker-ce
 fi
+
 
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     export LANG=en_US
@@ -632,4 +636,13 @@ fi
 # timedatectl set-ntp 0
 # apt-get install -y ntpdate
 # ntpdate cn.pool.ntp.org
+
+################################################################################
+##                      Last update
+################################################################################
+apt-get update
+if [ "$HHM_FAST_INIT" = "" ]; then
+    apt-get -y upgrade
+    apt-get -y autoremove
+fi
 
