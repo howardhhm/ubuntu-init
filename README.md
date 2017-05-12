@@ -1,5 +1,5 @@
 # ubuntu-init
-A shell script for installing common software and initializing relative settings automatically on Ubuntu
+A shell script for installing useful software and initializing relative settings automatically on Ubuntu
 
 Just execute the command below
 ```shell
@@ -11,8 +11,8 @@ sudo sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
 sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init/master/Linux_init.sh)"
 ``` -->
 
-## ubuntu-init for server
-Execute the command below
+## ubuntu-init for servers
+some software are worthless for server
 ```shell
 sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';"\
 "$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
@@ -20,62 +20,51 @@ sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';"\
 ```
 
 ## Contents
+* change the time zone
 * Update the Ubuntu sources.list:Change the source to the fastest one
-* get_fast_sources shellscript
-* update_pip_all shellscript
+<!-- * get_fast_sources shellscript -->
+* remove useless software
+ - aisleriot brasero cheese deja-dup empathy gnome-mahjongg
+ - gnome-mines gnome-orca gnome-sudoku landscape-client-ui-install
+ - libreoffice-common onboard rhythmbox simple-scan thunderbird totem
+ - transmission-common unity-webapps-common webbrowser-app
 * apt-file
 * /etc/sharerc:Useful alias settings
+* update_pip_all shellscript
 * Source Code Pro
-* Common software
- - ack-grep
- - autojump
- - classicmenu-indicator            [not for server]
- <!-- - chromium -->
+* Common software (both on clients and servers)
+ - ack-grep autojump
  - cmatrix:Just for fun
- - ctags
- - curl wget
- - dia:Linux visio                  [not for server]
- - dfc                              [not for debian]
- - dos2unix
- - exuberant-ctags
- - filezilla                        [not for server]
- - git
- - gparted                          [not for server]
- - htop
- - meld:Comparison                  [not for server]
- - net-tools
- - ntpdate
- - okular:pdf reader                [not for server]
- - openssh-server
- - pandoc:Convert docs              [not for server]
- - terminator                       [not for server]
- - screenfetch
- - speedcrunch                      [not for server]
- - subversion
- - unzip
- - variety:wallpapers               [not for server]
- - vim
- - vlc:video player                 [not for server]
- - zsh
-* Other software
- - haroopad:Markdown editor         [not for server]
- - java
- - lantern                          [not for server]
+ - ctags curl wget dos2unix exuberant-ctags git htop java net-tools
  - numlock:Numlock on automatically when login
- - sogou                            [not for server]
- - speedtest
- - sublime text 3                   [not for server]
- - teamviewer                       [not for server]
- - terminator config                [not for server]
- - wps                              [not for server]
- - caffeine:Anti-lock screen when watching flash video  [not for server]
- - chrome                           [not for server]
- - codeblocks                       [not for server]
+ - ntpdate openssh-server screenfetch speedtest subversion unzip vim zsh
+* Only on clients
+ - caffeine:Anti-lock screen when watching flash video
+ - chrome
+ - codeblocks
+ - dfc
+ - dia:Linux visio
+ - filezilla
+ - gparted
+ - haroopad:Markdown editor
+ - lantern
+ - meld:Comparison
+ - okular:pdf reader
+ - pandoc:Convert docs
+ - shutter:Screenshot
+ - sogou
+ - speedcrunch
+ - ss:For surfing internet
+ - sublime text 3
+ - teamviewer
+ - terminator
+ - terminator config
+ - variety:wallpapers
+ - vlc:video player
+ - wiz:A splendid note software
+ - wps
  <!-- - exfat:To read exfat filesystem -->
- - shutter:Screenshot               [not for server]
- - ss:For surfing internet          [not for server]
  <!-- - vokoscreen:Video monitor -->
- - wiz:A splendid note software     [not for server]
 * python
  - python2, python3, pip and useful libraries
  - python command line auto completion

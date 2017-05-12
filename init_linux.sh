@@ -153,7 +153,7 @@ chown root:root -R /usr/share/fonts
 apt-get install -y ack-grep astyle autoconf autojump autossh axel cloc cmake \
     cmatrix colordiff dos2unix exuberant-ctags gawk htop libtool most nbtscan \
     net-tools ntpdate openssh-server ranger shellcheck smartmontools \
-    subversion tig tmux tree unzip vim wget
+    sshfs subversion tig tmux tree unzip vim wget
 apt-get install -y screenfetch
 # apt-get install -y privoxy
 apt-get install -y polipo
@@ -198,8 +198,7 @@ fi
 # "Cookie: oraclelicense=accept-securebackup-cookie" \
 # "http://download.oracle.com/otn-pub/java/jdk/"\
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
-grep -q 'java' /etc/profile
-if [ $? -ne 0 ]; then
+if grep -q 'java' /etc/profile; then
     wget --no-cache "${CLOUDFILES}/jdk-8u112-linux-x64.tar.gz" -P \
         ~/debian-init-tmp
     # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
@@ -226,8 +225,7 @@ fi
 #     fi
 #     ## remove the letter "#" in line "#/usr/bin/lantern",
 #     ## if you want start lantern automatically when you login
-#     grep -q 'lantern' /etc/rc.local
-#     if [ $? -ne 0 ]; then
+#     if grep -q 'lantern' /etc/rc.local; then
 #         sed -i "/exit 0/ i /usr/bin/lantern" /etc/rc.local
 #     fi
 # fi
@@ -415,16 +413,6 @@ chown $username:$username -R ~/.pip
 pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
 pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
 
-## jupyter
-if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
-    # pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
-    pip2 install jupyter setuptools $HHM_PIP_TRUST_HOST
-fi
-## jupyter
-if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -a "$HHM_HOMEBREW" = "" ]; then
-    pip2 install spyder $HHM_PIP_TRUST_HOST
-fi
-
 ## soft link pip2
 rm -f /usr/local/bin/pip
 ln -s /usr/local/bin/pip2 /usr/local/bin/pip
@@ -432,9 +420,10 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
-    pip2 install --user autopep8 beautifulsoup4 flake8 gensim ipython \
+    pip2 install --user autopep8 beautifulsoup4 flake8 gensim \
         matplotlib nltk numpy pandas pylint requests scipy setuptools sklearn \
-        supervisor xgboost yapf $HHM_PIP_TRUST_HOST
+        supervisor thefuck xgboost yapf $HHM_PIP_TRUST_HOST
+    pip2 install --user ipython==5.3.0 $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
     if [ "$username" = "root" ]; then
@@ -448,6 +437,15 @@ if [ "$HHM_HOMEBREW" = "" ]; then
     ## Install MySQL-python
     # apt-get install -y libmysqlclient-dev
     # pip2 install MySQL-python $PIPDO
+fi
+## jupyter
+if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
+    # pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
+    pip2 install jupyter setuptools $HHM_PIP_TRUST_HOST
+fi
+## jupyter
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -a "$HHM_HOMEBREW" = "" ]; then
+    pip2 install spyder $HHM_PIP_TRUST_HOST
 fi
 
 ## python commandline auto-completion
@@ -518,8 +516,7 @@ sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 sh -c "$(wget ${GITFILES}/install_oh_my_zsh.sh -O -)"
 
 ## add the following code into ~/.zshrc
-grep -q 'ZSH_THEME="agnoster"' ~/.zshrc
-if [ $? -ne 0 ]; then
+if grep -q 'ZSH_THEME="agnoster"' ~/.zshrc; then
     ## change oh_my_zsh theme
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     ## add env into ~/.hhmrc
@@ -551,6 +548,8 @@ if [ $? -ne 0 ]; then
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
     ## tmux color problem
     echo "export TERM=xterm-256color" >> ~/.zshrc
+    ## the fuck
+    echo 'eval "$(thefuck --alias)"' >> ~/.zshrc
     ## tmuxinator
     echo "export EDITOR='vim'" >> ~/.zshrc
     echo 'source $HOME/.tmuxinator/tmuxinator.zsh' >> ~/.zshrc
@@ -559,8 +558,7 @@ if [ $? -ne 0 ]; then
     fi
 fi
 ## powerline for zsh
-grep -q 'powerline' ~/.zshrc
-if [ $? -ne 0 ]; then
+if grep -q 'powerline' ~/.zshrc; then
     echo "powerline-daemon -q" >> ~/.zshrc
     if [ "$HHM_HOMEBREW" = "" ]; then
         ## for ubuntu
