@@ -110,11 +110,19 @@ if [ ! -f /usr/local/bin/update_pip_all ]; then
 fi
 chown root:root /usr/local/bin/update_pip_all
 
+## git meld
+if [ ! -f /usr/local/bin/git_meld ]; then
+    wget --no-cache "${GITFILES}/git_meld" -P ~/debian-init-tmp
+    chmod a+rx ~/debian-init-tmp/git_meld
+    mv ~/debian-init-tmp/git_meld /usr/local/bin/git_meld
+fi
+chown root:root /usr/local/bin/git_meld
+
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
-        gnome-mines gnome-orca gnome-sudoku landscape-client-ui-install \
-        libreoffice-common onboard rhythmbox simple-scan thunderbird totem \
-        transmission-common unity-webapps-common webbrowser-app
+        gnome-mines gnome-orca gnome-sudoku libreoffice-common onboard \
+        simple-scan thunderbird totem transmission-common unity-webapps-common \
+        webbrowser-app
 fi
 ## update
 apt-get update
@@ -172,14 +180,17 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y dia filezilla geogebra gparted gpick krita meld mypaint \
         okular pandoc speedcrunch terminator thunar variety vlc
     apt-get install -fy
-    ## youtube-dl url-to-video
-    # apt-get install -y youtube-dl
-    apt-get install -y build-essential pkg-config
-    apt-get install -y libavcodec-dev libavformat-dev libdc1394-22-dev \
-        libevent-dev libgtk2.0-dev libjasper-dev libjpeg-dev libpng-dev \
-        libssl-dev libswscale-dev libtbb-dev libtbb2 libtiff-dev libxml2-dev \
-        libxslt-dev
 fi
+
+## youtube-dl url-to-video
+# apt-get install -y youtube-dl
+apt-get install -y build-essential pkg-config
+apt-get install -y libavcodec-dev libavformat-dev libdc1394-22-dev \
+    libevent-dev libgtk2.0-dev libjasper-dev libjpeg-dev libpng-dev \
+    libssl-dev libswscale-dev libtbb-dev libtbb2 libtiff-dev libxml2-dev \
+    libxslt-dev
+apt-get install -y libopencv-dev
+
 ntpdate time.nist.gov
 apt-get install -y git curl zsh convmv unrar ruby speedtest-cli
 apt-get install -fy
@@ -190,7 +201,6 @@ if [ ! -f /usr/bin/syncthing ]; then
     echo "deb https://apt.syncthing.net/ syncthing stable" | \
         tee /etc/apt/sources.list.d/syncthing.list
     apt-get update
-    apt-get install -y syncthing
 fi
 
 ## java
@@ -198,7 +208,8 @@ fi
 # "Cookie: oraclelicense=accept-securebackup-cookie" \
 # "http://download.oracle.com/otn-pub/java/jdk/"\
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
-if grep -q 'java' /etc/profile; then
+grep -q 'java' /etc/profile
+if [ $? -ne 0 ]; then
     wget --no-cache "${CLOUDFILES}/jdk-8u112-linux-x64.tar.gz" -P \
         ~/debian-init-tmp
     # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
@@ -331,9 +342,9 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
 
     ## Typora
     ## optional, but recommended
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
+    #apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
     ## add Typora's repository
-    add-apt-repository -y 'deb https://typora.io ./linux/'
+    #add-apt-repository -y 'deb https://typora.io ./linux/'
 
     add-apt-repository -y ppa:nilarimogard/webupd8
     ## codeblocks
@@ -353,7 +364,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ### To be tested
     ### chrome
     if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
-        wget --no-cache "--no-cache/google-chrome.list" -P \
+        wget --no-cache "${GITFILES}/google-chrome.list" -P \
             /etc/apt/sources.list.d/
     fi
     wget --no-cache -q -O - https://dl.google.com/linux/linux_signing_key.pub \
@@ -412,6 +423,7 @@ fi
 chown $username:$username -R ~/.pip
 pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
 pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
+pip2 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
 
 ## soft link pip2
 rm -f /usr/local/bin/pip
@@ -516,7 +528,8 @@ sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 sh -c "$(wget ${GITFILES}/install_oh_my_zsh.sh -O -)"
 
 ## add the following code into ~/.zshrc
-if grep -q 'ZSH_THEME="agnoster"' ~/.zshrc; then
+grep -q 'ZSH_THEME="agnoster"' ~/.zshrc
+if [ $? -ne 0 ]; then
     ## change oh_my_zsh theme
     sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
     ## add env into ~/.hhmrc
@@ -548,6 +561,8 @@ if grep -q 'ZSH_THEME="agnoster"' ~/.zshrc; then
     echo "export PYTHONSTARTUP=~/.pythonstartup.py" >> ~/.zshrc
     ## tmux color problem
     echo "export TERM=xterm-256color" >> ~/.zshrc
+    ## path problem of powerline
+    echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.zshrc
     ## the fuck
     echo 'eval "$(thefuck --alias)"' >> ~/.zshrc
     ## tmuxinator
@@ -558,7 +573,8 @@ if grep -q 'ZSH_THEME="agnoster"' ~/.zshrc; then
     fi
 fi
 ## powerline for zsh
-if grep -q 'powerline' ~/.zshrc; then
+grep -q 'powerline' ~/.zshrc
+if [ $? -ne 0 ]; then
     echo "powerline-daemon -q" >> ~/.zshrc
     if [ "$HHM_HOMEBREW" = "" ]; then
         ## for ubuntu
@@ -611,6 +627,7 @@ fi
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     export LANG=en_US
     mkdir ~/.config/autostart
+    chown $username:$username ~/.config/autostart
     su $username -c "export LANG=en_US;xdg-user-dirs-gtk-update"
     # cp "/usr/share/applications/{sublime_text.desktop,variety.desktop,"\
 # "shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
@@ -618,7 +635,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
 
     echo "*********Please install the following software by yourself*********"
     echo "sudo apt-get install -y albert caffeine codeblocks shutter "\
-    "shadowsocks-qt5 typora wiznote"
+    "shadowsocks-qt5 typora wiznote syncthing"
     echo "*********Please install the following software by yourself*********"
 fi
 
