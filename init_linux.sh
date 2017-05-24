@@ -159,9 +159,9 @@ chown root:root -R /usr/share/fonts
 #     apt-get install -y open-vm-tools-desktop
 # fi
 apt-get install -y ack-grep astyle autoconf autojump autossh axel cloc cmake \
-    cmatrix colordiff dos2unix exuberant-ctags gawk htop libtool most nbtscan \
-    net-tools ntpdate openssh-server ranger shellcheck smartmontools \
-    sshfs subversion tig tmux tree unzip vim wget
+    cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool most \
+    nbtscan net-tools ntpdate openssh-server pandoc ranger shellcheck \
+    smartmontools sshfs subversion tig tmux tree unzip vim wget
 apt-get install -y screenfetch
 # apt-get install -y privoxy
 apt-get install -y polipo
@@ -178,7 +178,7 @@ if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
 fi
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y dia filezilla geogebra gparted gpick krita meld mypaint \
-        okular pandoc speedcrunch terminator thunar variety vlc
+        okular speedcrunch terminator thunar variety vlc
     apt-get install -fy
 fi
 
@@ -210,15 +210,15 @@ fi
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
 grep -q 'java' /etc/profile
 if [ $? -ne 0 ]; then
-    wget --no-cache "${CLOUDFILES}/jdk-8u112-linux-x64.tar.gz" -P \
+    wget --no-cache "${CLOUDFILES}/jdk-8u131-linux-x64.tar.gz" -P \
         ~/debian-init-tmp
     # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
     mkdir -p /usr/local/java/
-    tar -zxvf ~/debian-init-tmp/jdk-8u112-linux-x64.tar.gz -P -C \
+    tar -zxvf ~/debian-init-tmp/jdk-8u131-linux-x64.tar.gz -P -C \
         /usr/local/java/
     ## add envs into /etc/profile
     sed -i '$ a # java' /etc/profile
-    sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_112' \
+    sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_131' \
         /etc/profile
     sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
     sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'\
@@ -433,8 +433,8 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
     pip2 install --user autopep8 beautifulsoup4 flake8 gensim \
-        matplotlib nltk numpy pandas pylint requests scipy setuptools sklearn \
-        supervisor thefuck xgboost yapf $HHM_PIP_TRUST_HOST
+        matplotlib nltk numpy pandas pylint requests scipy seaborn setuptools \
+        sklearn supervisor thefuck xgboost yapf $HHM_PIP_TRUST_HOST
     pip2 install --user ipython==5.3.0 $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
