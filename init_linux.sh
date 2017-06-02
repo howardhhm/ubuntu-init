@@ -159,9 +159,9 @@ chown root:root -R /usr/share/fonts
 #     apt-get install -y open-vm-tools-desktop
 # fi
 apt-get install -y ack-grep astyle autoconf autojump autossh axel cloc cmake \
-    cmatrix colordiff dos2unix exuberant-ctags gawk htop libtool most nbtscan \
-    net-tools ntpdate openssh-server pandoc ranger shellcheck smartmontools \
-    sshfs subversion tig tmux tree unzip vim wget
+    cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool most \
+    nbtscan net-tools ntpdate openssh-server pandoc ranger shellcheck \
+    smartmontools sshfs subversion tig tmux tree unzip vim wget
 apt-get install -y screenfetch
 # apt-get install -y privoxy
 apt-get install -y polipo
