@@ -433,8 +433,8 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
     pip2 install --user autopep8 beautifulsoup4 flake8 gensim \
-        matplotlib nltk numpy pandas pylint requests scipy setuptools sklearn \
-        supervisor thefuck xgboost yapf $HHM_PIP_TRUST_HOST
+        matplotlib nltk numpy pandas pylint requests scipy seaborn setuptools \
+        sklearn supervisor thefuck xgboost yapf $HHM_PIP_TRUST_HOST
     pip2 install --user ipython==5.3.0 $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
