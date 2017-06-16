@@ -160,7 +160,7 @@ chown root:root -R /usr/share/fonts
 # fi
 apt-get install -y ack-grep astyle autoconf autojump autossh axel cloc cmake \
     cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool most \
-    nbtscan net-tools ntpdate openssh-server pandoc ranger shellcheck \
+    nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger shellcheck \
     smartmontools sshfs subversion tig tmux tree unzip vim wget
 apt-get install -y screenfetch
 # apt-get install -y privoxy
