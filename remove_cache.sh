@@ -38,7 +38,7 @@ sudo apt-get -y autoremove
 ## remove old images
 echo
 echo "+++++++++++++++ all kernels start +++++++++++++++"
-dpkg --get-selections | grep linux
+dpkg --get-selections | grep linux- | awk '{print $1}'
 echo "+++++++++++++++ all kernels end +++++++++++++++"
 echo
 export ALL=$(dpkg --get-selections | cut -f1 | grep -e "linux-image-[0-9]" \
@@ -49,7 +49,7 @@ export LATEST=$(dpkg --get-selections | cut -f1 | grep -e "linux-image-[0-9]" \
 echo "+++++++++++++++ LATEST kernels start +++++++++++++++"
 
 # display the latest kernel
-dpkg --get-selections | grep linux | grep $LATEST
+dpkg --get-selections | grep linux | grep $LATEST | awk '{print $1}'
 
 echo "+++++++++++++++ LATEST kernels end +++++++++++++++"
 echo
