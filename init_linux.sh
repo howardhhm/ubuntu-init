@@ -110,15 +110,17 @@ if [ ! -f /usr/local/bin/update_pip_all ]; then
 fi
 chown root:root /usr/local/bin/update_pip_all
 
-## git meld
-if [ ! -f /usr/local/bin/git_meld ]; then
-    wget --no-cache "${GITFILES}/git_meld" -P ~/debian-init-tmp
-    chmod a+rx ~/debian-init-tmp/git_meld
-    mv ~/debian-init-tmp/git_meld /usr/local/bin/git_meld
-fi
-chown root:root /usr/local/bin/git_meld
-
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
+    # git config --global merge.tool vimdiff
+    # git config --global merge.conflictstyle diff3
+    ## git meld
+    # git config --global merge.tool git_meld
+    if [ ! -f /usr/local/bin/git_meld ]; then
+        wget --no-cache "${GITFILES}/git_meld" -P ~/debian-init-tmp
+        chmod a+rx ~/debian-init-tmp/git_meld
+        mv ~/debian-init-tmp/git_meld /usr/local/bin/git_meld
+    fi
+    chown root:root /usr/local/bin/git_meld
     apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
         gnome-mines gnome-orca gnome-sudoku libreoffice-common onboard \
         simple-scan thunderbird totem transmission-common unity-webapps-common \
