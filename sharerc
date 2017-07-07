@@ -73,15 +73,17 @@ alias f="du -sh"
 alias fs="f *"
 alias fsh="f * .??*"
 # alias py="python"
-# alias py3="python3"
+alias py3="python3"
 alias py="ipython2"
-alias py3="ipython3"
+# alias py3="ipython3"
 alias ipy="ipython2"
-alias ipy3="ipython3"
+# alias ipy3="ipython3"
 alias mk="make"
 alias mc="make clean"
 alias mi="make install"
 alias scp="scp -r"
+
+alias vd="vimdiff"
 
 alias tm='tmux'
 alias tma='tmux a'

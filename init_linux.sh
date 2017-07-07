@@ -481,8 +481,11 @@ chmod +x /usr/local/bin/m
 ################################################################################
 ## powerline for ipython
 mkdir -p ~/.ipython/profile_default/
-wget --no-cache "${GITFILES}/ipython_config.py" -P ~/debian-init-tmp/
-mv ~/debian-init-tmp/ipython_config.py ~/.ipython/profile_default/
+grep -q 'edit by howardhhm' ~/.ipython/profile_default/ipython_config.py
+if [ $? -ne 0 ]; then
+    wget --no-cache "${GITFILES}/ipython_config.py" -P ~/debian-init-tmp/
+    cat ~/debian-init-tmp/ipython_config.py >> ~/.ipython/profile_default/
+fi
 chown $username:$username -R ~/.ipython/
 
 ## Install fonts for powerline
