@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import readline, rlcompleter; 
+import readline, rlcompleter;
 readline.parse_and_bind("tab: complete"); # 启用Tab补全
 
 def igtk():
