@@ -334,7 +334,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
     # rm -rvf $(ls | grep -E "(codeblocks"\
     #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-    rm -rvf $(ls | grep -E "(atom|codeblocks|wiznote|hzwhuang|"\
+    rm -rvf $(ls | grep -E "(atom|codeblocks|hzwhuang|"\
     "caffeine|shutter)")
     cd
     ## exfat something wrong
@@ -356,7 +356,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## atom
     add-apt-repository ppa:webupd8team/atom
     ## wiz
-    add-apt-repository -y ppa:wiznote-team
+    # add-apt-repository -y ppa:wiznote-team
     ## ss
     add-apt-repository -y ppa:hzwhuang/ss-qt5
     ## flash anti-lock new version
