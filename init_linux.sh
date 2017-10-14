@@ -210,23 +210,26 @@ fi
 # "Cookie: oraclelicense=accept-securebackup-cookie" \
 # "http://download.oracle.com/otn-pub/java/jdk/"\
 #"8u112-b15/jdk-8u112-linux-x64.tar.gz"
-grep -q 'java' /etc/profile
-if [ $? -ne 0 ]; then
-    wget --no-cache "${CLOUDFILES}/jdk-8u131-linux-x64.tar.gz" -P \
-    ~/debian-init-tmp
-    # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
-    mkdir -p /usr/local/java/
-    tar -zxvf ~/debian-init-tmp/jdk-8u131-linux-x64.tar.gz -P -C \
-    /usr/local/java/
-    ## add envs into /etc/profile
-    sed -i '$ a # java' /etc/profile
-    sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_131' \
-    /etc/profile
-    sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
-    sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'\
-    ':$JAVA_HOME/lib/tools.jar' /etc/profile
-    sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
-fi
+# grep -q 'java' /etc/profile
+# if [ $? -ne 0 ]; then
+#     wget --no-cache "${CLOUDFILES}/jdk-8u131-linux-x64.tar.gz" -P \
+#     ~/debian-init-tmp
+#     # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
+#     mkdir -p /usr/local/java/
+#     tar -zxvf ~/debian-init-tmp/jdk-8u131-linux-x64.tar.gz -P -C \
+#     /usr/local/java/
+#     ## add envs into /etc/profile
+#     sed -i '$ a # java' /etc/profile
+#     sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_131' \
+#     /etc/profile
+#     sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
+#     sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'\
+#     ':$JAVA_HOME/lib/tools.jar' /etc/profile
+#     sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
+# fi
+
+# java -version
+add-apt-repository -y ppa:webupd8team/java
 
 # ## lantern
 # if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
@@ -354,7 +357,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## 3.0.2
     add-apt-repository -y ppa:damien-moore/codeblocks
     ## atom
-    add-apt-repository ppa:webupd8team/atom
+    add-apt-repository -y ppa:webupd8team/atom
     ## wiz
     # add-apt-repository -y ppa:wiznote-team
     ## ss
@@ -632,7 +635,7 @@ if [ "$HHM_INTERNATIONAL" = "1" ]; then
     apt-get install -y docker-ce
 fi
 
-
+echo "*********Please install the following software by yourself*********"
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     export LANG=en_US
     mkdir ~/.config/autostart
@@ -642,12 +645,12 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # "shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
     # chown $username:$username ~/.config/autostart
 
-    echo "*********Please install the following software by yourself*********"
     echo "sudo apt-get install -y albert atom caffeine codeblocks shutter "\
     "shadowsocks-qt5 typora wiznote syncthing"
-    echo "*********Please install the following software by yourself*********"
 fi
 
+echo "sudo apt-get install -y oracle-java8-installer oracle-java8-set-default"
+echo "*********Please install the following software by yourself*********"
 
 ## nodejs
 # curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
