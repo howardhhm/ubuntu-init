@@ -644,9 +644,9 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # cp "/usr/share/applications/{sublime_text.desktop,variety.desktop,"\
     # "shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
     # chown $username:$username ~/.config/autostart
-
+    # typora wiznote
     echo "sudo apt-get install -y albert atom caffeine codeblocks shutter "\
-    "shadowsocks-qt5 typora wiznote syncthing"
+    "shadowsocks-qt5 syncthing"
 fi
 
 echo "sudo apt-get install -y oracle-java8-installer oracle-java8-set-default"
