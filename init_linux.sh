@@ -123,8 +123,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     chown root:root /usr/local/bin/git_meld
     apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
     gnome-mines gnome-orca gnome-sudoku libreoffice-common onboard \
-    simple-scan thunderbird totem transmission-common unity-webapps-common \
-    webbrowser-app
+    simple-scan thunderbird totem transmission-common unity-webapps-common
+    apt-get remove -y webbrowser-app
 fi
 ## update
 apt-get update
@@ -160,10 +160,13 @@ chown root:root -R /usr/share/fonts
 # if [ "$HHM_VMWARE" = "1" ]; then
 #     apt-get install -y open-vm-tools-desktop
 # fi
-apt-get install -y ack-grep astyle autoconf autojump autossh axel cloc cmake \
+apt-get install -y ack-grep
+apt-get install -y clang
+apt-get install -y llvm
+apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
 cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool most \
 nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger shellcheck \
-smartmontools sshfs subversion tig tmux tree unzip vim wget
+smartmontools sshfs subversion tig tmux tree uncrustify unzip vim wget
 apt-get install -y screenfetch
 # apt-get install -y privoxy
 apt-get install -y polipo
@@ -440,7 +443,7 @@ cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
     # gensim xgboost
-    pip2 install --user autopep8 beautifulsoup4 flake8 \
+    pip2 install --user autopep8 beautifulsoup4 beautysh flake8 \
     matplotlib nltk numpy pandas pylint requests scipy seaborn \
     setuptools \
     sklearn supervisor thefuck yapf $HHM_PIP_TRUST_HOST
@@ -518,10 +521,10 @@ chown $username:$username ~/.tmux.conf
 mkdir ~/.tmuxinator
 if [ "$username" = "root" ]; then
     gem install tmuxinator
-    tmpdir=$(gem environment | grep -v 'USER' | grep 'INSTALLATION DIRECTORY' \
+    tmpdir=$(gem environment | grep 'USER INSTALLATION DIRECTORY' \
     | cut -d ":" -f2 | sed "s/ //g")
     ln -s ${tmpdir}/gems/tmuxinator-0.10.0/completion/tmuxinator.zsh \
-    ~/.tmuxinator
+    ~/.tmuxinator/tmuxinator.zsh
 else
     gem install --user tmuxinator
     ln -s "$HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.10.0/completion/"\
