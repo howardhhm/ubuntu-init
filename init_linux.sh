@@ -125,6 +125,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         gnome-mines gnome-orca gnome-sudoku libreoffice-common onboard \
         simple-scan thunderbird totem transmission-common unity-webapps-common
     apt-get remove -y webbrowser-app
+    apt-get remove -y rhythmbox
+    apt-get remove -y landscape-client-ui-install
 fi
 ## update
 apt-get update
@@ -273,9 +275,9 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     fi
     ## sogou
     if [ ! -f /usr/bin/sogou-diag ]; then
-        wget --no-cache "${CLOUDFILES}/sogoupinyin_2.1.0.0082_amd64.deb" -P \
+        wget --no-cache "${CLOUDFILES}/sogoupinyin_2.2.0.0102_amd64.deb" -P \
             ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
+        dpkg -i ~/debian-init-tmp/sogoupinyin_2.2.0.0102_amd64.deb
         apt-get install -fy
     fi
     ## sublime text 3
