@@ -70,13 +70,13 @@ fi
 if [ "$HHM_SKIP_SOURCES_SELECTION" = "" ]; then
     ## get old sources
     export OLDSOURCE=$(cat /etc/apt/sources.list | egrep "(deb|# deb)" \
-        | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c \
-    | sort -rn | sed 's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
+            | sed "s/^# //g" | grep "deb " | cut -d " " -f2 | sort | uniq -c \
+        | sort -rn | sed 's/  */ /g;s/^ //g' | cut -d " " -f2 | head -1)
     ## not reliable
     # export NEWSOURCE=$(netselect -s1 `wget --no-cache -q -O- \
-    # https://launchpad.net/ubuntu/+archivemirrors \
-    # | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
-    # | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
+        # https://launchpad.net/ubuntu/+archivemirrors \
+        # | grep -P -B8 "statusUP|statusSIX" | grep -o -P "(f|ht)tp.*\"" \
+        # | tr '"\n' '  '` | sed  's/  */ /g;s/^ //g' | cut -d " " -f2)
     ## for debian or ubuntu
     if [ "$HHM_DEBIAN_INIT_SERVER" = "1" ]; then
         # change into 163 source lists
@@ -122,8 +122,8 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     fi
     chown root:root /usr/local/bin/git_meld
     apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
-    gnome-mines gnome-orca gnome-sudoku libreoffice-common onboard \
-    simple-scan thunderbird totem transmission-common unity-webapps-common
+        gnome-mines gnome-orca gnome-sudoku libreoffice-common onboard \
+        simple-scan thunderbird totem transmission-common unity-webapps-common
     apt-get remove -y webbrowser-app
 fi
 ## update
@@ -147,9 +147,9 @@ source /etc/sharerc
 ################################################################################
 if [ ! -d /usr/share/fonts/source-code-pro-2.030R-ro-1.050R-it ]; then
     wget --no-cache "${CLOUDFILES}/source-code-pro-2.030R-ro-1.050R-it.tar.gz" \
-    -P ~/debian-init-tmp
+        -P ~/debian-init-tmp
     tar zxvf ~/debian-init-tmp/source-code-pro-2.030R-ro-1.050R-it.tar.gz -C \
-    /usr/share/fonts
+        /usr/share/fonts
     fc-cache
 fi
 chown root:root -R /usr/share/fonts
@@ -164,9 +164,9 @@ apt-get install -y ack-grep
 apt-get install -y clang
 apt-get install -y llvm
 apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
-cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool most \
-nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger shellcheck \
-smartmontools sshfs subversion tig tmux tree uncrustify unzip vim wget
+    cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool most \
+    nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger shellcheck \
+    smartmontools sshfs subversion tig tmux tree uncrustify unzip vim wget
 apt-get install -y screenfetch
 # apt-get install -y privoxy
 apt-get install -y polipo
@@ -183,7 +183,7 @@ if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
 fi
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y dia filezilla geogebra gparted gpick krita meld mypaint \
-    okular speedcrunch terminator thunar variety vlc
+        okular speedcrunch terminator thunar variety vlc
     apt-get install -fy
 fi
 
@@ -191,9 +191,9 @@ fi
 # apt-get install -y youtube-dl
 apt-get install -y build-essential pkg-config
 apt-get install -y libavcodec-dev libavformat-dev libdc1394-22-dev \
-libevent-dev libgtk2.0-dev libjasper-dev libjpeg-dev libpng-dev \
-libssl-dev libswscale-dev libtbb-dev libtbb2 libtiff-dev libxml2-dev \
-libxslt-dev
+    libevent-dev libgtk2.0-dev libjasper-dev libjpeg-dev libpng-dev \
+    libssl-dev libswscale-dev libtbb-dev libtbb2 libtiff-dev libxml2-dev \
+    libxslt-dev
 apt-get install -y libopencv-dev
 
 ntpdate time.nist.gov
@@ -204,30 +204,30 @@ apt-get install -fy
 if [ ! -f /usr/bin/syncthing ]; then
     curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
     echo "deb https://apt.syncthing.net/ syncthing stable" | \
-    tee /etc/apt/sources.list.d/syncthing.list
+        tee /etc/apt/sources.list.d/syncthing.list
     apt-get update
 fi
 
 ## java
 # wget --no-cache --no-check-certificate --no-cookies --header \
-# "Cookie: oraclelicense=accept-securebackup-cookie" \
-# "http://download.oracle.com/otn-pub/java/jdk/"\
-#"8u112-b15/jdk-8u112-linux-x64.tar.gz"
+    # "Cookie: oraclelicense=accept-securebackup-cookie" \
+    # "http://download.oracle.com/otn-pub/java/jdk/"`
+#`"8u112-b15/jdk-8u112-linux-x64.tar.gz"
 # grep -q 'java' /etc/profile
 # if [ $? -ne 0 ]; then
 #     wget --no-cache "${CLOUDFILES}/jdk-8u131-linux-x64.tar.gz" -P \
-#     ~/debian-init-tmp
+    #     ~/debian-init-tmp
 #     # apt-get autoremove -y openjdk-6-jre openjdk-7-jre
 #     mkdir -p /usr/local/java/
 #     tar -zxvf ~/debian-init-tmp/jdk-8u131-linux-x64.tar.gz -P -C \
-#     /usr/local/java/
+    #     /usr/local/java/
 #     ## add envs into /etc/profile
 #     sed -i '$ a # java' /etc/profile
 #     sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_131' \
-#     /etc/profile
+    #     /etc/profile
 #     sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
 #     sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'\
-#     ':$JAVA_HOME/lib/tools.jar' /etc/profile
+    #     ':$JAVA_HOME/lib/tools.jar' /etc/profile
 #     sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
 # fi
 
@@ -238,7 +238,7 @@ add-apt-repository -y ppa:webupd8team/java
 # if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
 #     if [ ! -f /usr/bin/lantern ]; then
 #         wget --no-cache "${CLOUDFILES}/lantern-installer-beta-64-bit.deb" \
-#             -P ~/debian-init-tmp
+    #             -P ~/debian-init-tmp
 #         dpkg -i ~/debian-init-tmp/lantern-installer-beta-64-bit.deb
 #         apt-get install -fy
 #     fi
@@ -252,36 +252,36 @@ add-apt-repository -y ppa:webupd8team/java
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## disable guest
     grep -q 'allow-guest' \
-    /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+        /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     if [ $? -ne 0 ]; then
         sed -i '$ a allow-guest=false' \
-        /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+            /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     fi
     ## numlock
     apt-get -y install numlockx
     grep -q 'numlockx' /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     if [ $? -ne 0 ]; then
         sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
-        /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+            /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     fi
     ## haroopad (Markdown editor)
     if [ ! -f /usr/bin/haroopad ]; then
         wget --no-cache "${CLOUDFILES}/haroopad-v0.13.1-x64.deb" -P \
-        ~/debian-init-tmp
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
         apt-get install -fy
     fi
     ## sogou
     if [ ! -f /usr/bin/sogou-diag ]; then
         wget --no-cache "${CLOUDFILES}/sogoupinyin_2.1.0.0082_amd64.deb" -P \
-        ~/debian-init-tmp
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/sogoupinyin_2.1.0.0082_amd64.deb
         apt-get install -fy
     fi
     ## sublime text 3
     if [ ! -f /usr/bin/subl ]; then
         wget --no-cache "${CLOUDFILES}/sublime-text_build-3126_amd64.deb" -P \
-        ~/debian-init-tmp
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/sublime-text_build-3126_amd64.deb
         apt-get install -fy
     fi
@@ -303,25 +303,25 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## backup gtkrc
     if [ ! -f /usr/share/themes/Ambiance/gtk-2.0/gtkrc.bak ]; then
         cp /usr/share/themes/Ambiance/gtk-2.0/gtkrc \
-        /usr/share/themes/Ambiance/gtk-2.0/gtkrc.bak
+            /usr/share/themes/Ambiance/gtk-2.0/gtkrc.bak
     fi
     ## highlight terminator tab color
     # grep -F "bg[NORMAL] = shade (1.02, @bg_color)"
     # /usr/share/themes/Ambiance/gtk-2.0/gtkrc
-    sed -i "s/bg\[NORMAL\] = shade (1.02, @bg_color)/bg\[NORMAL\] = "\
-    "shade (1.12, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+    sed -i "s/bg\[NORMAL\] = shade (1.02, @bg_color)/bg\[NORMAL\] = "`
+    `"shade (1.12, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     # grep -F "bg[ACTIVE] = shade (0.97, @bg_color)"
     # /usr/share/themes/Ambiance/gtk-2.0/gtkrc
-    sed -i "s/bg\[ACTIVE\] = shade (0.97, @bg_color)/bg\[ACTIVE\] = "\
-    "shade (0.87, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+    sed -i "s/bg\[ACTIVE\] = shade (0.97, @bg_color)/bg\[ACTIVE\] = "`
+    `"shade (0.87, @bg_color)/g" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     ## apple green
     # grep -F "base_color:#ffffff" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     sed -i "s/base_color:#ffffff/base_color:#cce8cf/g" \
-    /usr/share/themes/Ambiance/gtk-2.0/gtkrc
+        /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     ## wps
     if [ ! -f /usr/bin/wps ]; then
         wget --no-cache "${CLOUDFILES}/wps-office_10.1.0.5672~a21_amd64.deb" \
-        -P ~/debian-init-tmp
+            -P ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
         apt-get install -fy
     fi
@@ -329,19 +329,19 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## a screen shot app developed by deepin
     if [ ! -f /usr/bin/deepin-scrot ]; then
         wget --no-cache "${CLOUDFILES}/deepin-scrot_2.0-0deepin_all.deb" -P \
-        ~/debian-init-tmp
+            ~/debian-init-tmp
         dpkg -i ~/debian-init-tmp/deepin-scrot_2.0-0deepin_all.deb
         apt-get install -fy
     fi
 
     ## delete old source lists
     cd /etc/apt/sources.list.d
-    # rm -rvf $(ls | grep -E "(exfat|codeblocks"\
-    #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-    # rm -rvf $(ls | grep -E "(codeblocks"\
-    #"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
-    rm -rvf $(ls | grep -E "(atom|codeblocks|hzwhuang|"\
-    "caffeine|shutter)")
+    # rm -rvf $(ls | grep -E "(exfat|codeblocks"`
+    #`"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+    # rm -rvf $(ls | grep -E "(codeblocks"`
+    #`"|wiznote|hzwhuang|caffeine|vokoscreen|shutter)")
+    rm -rvf $(ls | grep -E "(atom|codeblocks|hzwhuang|"`
+    `"caffeine|shutter)")
     cd
     ## exfat something wrong
     # mount sdX to /mnt
@@ -375,10 +375,10 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ### chrome
     if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
         wget --no-cache "${GITFILES}/google-chrome.list" -P \
-        /etc/apt/sources.list.d/
+            /etc/apt/sources.list.d/
     fi
     wget --no-cache -q -O - https://dl.google.com/linux/linux_signing_key.pub \
-    | apt-key add -
+        | apt-key add -
 
     ## update the sources
     apt-get update
@@ -390,15 +390,15 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     apt-get install -y google-chrome-stable
 
     # apt-get install -y codeblocks libwxgtk3.0-dev wx-common \
-    #   codeblocks-contrib
+        #   codeblocks-contrib
     # apt-get install -y exfat-utils
     # apt-get install -y vokoscreen
 
     # apt-get install -y caffeine codeblocks libwxgtk3.0-dev \
-    #   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
-    #   vokoscreen wiznote
+        #   wx-common codeblocks-contrib exfat-utils shutter shadowsocks-qt5 \
+        #   vokoscreen wiznote
     # apt-get install -y albert caffeine codeblocks shutter \
-    #     shadowsocks-qt5 wiznote
+        #     shadowsocks-qt5 wiznote
 
     ## shutdown annoying error messages when login
     sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
@@ -408,7 +408,7 @@ fi
 ##                      Python & Pip
 ################################################################################
 apt-get install -y python-dev python-pip python2.7 python2.7-dev python-numpy \
-python-tk
+    python-tk
 apt-get install -y python3-pip python3.5 python3.5-dev
 apt-get install -y python-pyqt5 python-pyqt5.qtsvg python-pyqt5.qtwebkit
 ## if the command above does not work
@@ -425,9 +425,9 @@ fi
 ## pip source
 if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
-    echo "[global]\ntrusted-host = mirrors.aliyun.com\n"\
-    "index-url = http://mirrors.aliyun.com/pypi/simple\n" \
-    > ~/.pip/pip.conf
+    echo "[global]\ntrusted-host = mirrors.aliyun.com\n"`
+    `"index-url = http://mirrors.aliyun.com/pypi/simple\n" \
+        > ~/.pip/pip.conf
 fi
 
 chown $username:$username -R ~/.pip
@@ -444,18 +444,18 @@ if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
     # gensim xgboost
     pip2 install --user autopep8 beautifulsoup4 beautysh flake8 \
-    matplotlib nltk numpy pandas pylint requests scipy seaborn \
-    setuptools \
-    sklearn supervisor thefuck yapf $HHM_PIP_TRUST_HOST
+        matplotlib nltk numpy pandas pylint requests scipy seaborn \
+        setuptools \
+        sklearn supervisor thefuck yapf $HHM_PIP_TRUST_HOST
     pip2 install --user ipython==5.3.0 $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
     if [ "$username" = "root" ]; then
         pip2 install powerline-status powerline-gitstatus \
-        powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
+            powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
     else
         pip2 install --user powerline-status powerline-gitstatus \
-        powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
+            powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
     fi
 
     ## Install MySQL-python
@@ -479,8 +479,8 @@ fi
 chown $username:$username ~/.pythonstartup.py
 ## tldr : man page
 if [ ! -f /usr/local/bin/m ]; then
-    wget --no-cache "https://raw.githubusercontent.com/raylee/tldr/"\
-    "master/tldr" -P ~/debian-init-tmp
+    wget --no-cache "https://raw.githubusercontent.com/raylee/tldr/"`
+    `"master/tldr" -P ~/debian-init-tmp
     mv ~/debian-init-tmp/tldr /usr/local/bin/m
 fi
 chmod +x /usr/local/bin/m
@@ -506,7 +506,7 @@ cd ~/debian-init-tmp/fonts
 ## ~/.config/powerline
 if [ ! -d ~/.config/powerline ]; then
     wget --no-cache "${CLOUDFILES}/powerline_configuration.tar.gz" -P \
-    ~/debian-init-tmp
+        ~/debian-init-tmp
     mkdir ~/.config
     tar zxvf ~/debian-init-tmp/powerline_configuration.tar.gz -C ~/.config
 fi
@@ -522,13 +522,13 @@ mkdir ~/.tmuxinator
 if [ "$username" = "root" ]; then
     gem install tmuxinator
     tmpdir=$(gem environment | grep 'USER INSTALLATION DIRECTORY' \
-    | cut -d ":" -f2 | sed "s/ //g")
+        | cut -d ":" -f2 | sed "s/ //g")
     ln -s ${tmpdir}/gems/tmuxinator-0.10.0/completion/tmuxinator.zsh \
-    ~/.tmuxinator/tmuxinator.zsh
+        ~/.tmuxinator/tmuxinator.zsh
 else
     gem install --user tmuxinator
-    ln -s "$HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.10.0/completion/"\
-    "tmuxinator.zsh" ~/.tmuxinator
+    ln -s "$HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.10.0/completion/"`
+    `"tmuxinator.zsh" ~/.tmuxinator
     chown $username:$username -R ~/.gem
 fi
 chown $username:$username -R ~/.tmuxinator
@@ -562,7 +562,7 @@ if [ $? -ne 0 ]; then
     # sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
     sed -i 's|^plugins=(git)|plugins='\
-    '(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
+        '(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
     echo "stty start undef" >> ~/.zshrc
@@ -594,18 +594,18 @@ if [ $? -ne 0 ]; then
     if [ "$HHM_HOMEBREW" = "" ]; then
         ## for ubuntu
         if [ "$username" = "root" ]; then
-            echo "source /usr/local/lib/python2.7/dist-packages/powerline/"\
-            "bindings/zsh/powerline.zsh" >> ~/.zshrc
+            echo "source /usr/local/lib/python2.7/dist-packages/powerline/"`
+            `"bindings/zsh/powerline.zsh" >> ~/.zshrc
         else
-            echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"\
-            "bindings/zsh/powerline.zsh" >> ~/.zshrc
+            echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"`
+            `"bindings/zsh/powerline.zsh" >> ~/.zshrc
         fi
         ## for CentOS
-        # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"\
-        # "zsh/powerline.zsh" >> ~/.zshrc
+        # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"`
+        # `"zsh/powerline.zsh" >> ~/.zshrc
         ## for mac
-        # echo "#source /usr/local/lib/python2.7/site-packages/powerline/"\
-        # "bindings/zsh/powerline.zsh" >> ~/.zshrc
+        # echo "#source /usr/local/lib/python2.7/site-packages/powerline/"`
+        # `"bindings/zsh/powerline.zsh" >> ~/.zshrc
     fi
 fi
 chown $username:$username ~/.zshrc
@@ -622,18 +622,18 @@ sh -c "$(wget ${GITFILES}/config_vimrc.sh -O -)"
 ##                      Others
 ################################################################################
 su $username -c "ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa"
-su $username -c "touch ~/.ssh/authorized_keys && chmod 700 ~/.ssh "\
-"&& chmod 600 ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
+su $username -c "touch ~/.ssh/authorized_keys && chmod 700 ~/.ssh "`
+`"&& chmod 600 ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
 
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
     ## install docker
     apt-get install -y apt-transport-https ca-certificates \
-    software-properties-common
+        software-properties-common
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
-    | sudo apt-key add -
+        | sudo apt-key add -
     apt-key fingerprint 0EBFCD88
-    add-apt-repository -y "deb [arch=amd64] https://download.docker.com/"\
-    "linux/ubuntu $(lsb_release -cs) stable"
+    add-apt-repository -y "deb [arch=amd64] https://download.docker.com/"`
+    `"linux/ubuntu $(lsb_release -cs) stable"
     apt-get update
     apt-get install -y docker-ce
 fi
@@ -644,12 +644,12 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     mkdir ~/.config/autostart
     chown $username:$username ~/.config/autostart
     su $username -c "export LANG=en_US;xdg-user-dirs-gtk-update"
-    # cp "/usr/share/applications/{sublime_text.desktop,variety.desktop,"\
-    # "shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
+    # cp "/usr/share/applications/{sublime_text.desktop,variety.desktop,"`
+    # `"shadowsocks-qt5.desktop,albert.desktop}" ~/.config/autostart
     # chown $username:$username ~/.config/autostart
     # typora wiznote
-    echo "sudo apt-get install -y albert atom caffeine codeblocks shutter "\
-    "shadowsocks-qt5 syncthing"
+    echo "sudo apt-get install -y albert atom caffeine codeblocks shutter "`
+    `"shadowsocks-qt5 syncthing"
 fi
 
 echo "sudo apt-get install -y oracle-java8-installer oracle-java8-set-default"
