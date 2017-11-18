@@ -521,18 +521,18 @@ chown $username:$username -R ~/debian-init-tmp
 wget --no-cache "${GITFILES}/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
 mkdir ~/.tmuxinator
-if [ "$username" = "root" ]; then
-    gem install tmuxinator
-    tmpdir=$(gem environment | grep 'USER INSTALLATION DIRECTORY' \
-        | cut -d ":" -f2 | sed "s/ //g")
-    ln -s ${tmpdir}/gems/tmuxinator-0.10.0/completion/tmuxinator.zsh \
-        ~/.tmuxinator/tmuxinator.zsh
-else
-    gem install --user tmuxinator
-    ln -s "$HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.10.0/completion/"`
-    `"tmuxinator.zsh" ~/.tmuxinator
-    chown $username:$username -R ~/.gem
-fi
+# if [ "$username" = "root" ]; then
+#     gem install tmuxinator
+#     tmpdir=$(gem environment | grep 'USER INSTALLATION DIRECTORY' \
+    #         | cut -d ":" -f2 | sed "s/ //g")
+#     ln -s ${tmpdir}/gems/tmuxinator-0.10.0/completion/tmuxinator.zsh \
+    #         ~/.tmuxinator/tmuxinator.zsh
+# else
+gem install --user tmuxinator
+ln -s "$HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.10.0/completion/"`
+`"tmuxinator.zsh" ~/.tmuxinator
+chown $username:$username -R ~/.gem
+# fi
 chown $username:$username -R ~/.tmuxinator
 ################################################################################
 ##                      Zsh
