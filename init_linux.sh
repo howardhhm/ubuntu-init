@@ -581,7 +581,7 @@ if [ $? -ne 0 ]; then
     ## path problem of powerline
     echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.zshrc
     ## the fuck
-    echo 'eval "$(thefuck --alias)"' >> ~/.zshrc
+    # echo 'eval "$(thefuck --alias)"' >> ~/.zshrc
     ## tmuxinator
     echo "export EDITOR='vim'" >> ~/.zshrc
     echo 'source $HOME/.tmuxinator/tmuxinator.zsh' >> ~/.zshrc
