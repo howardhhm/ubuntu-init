@@ -35,6 +35,11 @@ else
     ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 fi
 
+## ubuntu virturl server
+if [ "$HHM_VMWARE" = "1" ]; then
+    HHM_MKSWAP="1"
+fi
+
 ## pip source
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
     HHM_PIP_TRUST_HOST=""
@@ -62,6 +67,7 @@ fi
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
     echo 'LANG="zh_CN.UTF-8"' > /etc/default/locale
     locale-gen zh_CN.UTF-8
+    HHM_SKIP_SOURCES_SELECTION="1"
 fi
 
 ################################################################################
@@ -655,7 +661,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
 fi
 
 echo "sudo apt-get install -y oracle-java8-installer oracle-java8-set-default"
-echo "*********Please install the following software by yourself*********"
+echo "*********Please install the above software by yourself*********"
 
 ## nodejs
 # curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -677,3 +683,13 @@ if [ "$HHM_FAST_INIT" = "" ]; then
     apt-get -y upgrade
     apt-get -y autoremove
 fi
+
+pushd ~
+rm -irv -f remove_cache.sh
+wget "https://raw.githubusercontent.com/howardhhm/"`
+`"ubuntu-init/master/remove_cache.sh"
+chmod +x remove_cache.sh
+./remove_cache.sh
+rm -irv -f remove_cache.sh
+rm -irv -rvf $HOME/.cache/vmware/drag_and_drop
+popd
