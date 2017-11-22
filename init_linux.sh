@@ -372,7 +372,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## wiz
     # add-apt-repository -y ppa:wiznote-team
     ## ss
-    add-apt-repository -y ppa:hzwhuang/ss-qt5
+    # add-apt-repository -y ppa:hzwhuang/ss-qt5
     ## flash anti-lock new version
     add-apt-repository -y ppa:caffeine-developers/ppa
     ## vokoscreen (video monitor) a little problem
@@ -657,7 +657,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # chown $username:$username ~/.config/autostart
     # typora wiznote
     echo "sudo apt-get install -y albert atom caffeine codeblocks shutter "`
-    `"shadowsocks-qt5 syncthing"
+    `"syncthing"
 fi
 
 echo "sudo apt-get install -y oracle-java8-installer oracle-java8-set-default"
