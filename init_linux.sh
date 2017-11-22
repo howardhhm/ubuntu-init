@@ -453,8 +453,8 @@ if [ "$HHM_HOMEBREW" = "" ]; then
     # gensim xgboost
     pip2 install --user autopep8 beautifulsoup4 beautysh flake8 \
         matplotlib nltk numpy pandas pylint requests scipy seaborn \
-        setuptools \
-        sklearn supervisor thefuck yapf $HHM_PIP_TRUST_HOST
+        setuptools sklearn yapf $HHM_PIP_TRUST_HOST
+    pip2 install supervisor $HHM_PIP_TRUST_HOST
     pip2 install --user ipython==5.3.0 $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
