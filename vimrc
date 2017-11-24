@@ -1,26 +1,25 @@
 " =========== added by hhm ===========
-"这个档案的双引号 (") 是批注
 " in case of the display problem in tmux
 set term=screen
-set hlsearch "高亮度反白
-set backspace=2 "可随时用退格键删除
-"set autoindent "自动缩排
-set ruler "可显示最后一行的状态
-set showmode "左下角那一行的状态
-set nu "可以在每一行的最前面显示行号啦！
-set bg=dark "显示不同的底色色调
-syntax on "进行语法检验，颜色显示。
-set ts=4 "TAB 4个空格
-set expandtab "把TAB转换成空格！！ :
+set hlsearch " hightlight search
+set backspace=2 " enable backspace
+"set autoindent " auto indent
+set ruler " locate the coord
+set showmode " status line
+set nu " display line number
+set bg=dark
+syntax on
+set ts=4 "TAB 4 spaces
+set expandtab "convert TABs to spaces
 set relativenumber
-" 打开文件自动跳转到上次修改位置
+" jump to the location where edited at last time
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
 " ===================================
-"        << Ctrl + Shift + k ： 上移当前行 >>
-"        << Ctrl + Shift + j ： 下移当前行 >>
+"        << Ctrl + Shift + k ： move up the line >>
+"        << Ctrl + Shift + j ： move down the line >>
 " ===================================
 nnoremap <C-S-j> :m .+1<CR>==
 nnoremap <C-S-k> :m .-2<CR>==

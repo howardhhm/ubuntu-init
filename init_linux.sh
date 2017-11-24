@@ -234,8 +234,8 @@ fi
 #     sed -i '$ a export JAVA_HOME=/usr/local/java/jdk1.8.0_131' \
     #     /etc/profile
 #     sed -i '$ a export JAVA_BIN=$JAVA_HOME/bin' /etc/profile
-#     sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'\
-    #     ':$JAVA_HOME/lib/tools.jar' /etc/profile
+#     sed -i '$ a export CLASSPATH=.:$JAVA_HOME/lib/dt.jar'`
+#     `':$JAVA_HOME/lib/tools.jar' /etc/profile
 #     sed -i '$ a export PATH=$PATH:$JAVA_HOME/bin' /etc/profile
 # fi
 
@@ -569,8 +569,8 @@ if [ $? -ne 0 ]; then
     sed -i '4 a source /etc/sharerc' ~/.zshrc
     # sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
-    sed -i 's|^plugins=(git)|plugins='\
-        '(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
+    sed -i 's|^plugins=(git)|plugins='`
+    `'(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
     echo "stty start undef" >> ~/.zshrc

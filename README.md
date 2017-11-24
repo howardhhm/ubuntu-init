@@ -3,8 +3,8 @@ A shell script for installing useful software and initializing relative settings
 
 Just execute the command below
 ```shell
-sudo sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"\
-"ubuntu-init/master/init_linux.sh -O -)"
+sudo sh -c "$(wget https://raw.githubusercontent.com/howardhhm/"`
+`"ubuntu-init/master/init_linux.sh -O -)"
 ```
 <!-- or
 ```shell
@@ -14,9 +14,9 @@ sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/howardhhm/ubuntu-init
 ## ubuntu-init for servers
 some software are worthless for server
 ```shell
-sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';"\
-"$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"\
-"master/init_linux.sh -O -)"
+sudo sh -c "export HHM_UBUNTU_INIT_SERVER='1';"`
+`"$(wget https://raw.githubusercontent.com/howardhhm/ubuntu-init/"`
+`"master/init_linux.sh -O -)"
 ```
 
 ## Contents
