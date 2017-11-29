@@ -26,6 +26,9 @@ mkdir ~/debian-init-tmp
 GITFILES="https://raw.githubusercontent.com/howardhhm/ubuntu-init/master"
 CLOUDFILES="http://7xvxlx.com1.z0.glb.clouddn.com"
 
+# change dash into bash
+rm -rvf /bin/sh
+ln -s /bin/bash /bin/sh
 ## ubuntu client
 if [ "$HHM_UBUNTU_INIT_SERVER" = "" -a "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     HHM_UBUNTU_INIT_CLIENT="1"
