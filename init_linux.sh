@@ -54,7 +54,8 @@ fi
 # username=$(whoami)
 username=$(echo $SUDO_USER)
 ## a tool for source selection
-wget --no-cache "${GITFILES}/netselect_0.3.ds1-26_amd64.deb" -P ~/debian-init-tmp
+wget --no-cache "${GITFILES}/netselect_0.3.ds1-26_amd64.deb" -P \
+    ~/debian-init-tmp
 dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
 
 ## make swap
@@ -553,6 +554,12 @@ sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 # install oh_my_zsh
 sh -c "$(wget ${GITFILES}/install_oh_my_zsh.sh -O -)"
 
+# install zsh-syntax-highlighting
+cd $HOME/.config
+git clone git://github.com/zsh-users/zsh-syntax-highlighting.git
+chown $username:$username -R ~/.config/zsh-syntax-highlighting
+cd $HOME
+
 ## add the following code into ~/.zshrc
 grep -q 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -ne 0 ]; then
@@ -573,7 +580,8 @@ if [ $? -ne 0 ]; then
     # sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
     sed -i 's|^plugins=(git)|plugins='`
-    `'(git extract wd svn pip pyenv pylint python)|g' ~/.zshrc
+    `'(git extract wd svn pip pyenv pylint python zsh-syntax-highlighting)|g' \
+        ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
     echo "stty start undef" >> ~/.zshrc
@@ -597,6 +605,9 @@ if [ $? -ne 0 ]; then
     if [ "$HHM_HOMEBREW" = "" ]; then
         echo 'source /usr/share/autojump/autojump.zsh' >> ~/.zshrc
     fi
+    ## path for zsh-syntax-highlighting
+    echo 'source $HOME/.config/zsh-syntax-highlighting/'`
+    `'zsh-syntax-highlighting.zsh' >> ~/.zshrc
 fi
 ## powerline for zsh
 grep -q 'powerline' ~/.zshrc
