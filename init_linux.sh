@@ -25,7 +25,6 @@ mkdir ~/debian-init-tmp
 ## macros
 GITFILES="https://raw.githubusercontent.com/howardhhm/ubuntu-init/master"
 CLOUDFILES="http://7xvxlx.com1.z0.glb.clouddn.com"
-
 # change dash into bash
 rm -rvf /bin/sh
 ln -s /bin/bash /bin/sh
@@ -157,10 +156,10 @@ source /etc/sharerc
 ##                      Source code pro
 ##          https://github.com/adobe-fonts/source-code-pro/downloads
 ################################################################################
-if [ ! -d /usr/share/fonts/source-code-pro-2.030R-ro-1.050R-it ]; then
-    wget --no-cache "${CLOUDFILES}/source-code-pro-2.030R-ro-1.050R-it.tar.gz" \
+if [ ! -d /usr/share/fonts/source-code-pro-2.03-msyh ]; then
+    wget --no-cache "${CLOUDFILES}/source-code-pro-2.03-msyh.tar.gz" \
         -P ~/debian-init-tmp
-    tar zxvf ~/debian-init-tmp/source-code-pro-2.030R-ro-1.050R-it.tar.gz -C \
+    tar zxvf ~/debian-init-tmp/source-code-pro-2.03-msyh.tar.gz -C \
         /usr/share/fonts
     fc-cache
 fi
@@ -302,8 +301,9 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     sh ~/debian-init-tmp/repair_st_input.sh
     ## teamviewer
     if [ ! -f /usr/bin/teamviewer ]; then
-        wget --no-cache "${CLOUDFILES}/teamviewer_i386.deb" -P ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/teamviewer_i386.deb
+        wget --no-cache "${CLOUDFILES}/teamviewer_13.0.6634_amd64.deb" -P \
+            ~/debian-init-tmp
+        dpkg -i ~/debian-init-tmp/teamviewer_13.0.6634_amd64.deb
         apt-get install -fy
     fi
     ## terminator config
@@ -446,29 +446,31 @@ chown $username:$username -R ~/.pip
 pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
 pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
 pip2 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
+pip3 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
 
 ## soft link pip2
-rm -f /usr/local/bin/pip
-ln -s /usr/local/bin/pip2 /usr/local/bin/pip
-cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
+# rm -f /usr/local/bin/pip
+# ln -s /usr/local/bin/pip2 /usr/local/bin/pip
+# cp $(ls /usr/local/bin/pip2.*) /usr/local/bin/pip2
 
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
     # gensim xgboost
-    pip2 install --user autopep8 beautifulsoup4 beautysh flake8 \
+    pip3 install --user autopep8 beautifulsoup4 beautysh flake8 \
         matplotlib nltk numpy pandas pylint requests scipy seaborn \
         setuptools sklearn yapf $HHM_PIP_TRUST_HOST
+    pip2 install setuptools $HHM_PIP_TRUST_HOST
     pip2 install supervisor $HHM_PIP_TRUST_HOST
-    pip2 install --user ipython==5.3.0 $HHM_PIP_TRUST_HOST
+    pip3 install --user ipython $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
-    if [ "$username" = "root" ]; then
-        pip2 install powerline-status powerline-gitstatus \
-            powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
-    else
-        pip2 install --user powerline-status powerline-gitstatus \
-            powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
-    fi
+    # if [ "$username" = "root" ]; then
+    pip3 install powerline-status powerline-gitstatus \
+        powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
+    # else
+    #     pip3 install --user powerline-status powerline-gitstatus \
+        #         powerline-svnstatus psutil $HHM_PIP_TRUST_HOST
+    # fi
 
     ## Install MySQL-python
     # apt-get install -y libmysqlclient-dev
@@ -477,11 +479,11 @@ fi
 ## jupyter
 if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
     # pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
-    pip2 install jupyter setuptools $HHM_PIP_TRUST_HOST
+    pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
 fi
 ## jupyter
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -a "$HHM_HOMEBREW" = "" ]; then
-    pip2 install spyder $HHM_PIP_TRUST_HOST
+    pip3 install spyder $HHM_PIP_TRUST_HOST
 fi
 
 ## python commandline auto-completion
@@ -539,7 +541,7 @@ mkdir ~/.tmuxinator
     #         ~/.tmuxinator/tmuxinator.zsh
 # else
 gem install --user tmuxinator
-ln -s "$HOME/.gem/ruby/2.3.0/gems/tmuxinator-0.10.0/completion/"`
+ln -s "../.gem/ruby/2.3.0/gems/tmuxinator-0.10.1/completion/"`
 `"tmuxinator.zsh" ~/.tmuxinator
 chown $username:$username -R ~/.gem
 # fi
@@ -579,8 +581,8 @@ if [ $? -ne 0 ]; then
     sed -i '4 a source /etc/sharerc' ~/.zshrc
     # sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
-    sed -i 's|^plugins=(git)|plugins='`
-    `'(git extract wd svn pip pyenv pylint python zsh-syntax-highlighting)|g' \
+    sed -i 's|^  git|'`
+    `'  git extract wd svn pip pyenv pylint python zsh-syntax-highlighting|g' \
         ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
@@ -597,6 +599,8 @@ if [ $? -ne 0 ]; then
     echo "export TERM=xterm-256color" >> ~/.zshrc
     ## path problem of powerline
     echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.zshrc
+    ## path of tmuxinator
+    echo 'export PATH=$HOME/.gem/ruby/2.3.0/bin:$PATH' >> ~/.zshrc
     ## the fuck
     # echo 'eval "$(thefuck --alias)"' >> ~/.zshrc
     ## tmuxinator
@@ -615,13 +619,13 @@ if [ $? -ne 0 ]; then
     echo "powerline-daemon -q" >> ~/.zshrc
     if [ "$HHM_HOMEBREW" = "" ]; then
         ## for ubuntu
-        if [ "$username" = "root" ]; then
-            echo "source /usr/local/lib/python2.7/dist-packages/powerline/"`
-            `"bindings/zsh/powerline.zsh" >> ~/.zshrc
-        else
-            echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"`
-            `"bindings/zsh/powerline.zsh" >> ~/.zshrc
-        fi
+        # if [ "$username" = "root" ]; then
+        echo "source /usr/local/lib/python3.5/dist-packages/powerline/"`
+        `"bindings/zsh/powerline.zsh" >> ~/.zshrc
+        # else
+        #     echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"`
+        #     `"bindings/zsh/powerline.zsh" >> ~/.zshrc
+        # fi
         ## for CentOS
         # echo "/usr/lib/python2.7/site-packages/powerline/bindings/"`
         # `"zsh/powerline.zsh" >> ~/.zshrc
@@ -692,6 +696,8 @@ echo "*********Please install the above software by yourself*********"
 ################################################################################
 ##                      Last update
 ################################################################################
+chown $username:$username -R $HOME/.local/share/autojump
+
 apt-get update
 if [ "$HHM_FAST_INIT" = "" ]; then
     apt-get -y upgrade
