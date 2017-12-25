@@ -711,5 +711,4 @@ wget "https://raw.githubusercontent.com/howardhhm/"`
 chmod +x remove_cache.sh
 ./remove_cache.sh
 rm -irv -f remove_cache.sh
-rm -irv -rvf $HOME/.cache/vmware/drag_and_drop
 popd
