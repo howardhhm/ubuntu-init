@@ -196,10 +196,10 @@ apt-get install -y screenfetch
 apt-get install -y polipo
 ## disable privoxy dnsmasq polipo
 # service privoxy stop
-service dnsmasq stop
+# service dnsmasq stop
 service polipo stop
 # systemctl disable privoxy.service
-systemctl disable dnsmasq.service
+# systemctl disable dnsmasq.service
 systemctl disable polipo.service
 
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
@@ -564,7 +564,7 @@ wget --no-cache "${GITFILES}/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
 mkdir ~/.tmuxinator
 gem install --user tmuxinator
-ln -s "../.gem/ruby/${RUBY_VERSION}/gems/tmuxinator-0.13.0/completion/"`
+ln -s "../.gem/ruby/${RUBY_VERSION}/gems/tmuxinator-0.14.0/completion/"`
 `"tmuxinator.zsh" ~/.tmuxinator
 chown $username:$username -R ~/.gem
 # fi
