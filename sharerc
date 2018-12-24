@@ -45,20 +45,20 @@ fi
 ## ==================================================================
 ## ---------   Linux (Not for Mac)
 ## ==================================================================
-if [ "$HHM_LINUX" = "1" ]; then
-    source /etc/profile
-    remove-cache () {
-        pushd ~
-        rm -irv -f remove_cache.sh
-        wget "https://raw.githubusercontent.com/howardhhm/"`
-        `"ubuntu-init/master/remove_cache.sh"
-        chmod +x remove_cache.sh
-        ./remove_cache.sh
-        rm -irv -f remove_cache.sh
-        rm -irv -rvf $HOME/.cache/vmware/drag_and_drop
-        popd
-    }
-fi
+# if [ "$HHM_LINUX" = "1" ]; then
+#     source /etc/profile
+#     remove-cache () {
+#         pushd ~
+#         rm -irv -f remove_cache.sh
+#         wget "https://raw.githubusercontent.com/howardhhm/"`
+#         `"ubuntu-init/master/remove_cache.sh"
+#         chmod +x remove_cache.sh
+#         ./remove_cache.sh
+#         rm -irv -f remove_cache.sh
+#         rm -irv -rvf $HOME/.cache/vmware/drag_and_drop
+#         popd
+#     }
+# fi
 
 ## ==================================================================
 ## ---------   Export
@@ -85,23 +85,25 @@ alias fs="f *"
 alias fsh="f * .??*"
 # alias py="python"
 alias py3="python3"
-alias py="ipython2"
+alias py="python"
 # alias py3="ipython3"
-alias ipy="ipython2"
+alias ipy="ipython"
 # alias ipy3="ipython3"
 alias mk="make"
 alias mc="make clean"
 alias mi="make install"
 alias scp="scp -r"
+alias line="wc -l"
+alias dfh="df -h"
 
 alias vd="vimdiff"
 
 alias tm='tmux'
 alias tma='tmux a'
 alias tml='tmux ls'
+alias tailf='tail -f'
 
-alias psa='ps aux'
-code()
+pscode()
 {
     LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}
     echo
@@ -158,6 +160,7 @@ fi
 ## ==================================================================
 if [ "$HHM_LINUX" = "1" ]; then
     alias cp='cp -iarv'
+    alias psa='ps aux'
 
     ### caution 'p4p1'
     ### caution: ip got below is divided by '.'
@@ -196,4 +199,5 @@ if [ "$HHM_MAC_INIT" = "1" ]; then
     alias cp='cp -iaRv'
     alias st="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
     alias svn="/usr/local/bin/svn"
+    alias psa='ps -ef'
 fi

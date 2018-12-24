@@ -21,10 +21,11 @@ mkdir ~/debian-init-tmp
 ## HHM_INTERNATIONAL
 ## HHM_FAST_INIT
 ## HHM_MKSWAP
+## HHM_BASE
 
 ## macros
 GITFILES="https://raw.githubusercontent.com/howardhhm/ubuntu-init/master"
-CLOUDFILES="http://7xvxlx.com1.z0.glb.clouddn.com"
+# CLOUDFILES="http://7xvxlx.com1.z0.glb.clouddn.com"
 # change dash into bash
 rm -rvf /bin/sh
 ln -s /bin/bash /bin/sh
@@ -52,10 +53,10 @@ fi
 ## whoami returns root all the time
 # username=$(whoami)
 username=$(echo $SUDO_USER)
-## a tool for source selection
-wget --no-cache "${GITFILES}/netselect_0.3.ds1-26_amd64.deb" -P \
-    ~/debian-init-tmp
-dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
+# ## a tool for source selection
+# wget --no-cache "${GITFILES}/netselect_0.3.ds1-26_amd64.deb" -P \
+#     ~/debian-init-tmp
+# dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
 
 ## make swap
 if [ ! -f /opt/image/swap -a "$HHM_MKSWAP" = "1" ]; then
@@ -71,6 +72,17 @@ if [ "$HHM_INTERNATIONAL" = "1" ]; then
     echo 'LANG="zh_CN.UTF-8"' > /etc/default/locale
     locale-gen zh_CN.UTF-8
     HHM_SKIP_SOURCES_SELECTION="1"
+fi
+
+## link rc.local.service
+ln -fs /lib/systemd/system/rc-local.service \
+/etc/systemd/system/rc-local.service
+touch /etc/rc.local
+chmod 755 /etc/rc.local
+LINE=$(wc -c /etc/rc.local | awk '{print $1}')
+if [ $LINE -eq 0 ]; then
+    echo '#!/bin/sh -e' > /etc/rc.local
+    echo '#' >> /etc/rc.local
 fi
 
 ################################################################################
@@ -131,7 +143,7 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     fi
     chown root:root /usr/local/bin/git_meld
     apt-get remove -y aisleriot brasero cheese deja-dup empathy gnome-mahjongg \
-        gnome-mines gnome-orca gnome-sudoku libreoffice-common onboard \
+        gnome-mines gnome-orca gnome-sudoku libreoffice-common mycli onboard \
         simple-scan thunderbird totem transmission-common unity-webapps-common
     apt-get remove -y webbrowser-app
     apt-get remove -y rhythmbox
@@ -149,21 +161,21 @@ apt-file update
 ##                      Share Resource
 ################################################################################
 wget --no-cache "${GITFILES}/sharerc" -P ~/debian-init-tmp
-mv ~/debian-init-tmp/sharerc /etc/sharerc
-source /etc/sharerc
+mv ~/debian-init-tmp/sharerc ~/.sharerc
+source ~/.sharerc
 
 ################################################################################
 ##                      Source code pro
 ##          https://github.com/adobe-fonts/source-code-pro/downloads
 ################################################################################
-if [ ! -d /usr/share/fonts/source-code-pro-2.03-msyh ]; then
-    wget --no-cache "${CLOUDFILES}/source-code-pro-2.03-msyh.tar.gz" \
-        -P ~/debian-init-tmp
-    tar zxvf ~/debian-init-tmp/source-code-pro-2.03-msyh.tar.gz -C \
-        /usr/share/fonts
-    fc-cache
-fi
-chown root:root -R /usr/share/fonts
+# if [ ! -d /usr/share/fonts/source-code-pro-2.03-msyh ]; then
+#     wget --no-cache "${CLOUDFILES}/source-code-pro-2.03-msyh.tar.gz" \
+#         -P ~/debian-init-tmp
+#     tar zxvf ~/debian-init-tmp/source-code-pro-2.03-msyh.tar.gz -C \
+#         /usr/share/fonts
+#     fc-cache
+# fi
+# chown root:root -R /usr/share/fonts
 
 ################################################################################
 ##                      Common Software
@@ -173,11 +185,12 @@ chown root:root -R /usr/share/fonts
 # fi
 apt-get install -y ack-grep
 apt-get install -y clang
-apt-get install -y llvm
+# apt-get install -y llvm
 apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
-    cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool most \
-    nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger shellcheck \
-    smartmontools sshfs subversion tig tmux tree uncrustify unzip vim wget
+    cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool lrzsz \
+    most nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger \
+    shellcheck smartmontools sshfs subversion tig tmux tree uncrustify \
+    unzip vim wget
 apt-get install -y screenfetch
 # apt-get install -y privoxy
 apt-get install -y polipo
@@ -202,15 +215,22 @@ fi
 # apt-get install -y youtube-dl
 apt-get install -y build-essential pkg-config
 apt-get install -y libavcodec-dev libavformat-dev libdc1394-22-dev \
-    libevent-dev libgtk2.0-dev libjasper-dev libjpeg-dev libpng-dev \
+    libevent-dev libgtk2.0-dev libjpeg-dev libpng-dev \
     libssl-dev libswscale-dev libtbb-dev libtbb2 libtiff-dev libxml2-dev \
     libxslt-dev
 apt-get install -y libopencv-dev
+apt-get install -y libjasper-dev
 
 ntpdate time.nist.gov
-apt-get install -y git curl zsh convmv unrar ruby speedtest-cli
+apt-get install -y git
+apt-get install -y unrar
+apt-get install -y curl zsh convmv ruby speedtest-cli
 apt-get install -fy
 
+## install docker-compose
+curl -L "https://github.com/docker/compose/releases/download/1.23.1/"\
+"docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 ## syncthing
 if [ ! -f /usr/bin/syncthing ]; then
     curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
@@ -275,37 +295,37 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         sed -i '$ a greeter-setup-script=/usr/bin/numlockx on' \
             /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
     fi
-    ## haroopad (Markdown editor)
-    if [ ! -f /usr/bin/haroopad ]; then
-        wget --no-cache "${CLOUDFILES}/haroopad-v0.13.1-x64.deb" -P \
-            ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
-        apt-get install -fy
-    fi
-    ## sogou
-    if [ ! -f /usr/bin/sogou-diag ]; then
-        wget --no-cache "${CLOUDFILES}/sogoupinyin_2.2.0.0102_amd64.deb" -P \
-            ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/sogoupinyin_2.2.0.0102_amd64.deb
-        apt-get install -fy
-    fi
-    ## sublime text 3
-    if [ ! -f /usr/bin/subl ]; then
-        wget --no-cache "${CLOUDFILES}/sublime-text_build-3126_amd64.deb" -P \
-            ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/sublime-text_build-3126_amd64.deb
-        apt-get install -fy
-    fi
-    wget --no-cache "${GITFILES}/repair_st_input.sh" -P ~/debian-init-tmp
-    chmod a+x ~/debian-init-tmp/repair_st_input.sh
-    sh ~/debian-init-tmp/repair_st_input.sh
-    ## teamviewer
-    if [ ! -f /usr/bin/teamviewer ]; then
-        wget --no-cache "${CLOUDFILES}/teamviewer_13.0.6634_amd64.deb" -P \
-            ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/teamviewer_13.0.6634_amd64.deb
-        apt-get install -fy
-    fi
+    # ## haroopad (Markdown editor)
+    # if [ ! -f /usr/bin/haroopad ]; then
+    #     wget --no-cache "${CLOUDFILES}/haroopad-v0.13.1-x64.deb" -P \
+    #         ~/debian-init-tmp
+    #     dpkg -i ~/debian-init-tmp/haroopad-v0.13.1-x64.deb
+    #     apt-get install -fy
+    # fi
+    # ## sogou
+    # if [ ! -f /usr/bin/sogou-diag ]; then
+    #     wget --no-cache "${CLOUDFILES}/sogoupinyin_2.2.0.0102_amd64.deb" -P \
+    #         ~/debian-init-tmp
+    #     dpkg -i ~/debian-init-tmp/sogoupinyin_2.2.0.0102_amd64.deb
+    #     apt-get install -fy
+    # fi
+    # ## sublime text 3
+    # if [ ! -f /usr/bin/subl ]; then
+    #     wget --no-cache "${CLOUDFILES}/sublime-text_build-3126_amd64.deb" -P \
+    #         ~/debian-init-tmp
+    #     dpkg -i ~/debian-init-tmp/sublime-text_build-3126_amd64.deb
+    #     apt-get install -fy
+    # fi
+    # wget --no-cache "${GITFILES}/repair_st_input.sh" -P ~/debian-init-tmp
+    # chmod a+x ~/debian-init-tmp/repair_st_input.sh
+    # sh ~/debian-init-tmp/repair_st_input.sh
+    # ## teamviewer
+    # if [ ! -f /usr/bin/teamviewer ]; then
+    #     wget --no-cache "${CLOUDFILES}/teamviewer_13.0.6634_amd64.deb" -P \
+    #         ~/debian-init-tmp
+    #     dpkg -i ~/debian-init-tmp/teamviewer_13.0.6634_amd64.deb
+    #     apt-get install -fy
+    # fi
     ## terminator config
     wget --no-cache "${GITFILES}/terminator_config" -P ~/debian-init-tmp
     mkdir -p ~/.config/terminator/
@@ -330,21 +350,21 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     # grep -F "base_color:#ffffff" /usr/share/themes/Ambiance/gtk-2.0/gtkrc
     sed -i "s/base_color:#ffffff/base_color:#cce8cf/g" \
         /usr/share/themes/Ambiance/gtk-2.0/gtkrc
-    ## wps
-    if [ ! -f /usr/bin/wps ]; then
-        wget --no-cache "${CLOUDFILES}/wps-office_10.1.0.5672~a21_amd64.deb" \
-            -P ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
-        apt-get install -fy
-    fi
+    # ## wps
+    # if [ ! -f /usr/bin/wps ]; then
+    #     wget --no-cache "${CLOUDFILES}/wps-office_10.1.0.5672~a21_amd64.deb" \
+    #         -P ~/debian-init-tmp
+    #     dpkg -i ~/debian-init-tmp/wps-office_10.1.0.5672~a21_amd64.deb
+    #     apt-get install -fy
+    # fi
 
-    ## a screen shot app developed by deepin
-    if [ ! -f /usr/bin/deepin-scrot ]; then
-        wget --no-cache "${CLOUDFILES}/deepin-scrot_2.0-0deepin_all.deb" -P \
-            ~/debian-init-tmp
-        dpkg -i ~/debian-init-tmp/deepin-scrot_2.0-0deepin_all.deb
-        apt-get install -fy
-    fi
+    # ## a screen shot app developed by deepin
+    # if [ ! -f /usr/bin/deepin-scrot ]; then
+    #     wget --no-cache "${CLOUDFILES}/deepin-scrot_2.0-0deepin_all.deb" -P \
+    #         ~/debian-init-tmp
+    #     dpkg -i ~/debian-init-tmp/deepin-scrot_2.0-0deepin_all.deb
+    #     apt-get install -fy
+    # fi
 
     ## delete old source lists
     cd /etc/apt/sources.list.d
@@ -421,7 +441,7 @@ fi
 ################################################################################
 apt-get install -y python-dev python-pip python2.7 python2.7-dev python-numpy \
     python-tk
-apt-get install -y python3-pip python3.5 python3.5-dev
+apt-get install -y python3-pip python3.7 python3.7-dev
 apt-get install -y python-pyqt5 python-pyqt5.qtsvg python-pyqt5.qtwebkit
 ## if the command above does not work
 ## follow these commands
@@ -437,16 +457,16 @@ fi
 ## pip source
 if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
-    echo "[global]\ntrusted-host = mirrors.aliyun.com\n"`
-    `"index-url = http://mirrors.aliyun.com/pypi/simple\n" \
-        > ~/.pip/pip.conf
+    echo "[global]" > ~/.pip/pip.conf
+    echo "trusted-host = mirrors.aliyun.com" >> ~/.pip/pip.conf
+    echo "index-url = http://mirrors.aliyun.com/pypi/simple" >> ~/.pip/pip.conf
 fi
 
 chown $username:$username -R ~/.pip
 pip2 install --upgrade pip $HHM_PIP_TRUST_HOST
 pip3 install --upgrade pip $HHM_PIP_TRUST_HOST
-pip2 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
-pip3 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
+# pip2 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
+# pip3 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
 
 ## soft link pip2
 # rm -f /usr/local/bin/pip
@@ -456,12 +476,18 @@ pip3 install html5lib==0.9999999 $HHM_PIP_TRUST_HOST
 if [ "$HHM_HOMEBREW" = "" ]; then
     ## packages for machine learning
     # gensim xgboost
+
     pip3 install --user autopep8 beautifulsoup4 beautysh flake8 \
         matplotlib nltk numpy pandas pylint requests scipy seaborn \
         setuptools sklearn yapf $HHM_PIP_TRUST_HOST
+    pip3 install --user gensim jupyter_contrib_nbextensions jieba \
+        bloom_filter xlsxwriter $HHM_PIP_TRUST_HOST
     pip2 install setuptools $HHM_PIP_TRUST_HOST
     pip2 install supervisor $HHM_PIP_TRUST_HOST
     pip3 install --user ipython $HHM_PIP_TRUST_HOST
+    pip3 install --user jupyter jupyter_contrib_nbextensions \
+        $HHM_PIP_TRUST_HOST
+    pip3 install --user mycli $HHM_PIP_TRUST_HOST
     ## packages for powerline
     ## caution: svnstatus needs reboot
     # if [ "$username" = "root" ]; then
@@ -508,21 +534,21 @@ mkdir -p ~/.ipython/profile_default/
 grep -q 'edit by howardhhm' ~/.ipython/profile_default/ipython_config.py
 if [ $? -ne 0 ]; then
     wget --no-cache "${GITFILES}/ipython_config.py" -P ~/debian-init-tmp/
-    cat ~/debian-init-tmp/ipython_config.py >> ~/.ipython/profile_default/
+    mv ~/debian-init-tmp/ipython_config.py ~/.ipython/profile_default/
 fi
 chown $username:$username -R ~/.ipython/
 
-## Install fonts for powerline
-wget --no-cache ${CLOUDFILES}/fonts.tar.gz -P ~/debian-init-tmp
-tar zxvf ~/debian-init-tmp/fonts.tar.gz -C ~/debian-init-tmp
-cd ~/debian-init-tmp/fonts
-./install.sh
+# ## Install fonts for powerline
+# wget --no-cache ${GITFILES}/fonts.tar.gz -P ~/debian-init-tmp
+# tar zxvf ~/debian-init-tmp/fonts.tar.gz -C ~/debian-init-tmp
+# cd ~/debian-init-tmp/fonts
+# ./install.sh
 ## ~/.config/powerline
 if [ ! -d ~/.config/powerline ]; then
-    wget --no-cache "${CLOUDFILES}/powerline_configuration.tar.gz" -P \
+    wget --no-cache "${GITFILES}/powerline_user_config.tar.gz" -P \
         ~/debian-init-tmp
     mkdir ~/.config
-    tar zxvf ~/debian-init-tmp/powerline_configuration.tar.gz -C ~/.config
+    tar zxvf ~/debian-init-tmp/powerline_user_config.tar.gz -C ~/.config
 fi
 chown $username:$username -R ~/.config
 chown $username:$username -R ~/debian-init-tmp
@@ -530,18 +556,15 @@ chown $username:$username -R ~/debian-init-tmp
 ##                      tmux
 ################################################################################
 ## configuration for tmux
+
+RUBY_VERSION=$(gem environment | grep 'USER INSTALLATION DIRECTORY' \
+| awk -F':' '{print $2}' | awk -F'/' '{print $NF}')
+
 wget --no-cache "${GITFILES}/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
 mkdir ~/.tmuxinator
-# if [ "$username" = "root" ]; then
-#     gem install tmuxinator
-#     tmpdir=$(gem environment | grep 'USER INSTALLATION DIRECTORY' \
-    #         | cut -d ":" -f2 | sed "s/ //g")
-#     ln -s ${tmpdir}/gems/tmuxinator-0.10.0/completion/tmuxinator.zsh \
-    #         ~/.tmuxinator/tmuxinator.zsh
-# else
 gem install --user tmuxinator
-ln -s "../.gem/ruby/2.3.0/gems/tmuxinator-0.10.1/completion/"`
+ln -s "../.gem/ruby/${RUBY_VERSION}/gems/tmuxinator-0.13.0/completion/"`
 `"tmuxinator.zsh" ~/.tmuxinator
 chown $username:$username -R ~/.gem
 # fi
@@ -578,11 +601,11 @@ if [ $? -ne 0 ]; then
         sed -i '3 a export HHM_INTERNATIONAL="1"' ~/.zshrc
     fi
     ## source ~/.hhmrc and /etc/sharerc
-    sed -i '4 a source /etc/sharerc' ~/.zshrc
+    sed -i '4 a source $HOME/.sharerc' ~/.zshrc
     # sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
     sed -i 's|^  git|'`
-    `'  git extract wd svn pip pyenv pylint python zsh-syntax-highlighting|g' \
+    `'  git extract wd svn pip pyenv pylint python zsh-syntax-highlighting docker|g' \
         ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
@@ -600,7 +623,7 @@ if [ $? -ne 0 ]; then
     ## path problem of powerline
     echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.zshrc
     ## path of tmuxinator
-    echo 'export PATH=$HOME/.gem/ruby/2.3.0/bin:$PATH' >> ~/.zshrc
+    echo "export PATH=\$HOME/.gem/ruby/${RUBY_VERSION}/bin:\$PATH" >> ~/.zshrc
     ## the fuck
     # echo 'eval "$(thefuck --alias)"' >> ~/.zshrc
     ## tmuxinator
@@ -620,7 +643,7 @@ if [ $? -ne 0 ]; then
     if [ "$HHM_HOMEBREW" = "" ]; then
         ## for ubuntu
         # if [ "$username" = "root" ]; then
-        echo "source /usr/local/lib/python3.5/dist-packages/powerline/"`
+        echo "source /usr/local/lib/python3.6/dist-packages/powerline/"`
         `"bindings/zsh/powerline.zsh" >> ~/.zshrc
         # else
         #     echo "source $HOME/.local/lib/python2.7/site-packages/powerline/"`
@@ -651,18 +674,28 @@ su $username -c "ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa"
 su $username -c "touch ~/.ssh/authorized_keys && chmod 700 ~/.ssh "`
 `"&& chmod 600 ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
 
-if [ "$HHM_INTERNATIONAL" = "1" ]; then
-    ## install docker
-    apt-get install -y apt-transport-https ca-certificates \
-        software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
-        | sudo apt-key add -
-    apt-key fingerprint 0EBFCD88
-    add-apt-repository -y "deb [arch=amd64] https://download.docker.com/"`
-    `"linux/ubuntu $(lsb_release -cs) stable"
-    apt-get update
-    apt-get install -y docker-ce
-fi
+## install docker
+apt-get install -y apt-transport-https ca-certificates \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+    | sudo apt-key add -
+apt-key fingerprint 0EBFCD88
+add-apt-repository -y "deb [arch=amd64] https://download.docker.com/"`
+`"linux/ubuntu $(lsb_release -cs) stable"
+apt-get update
+apt-get install -y docker-ce
+# if [ "$HHM_INTERNATIONAL" = "1" ]; then
+#     ## install docker
+#     apt-get install -y apt-transport-https ca-certificates \
+#         software-properties-common
+#     curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+#         | sudo apt-key add -
+#     apt-key fingerprint 0EBFCD88
+#     add-apt-repository -y "deb [arch=amd64] https://download.docker.com/"`
+#     `"linux/ubuntu $(lsb_release -cs) stable"
+#     apt-get update
+#     apt-get install -y docker-ce
+# fi
 
 echo "*********Please install the following software by yourself*********"
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
@@ -704,11 +737,13 @@ if [ "$HHM_FAST_INIT" = "" ]; then
     apt-get -y autoremove
 fi
 
-pushd ~
-rm -irv -f remove_cache.sh
-wget "https://raw.githubusercontent.com/howardhhm/"`
-`"ubuntu-init/master/remove_cache.sh"
-chmod +x remove_cache.sh
-./remove_cache.sh
-rm -irv -f remove_cache.sh
-popd
+apt-get install -y syncthing
+
+# pushd ~
+# rm -irv -f remove_cache.sh
+# wget "https://raw.githubusercontent.com/howardhhm/"`
+# `"ubuntu-init/master/remove_cache.sh"
+# chmod +x remove_cache.sh
+# ./remove_cache.sh
+# rm -irv -f remove_cache.sh
+# popd
