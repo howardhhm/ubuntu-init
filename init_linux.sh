@@ -502,6 +502,8 @@ if [ "$HHM_HOMEBREW" = "" ]; then
     # apt-get install -y libmysqlclient-dev
     # pip2 install MySQL-python $PIPDO
 fi
+## mycli syntax
+sed -i 's|^syntax_style = default|syntax_style = fruity|g' ~/.myclirc
 ## jupyter
 if [ "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
     # pip3 install jupyter setuptools $HHM_PIP_TRUST_HOST
