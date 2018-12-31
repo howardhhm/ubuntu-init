@@ -224,6 +224,7 @@ apt-get install -y libjasper-dev
 ntpdate time.nist.gov
 apt-get install -y git
 apt-get install -y unrar
+apt-get install -y rlwrap
 apt-get install -y curl zsh convmv ruby speedtest-cli
 apt-get install -fy
 
