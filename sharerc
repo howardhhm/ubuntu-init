@@ -118,16 +118,6 @@ fileconv()
     done
 }
 
-docker-ps()
-{
-    docker ps
-}
-
-docker-ps-vertical()
-{
-    docker ps --format="ID\t{{.ID}}\nNAME\t{{.Names}}\nIMAGE\t{{.Image}}\nPORTS\t{{.Ports}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.CreatedAt}}\nSTATUS\t{{.Status}}\n"
-}
-
 tailf() {
     if [ -z "$1" ] ; then
         echo "Please specify a file for monitoring"
