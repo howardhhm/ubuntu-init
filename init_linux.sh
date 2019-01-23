@@ -192,6 +192,7 @@ apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
     shellcheck smartmontools sshfs subversion tig tmux tree uncrustify \
     unzip vim wget
 apt-get install -y screenfetch
+apt-get install -y multitail
 # apt-get install -y privoxy
 apt-get install -y polipo
 ## disable privoxy dnsmasq polipo
