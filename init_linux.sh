@@ -608,8 +608,8 @@ if [ $? -ne 0 ]; then
     sed -i '4 a source $HOME/.sharerc' ~/.zshrc
     # sed -i '5 a source ~/.hhmrc' ~/.zshrc
     ## enable oh_my_zsh "x" and "wd" command
-    sed -i 's|^  git|'`
-    `'  git extract wd svn pip pyenv pylint python zsh-syntax-highlighting docker|g' \
+    sed -i 's|^plugins=(git)|'`
+    `'plugins=(git extract wd svn pip pyenv pylint python zsh-syntax-highlighting docker)|g' \
         ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q
