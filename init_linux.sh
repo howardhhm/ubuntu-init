@@ -568,7 +568,7 @@ wget --no-cache "${GITFILES}/.tmux.conf" -P ~/
 chown $username:$username ~/.tmux.conf
 mkdir ~/.tmuxinator
 gem install --user tmuxinator
-ln -s "../.gem/ruby/${RUBY_VERSION}/gems/tmuxinator-0.15.0/completion/"`
+ln -s "../.gem/ruby/${RUBY_VERSION}/gems/tmuxinator-1.1.1/completion/"`
 `"tmuxinator.zsh" ~/.tmuxinator
 chown $username:$username -R ~/.gem
 # fi
