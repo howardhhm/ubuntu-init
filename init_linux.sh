@@ -193,15 +193,16 @@ apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
     unzip vim wget
 apt-get install -y screenfetch
 apt-get install -y multitail
+## use docker
 # apt-get install -y privoxy
-apt-get install -y polipo
+# apt-get install -y polipo
 ## disable privoxy dnsmasq polipo
 # service privoxy stop
 # service dnsmasq stop
-service polipo stop
+# service polipo stop
 # systemctl disable privoxy.service
 # systemctl disable dnsmasq.service
-systemctl disable polipo.service
+# systemctl disable polipo.service
 
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
     apt-get install -y dfc
@@ -485,7 +486,8 @@ if [ "$HHM_HOMEBREW" = "" ]; then
     pip3 install --user gensim jupyter_contrib_nbextensions jieba \
         bloom_filter xlsxwriter $HHM_PIP_TRUST_HOST
     pip2 install setuptools $HHM_PIP_TRUST_HOST
-    pip2 install supervisor $HHM_PIP_TRUST_HOST
+    ## use docker
+    # pip2 install supervisor $HHM_PIP_TRUST_HOST
     pip3 install --user ipython $HHM_PIP_TRUST_HOST
     pip3 install --user jupyter jupyter_contrib_nbextensions \
         $HHM_PIP_TRUST_HOST
