@@ -193,6 +193,8 @@ apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
     unzip vim wget
 apt-get install -y screenfetch
 apt-get install -y multitail
+apt-get install -y apache2
+systemctl disable apache2
 ## use docker
 # apt-get install -y privoxy
 # apt-get install -y polipo
