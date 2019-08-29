@@ -37,28 +37,9 @@ if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_UBUNTU_INIT_SERVER" = "1" ]; then
 fi
 
 ## get HHM_LINUX_INIT_CLIENT
-if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_ARCHLINUX_INIT_CLIENT" = "1" ]
-then
+if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" -o "$HHM_ARCHLINUX_INIT_CLIENT" = "1" ]; then
     export HHM_LINUX_INIT_CLIENT="1"
 fi
-
-## ==================================================================
-## ---------   Linux (Not for Mac)
-## ==================================================================
-# if [ "$HHM_LINUX" = "1" ]; then
-#     source /etc/profile
-#     remove-cache () {
-#         pushd ~
-#         rm -irv -f remove_cache.sh
-#         wget "https://raw.githubusercontent.com/howardhhm/"`
-#         `"ubuntu-init/master/remove_cache.sh"
-#         chmod +x remove_cache.sh
-#         ./remove_cache.sh
-#         rm -irv -f remove_cache.sh
-#         rm -irv -rvf $HOME/.cache/vmware/drag_and_drop
-#         popd
-#     }
-# fi
 
 ## ==================================================================
 ## ---------   Export
@@ -102,15 +83,13 @@ alias tm='tmux'
 alias tma='tmux a'
 alias tml='tmux ls'
 
-pscode()
-{
-    LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}
+pscode() {
+    LANG=c tr </dev/urandom -dc _A-Z-a-z-0-9 | head -c${1:-16}
     echo
 }
 
-fileconv()
-{
-    while [ $# != 0 ];do
+fileconv() {
+    while [ $# != 0 ]; do
         iconv $1 -f gbk -t utf8 -o ${1}.tmp
         mv -f ${1}.tmp $1
         dos2unix $1
@@ -119,7 +98,7 @@ fileconv()
 }
 
 tailf() {
-    if [ -z "$1" ] ; then
+    if [ -z "$1" ]; then
         echo "Please specify a file for monitoring"
         return
     fi
@@ -182,10 +161,10 @@ if [ "$HHM_LINUX" = "1" ]; then
     ### caution 'p4p1'
     ### caution: ip got below is divided by '.'
     ## ip0 $(ip addr show p4p1 | grep 'inet ' | sed 's/^.*inet //g' \
-        ## | cut -d ' ' -f1 | sed 's/\/.*$//g')
+    ## | cut -d ' ' -f1 | sed 's/\/.*$//g')
     ### caution: mac got below is divided by ':'
     ## mac $(ip link show p4p1 | grep 'link\/ether' | sed 's/^.*link\/ether //g' \
-        ## | cut -d ' ' -f1)
+    ## | cut -d ' ' -f1)
     ## list all network cards
     # ls /sys/class/net
     # alias ip0="ip addr show enp0s3 | grep 'inet ' | sed 's/^.*inet //g' "`
@@ -193,11 +172,10 @@ if [ "$HHM_LINUX" = "1" ]; then
     # alias mac0="ip link show enp0s3 | grep 'link\/ether' "`
     # `"| sed 's/^.*link\/ether //g'| cut -d ' ' -f1 | sed 's/:/-/g'"
     alias myfs="ls  /lib/modules/$(uname -r)/kernel/fs"
-    allip()
-    {
-        ip addr show | grep "inet " | sed "s/^.*inet //g" \
-            | cut -d " " -f1,4,6,7 | sed "s/scope //g" | sed "s/dynamic //g" \
-            | awk "{ print \$2 \"\t\" \$1 }"
+    allip() {
+        ip addr show | grep "inet " | sed "s/^.*inet //g" |
+            cut -d " " -f1,4,6,7 | sed "s/scope //g" | sed "s/dynamic //g" |
+            awk "{ print \$2 \"\t\" \$1 }"
     }
 
 fi
