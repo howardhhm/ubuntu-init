@@ -204,19 +204,20 @@ apt-get install -y git
 apt-get install -y unrar
 apt-get install -y rlwrap
 apt-get install -y curl zsh convmv ruby speedtest-cli
+apt-get install -y docker-compose
 apt-get install -fy
 
 ## install docker-compose
 curl -L "https://github.com/docker/compose/releases/download/1.23.1/"$(
 )"docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-## syncthing
-if [ ! -f /usr/bin/syncthing ]; then
-    curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
-    echo "deb https://apt.syncthing.net/ syncthing stable" |
-        tee /etc/apt/sources.list.d/syncthing.list
-    apt-get update
-fi
+# ## syncthing
+# if [ ! -f /usr/bin/syncthing ]; then
+#     curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
+#     echo "deb https://apt.syncthing.net/ syncthing stable" |
+#         tee /etc/apt/sources.list.d/syncthing.list
+#     apt-get update
+# fi
 
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
     ## disable guest
@@ -413,6 +414,34 @@ if [ ! -d ~/.config/powerline ]; then
 fi
 chown $username:$username -R ~/.config
 chown $username:$username -R ~/debian-init-tmp
+
+## ~/.oh-my-zsh/custom/themes/powerlevel10k
+if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
+    git clone https://github.com/romkatv/powerlevel10k.git \
+        ~/.oh-my-zsh/custom/themes/powerlevel10k
+fi
+
+## ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+        ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+fi
+
+## ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+        ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+fi
+
+## ~/.fzf/install
+if [ ! -d ~/.fzf/install ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
+        ~/.fzf/install
+    chown $username:$username -R ~/.fzf
+fi
+
+chown $username:$username -R ~/.oh-my-zsh
+
 ################################################################################
 ##                      tmux
 ################################################################################
@@ -450,7 +479,8 @@ cd $HOME
 grep -q 'ZSH_THEME="agnoster"' ~/.zshrc
 if [ $? -ne 0 ]; then
     ## change oh_my_zsh theme
-    sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
+    sed -i 's|^ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"\n'$(
+    )'#ZSH_THEME="powerlevel10k/powerlevel10k"|g' ~/.zshrc
     ## add env into ~/.hhmrc
     if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
         sed -i '2 a export HHM_UBUNTU_INIT_CLIENT="1"' ~/.zshrc
@@ -467,7 +497,7 @@ if [ $? -ne 0 ]; then
     ## enable oh_my_zsh "x" and "wd" command
     sed -i 's|^plugins=(git)|'$(
     )'plugins=(git extract wd svn pip pyenv pylint python '$(
-    )'zsh-syntax-highlighting docker)|g' \
+    )'zsh-syntax-highlighting docker zsh-autosuggestions dnf)|g' \
         ~/.zshrc
     ### [AT THE END OF THE FILE]
     ## enable control-s and control-q

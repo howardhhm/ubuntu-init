@@ -8,6 +8,7 @@ set ruler " locate the coord
 set showmode " status line
 set nu " display line number
 set bg=dark
+set mouse=a
 syntax on
 set ts=4 "TAB 4 spaces
 set expandtab "convert TABs to spaces
