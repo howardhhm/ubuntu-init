@@ -174,7 +174,8 @@ apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
     cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool lrzsz \
     most nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger \
     shellcheck smartmontools sshfs subversion tig tmux tree uncrustify \
-    unzip vim wget
+    unzip vim wget silversearcher-ag axel sloccount
+
 apt-get install -y screenfetch
 apt-get install -y multitail
 apt-get install -y apache2
@@ -353,6 +354,7 @@ if [ "$HHM_HOMEBREW" = "" ]; then
     ## use docker
     # pip2 install supervisor $HHM_PIP_TRUST_HOST
     pip3 install --user ipython $HHM_PIP_TRUST_HOST
+    pip3 install --user glances $HHM_PIP_TRUST_HOST
     pip3 install --user jupyter jupyter_contrib_nbextensions \
         $HHM_PIP_TRUST_HOST
     pip3 install --user mycli $HHM_PIP_TRUST_HOST
