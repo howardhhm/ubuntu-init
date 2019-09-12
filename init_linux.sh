@@ -174,7 +174,7 @@ apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
     cmatrix colordiff dos2unix exuberant-ctags feh gawk htop libtool lrzsz \
     most nbtscan net-tools ntpdate openssh-server p7zip pandoc ranger \
     shellcheck smartmontools sshfs subversion tig tmux tree uncrustify \
-    unzip vim wget silversearcher-ag axel sloccount
+    unzip vim wget silversearcher-ag axel sloccount jq
 
 apt-get install -y screenfetch
 apt-get install -y multitail
