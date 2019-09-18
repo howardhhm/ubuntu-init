@@ -435,14 +435,14 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
         ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 fi
 
-## ~/.fzf/install
-if [ ! -d ~/.fzf/install ]; then
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
-        ~/.fzf/install
-    chown $username:$username -R ~/.fzf
-fi
+# ## ~/.fzf/install
+# if [ ! -d ~/.fzf/install ]; then
+#     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
+#         ~/.fzf/install
+#     chown $username:$username -R ~/.fzf
+# fi
 
-chown $username:$username -R ~/.oh-my-zsh
+# chown $username:$username -R ~/.oh-my-zsh
 
 ################################################################################
 ##                      tmux
