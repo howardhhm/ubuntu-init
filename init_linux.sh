@@ -59,13 +59,13 @@ username=$(echo $SUDO_USER)
 # dpkg -i ~/debian-init-tmp/netselect_0.3.ds1-26_amd64.deb
 
 ## make swap
-if [ ! -f /opt/image/swap -a "$HHM_MKSWAP" = "1" ]; then
-    mkdir -p /opt/image/
-    dd if=/dev/zero of=/opt/image/swap bs=1024 count=2048000
-    mkswap /opt/image/swap
-    swapon /opt/image/swap
-    sed -i '$ a /opt/image/swap     swap      swap defaults 0 0' /etc/fstab
-fi
+# if [ ! -f /opt/image/swap -a "$HHM_MKSWAP" = "1" ]; then
+#     mkdir -p /opt/image/
+#     dd if=/dev/zero of=/opt/image/swap bs=1024 count=2048000
+#     mkswap /opt/image/swap
+#     swapon /opt/image/swap
+#     sed -i '$ a /opt/image/swap     swap      swap defaults 0 0' /etc/fstab
+# fi
 
 ## set locale
 if [ "$HHM_INTERNATIONAL" = "1" ]; then
