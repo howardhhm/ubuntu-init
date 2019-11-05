@@ -179,6 +179,7 @@ apt-get install -y astyle autoconf autojump autossh axel cloc cmake \
 apt-get install -y screenfetch
 apt-get install -y multitail
 apt-get install -y apache2
+apt-get install -y pwgen
 systemctl disable apache2
 
 if [ "$HHM_DEBIAN_INIT_SERVER" = "" ]; then
@@ -566,6 +567,11 @@ add-apt-repository -y "deb [arch=amd64] https://download.docker.com/"$(
 )"linux/ubuntu $(lsb_release -cs) stable"
 apt-get update
 apt-get install -y docker-ce
+
+## install go
+add-apt-repository -y ppa:longsleep/golang-backports
+apt-get update
+apt-get install -y golang-go
 
 echo "*********Please install the following software by yourself*********"
 if [ "$HHM_UBUNTU_INIT_CLIENT" = "1" ]; then
