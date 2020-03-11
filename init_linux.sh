@@ -2,7 +2,7 @@
 # @Author:       howardhhm
 # @Email:        howardhhm@126.com
 # @DateTime:     2017-02-21 10:59:06
-# @Description:  Description
+# @Description:  fundamentally init ubuntu os
 
 ################################################################################
 ##                      Preparation
