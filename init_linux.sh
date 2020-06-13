@@ -472,10 +472,6 @@ sed -i "${lineno}s|bash|zsh|g" /etc/passwd
 # install oh_my_zsh
 sh -c "$(wget ${GITFILES}/install_oh_my_zsh.sh -O -)"
 
-# install zsh-syntax-highlighting
-cd $HOME/.config
-git clone git://github.com/zsh-users/zsh-syntax-highlighting.git
-chown $username:$username -R ~/.config/zsh-syntax-highlighting
 cd $HOME
 
 ## add the following code into ~/.zshrc
