@@ -146,6 +146,7 @@ apt-get update
 if [ "$HHM_FAST_INIT" = "" ]; then
     apt-get -y upgrade
 fi
+apt-get install -y iftop
 apt-get install -y apt-file
 apt-file update
 
