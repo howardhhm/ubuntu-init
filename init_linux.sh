@@ -330,7 +330,7 @@ if [ "$HHM_INTERNATIONAL" = "" ]; then
     mkdir ~/.pip/
     echo "[global]" >~/.pip/pip.conf
     echo "trusted-host = mirrors.aliyun.com" >>~/.pip/pip.conf
-    echo "index-url = http://mirrors.aliyun.com/pypi/simple" >>~/.pip/pip.conf
+    echo "index-url = https://mirrors.aliyun.com/pypi/simple" >>~/.pip/pip.conf
 fi
 
 chown $username:$username -R ~/.pip
